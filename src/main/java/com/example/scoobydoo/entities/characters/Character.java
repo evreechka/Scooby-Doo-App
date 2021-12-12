@@ -1,5 +1,7 @@
-package com.example.scoobydoo.entities;
+package com.example.scoobydoo.entities.characters;
 
+import com.example.scoobydoo.entities.investigation.crime.Suspect;
+import com.example.scoobydoo.entities.investigation.crime.Victim;
 import com.example.scoobydoo.entities.enums.SexType;
 import com.example.scoobydoo.entities.enums.SystemRoleType;
 import lombok.Data;
@@ -21,23 +23,35 @@ public class Character {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "character_id")
     private Long id;
+
     @NotBlank
     @Column(name = "name")
     private String name;
+
     @NotBlank
     @Column(name = "surname")
     private String surname;
+
     @Min(1)
     @Max(120)
     @Column(name = "age")
     private int age;
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "sex")
     private SexType sex;
+
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "system_role")
     private SystemRoleType role;
+
+    @OneToMany(mappedBy = "character") //TODO
+    private Set<Victim> victims;
+
+    @OneToMany(mappedBy = "character") //TODO
+    private Set<Suspect> suspects;
+
     @ManyToMany
     @JoinTable(
             name = "Living_Place",

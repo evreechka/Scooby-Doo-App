@@ -1,5 +1,6 @@
-package com.example.scoobydoo.entities;
+package com.example.scoobydoo.entities.characters;
 
+import com.example.scoobydoo.entities.characters.Character;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,15 +18,19 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "address_id")
     private long id;
+
     @NotBlank
     @Column(name = "city")
     private String city;
+
     @NotBlank
     @Column(name = "avenue")
     private String avenue;
+
     @Min(1)
     @Column(name = "house_num")
     private int houseNumber;
-    @ManyToMany(mappedBy = "livingPlace")
+
+    @ManyToMany(mappedBy = "livingPlaces")
     private Set<Character> residents;
 }

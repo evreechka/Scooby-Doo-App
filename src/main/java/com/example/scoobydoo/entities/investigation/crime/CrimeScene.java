@@ -1,5 +1,6 @@
-package com.example.scoobydoo.entities;
+package com.example.scoobydoo.entities.investigation.crime;
 
+import com.example.scoobydoo.entities.characters.Address;
 import com.example.scoobydoo.entities.enums.PlaceType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
