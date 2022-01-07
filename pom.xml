@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Scooby-Doo</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Nice project to cartoon Scooby Doo</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
