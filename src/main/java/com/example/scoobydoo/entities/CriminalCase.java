@@ -1,5 +1,6 @@
 package com.example.scoobydoo.entities;
 
+import com.example.scoobydoo.entities.enums.PunishmentType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,14 +12,14 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Criminal_Case")
+@Table(name = "CRIMINAL_CASE")
 public class CriminalCase {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "case_id")
     private long id;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "punishment")
     private PunishmentType punishment;
 
@@ -27,18 +28,22 @@ public class CriminalCase {
     @Column(name = "severity_case")
     private int severity;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    //TODO
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "monster_id", referencedColumnName = "monster_id")
     private Monster monster;
 
+    //TODO
     @ManyToOne
-    @JoinColumn(name="quilt_id")
+    @JoinColumn(name="quilt_id", referencedColumnName = "suspect_id")
     private Suspect quilt;
 
+    //TODO
     @ManyToOne
-    @JoinColumn(name="crime_id")
+    @JoinColumn(name="crime_id", referencedColumnName = "crime_id")
     private Crime crime;
 
+    //TODO
     @OneToMany(mappedBy = "criminalCase") //TODO
     private Set<EquipmentCase> equipments;
 }

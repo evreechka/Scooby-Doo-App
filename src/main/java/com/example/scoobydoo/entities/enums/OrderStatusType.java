@@ -1,4 +1,4 @@
-package com.example.scoobydoo.entities;
+package com.example.scoobydoo.entities.enums;
 
 public enum OrderStatusType {
     NOT_CONFIRMED,

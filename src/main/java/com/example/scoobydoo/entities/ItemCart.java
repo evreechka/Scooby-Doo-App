@@ -1,5 +1,6 @@
 package com.example.scoobydoo.entities;
 
+import com.example.scoobydoo.entities.embedded_keys.CartKey;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Item_Cart")
+@Table(name = "ITEM_CART")
 public class ItemCart {
     @EmbeddedId
     private CartKey id;
@@ -24,11 +25,13 @@ public class ItemCart {
     @Column(name = "date_receipt")
     private LocalDateTime dateReceipt;
 
+    //TODO
     @ManyToOne
     @MapsId("itemId")
     @JoinColumn(name = "item_id")
     private Item item;
 
+    //TODO
     @ManyToOne
     @MapsId("orderId")
     @JoinColumn(name = "order_id")

@@ -1,4 +1,4 @@
-package com.example.scoobydoo.entities;
+package com.example.scoobydoo.entities.embedded_keys;
 
 import lombok.Data;
 
@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Embeddable
 public class VisitParticipantKey implements Serializable {
     @Column(name = "visit_id")
-    private Long visitId;
+    private long visitId;
 
-    @Column(name = "investigator_id")
-    private Long investigatorId;
+    @Column(name = "participant_id")
+    private long participantId;
 }

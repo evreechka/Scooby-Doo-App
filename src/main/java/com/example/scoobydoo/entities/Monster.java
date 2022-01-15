@@ -9,12 +9,15 @@ import javax.validation.constraints.Min;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Monster")
+@Table(name = "MONSTER")
 public class Monster {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monster_id")
     private long id;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "description")
     private String description;
@@ -31,7 +34,7 @@ public class Monster {
     private String internetInformation;
 
     @ManyToOne
-    @JoinColumn(name="monster_type_id")
+    @JoinColumn(name="type_id", referencedColumnName = "monster_type_id")
     private MonsterType monsterType;
 
 }

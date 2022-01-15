@@ -1,5 +1,6 @@
 package com.example.scoobydoo.entities;
 
+import com.example.scoobydoo.entities.embedded_keys.HistoryKey;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "History")
+@Table(name = "HISTORY")
 public class History {
     @EmbeddedId
     private HistoryKey id;
@@ -20,11 +21,13 @@ public class History {
     @Column(name = "time_return")
     private LocalDateTime timeReturn;
 
+    //TODO
     @ManyToOne
     @MapsId("itemSerialNumber")
     @JoinColumn(name = "item_serial_num")
     private Inventory inventory;
 
+    //TODO
     @ManyToOne
     @MapsId("investigatorId")
     @JoinColumn(name = "investigator_id")

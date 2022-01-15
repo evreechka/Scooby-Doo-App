@@ -13,10 +13,10 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Crime_Visit")
+@Table(name = "CRIME_VISIT")
 public class CrimeVisit {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "visit_id")
     private long id;
 
@@ -42,10 +42,11 @@ public class CrimeVisit {
     @OneToMany(mappedBy = "crimeVisit") //TODO
     private Set<VisitParticipant> participants;
 
+    //TODO
     @ManyToOne
     @JoinColumn(name="scene_id")
     private CrimeScene crimeScene;
-
+    //TODO
     @ManyToOne
     @JoinColumn(name="crime_id")
     private Crime crime;

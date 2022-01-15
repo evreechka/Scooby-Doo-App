@@ -1,56 +1,57 @@
 package com.example.scoobydoo.entities;
 
+import com.example.scoobydoo.entities.enums.SexType;
+import com.example.scoobydoo.entities.enums.SystemRoleType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Character")
+@Table(name = "CHARACTER")
 public class Character {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "character_id")
-    private Long id;
+    private long id;
 
-    @NotBlank
+    @NotNull
     @Column(name = "name")
     private String name;
 
-    @NotBlank
+    @NotNull
     @Column(name = "surname")
     private String surname;
 
     @Min(1)
-    @Max(120)
+    @Max(119)
     @Column(name = "age")
     private int age;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "sex")
     private SexType sex;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "system_role")
     private SystemRoleType role;
 
-    @OneToMany(mappedBy = "character") //TODO
-    private Set<Victim> victims;
+//    @OneToMany(mappedBy = "character") //TODO
+//    private Set<Victim> victims;
+//
+//    @OneToMany(mappedBy = "character") //TODO
+//    private Set<Suspect> suspects;
 
-    @OneToMany(mappedBy = "character") //TODO
-    private Set<Suspect> suspects;
-
-    @ManyToMany
+    @ManyToMany //TODO
     @JoinTable(
-            name = "Living_Place",
+            name = "LIVING_PLACE",
             joinColumns = @JoinColumn(name = "character_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Set<Address> livingPlaces;

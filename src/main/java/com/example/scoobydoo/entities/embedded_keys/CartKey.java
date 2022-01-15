@@ -1,4 +1,4 @@
-package com.example.scoobydoo.entities;
+package com.example.scoobydoo.entities.embedded_keys;
 
 import lombok.Data;
 
@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class CartKey implements Serializable {
     @Column(name = "item_id")
-    private Long itemId;
+    private long itemId;
 
     @Column(name = "order_id")
-    private Long orderId;
+    private long orderId;
 }

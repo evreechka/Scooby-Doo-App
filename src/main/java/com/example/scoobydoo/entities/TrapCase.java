@@ -13,14 +13,13 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Trap_Case")
+@Table(name = "TRAP_CASE")
 public class TrapCase {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "trap_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "trap_case_id")
     private long id;
 
-    @NotBlank
     @Column(name = "name")
     private String name;
 
@@ -29,12 +28,12 @@ public class TrapCase {
     @Column(name = "usefulness")
     private int usefulness;
 
-    @NotNull
     @Column(name = "is_selected")
     private boolean isSelected;
 
+    //TODO
     @ManyToOne
-    @JoinColumn(name="case_id")
+    @JoinColumn(name="case_id", referencedColumnName = "case_id")
     private CriminalCase criminalCase;
 
     @OneToMany(mappedBy = "trapCase") //TODO

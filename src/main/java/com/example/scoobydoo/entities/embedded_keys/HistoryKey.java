@@ -1,4 +1,4 @@
-package com.example.scoobydoo.entities;
+package com.example.scoobydoo.entities.embedded_keys;
 
 import lombok.Data;
 
@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Embeddable
 public class HistoryKey implements Serializable {
     @Column(name = "item_serial_num")
-    private Long itemSerialNumber;
+    private long itemSerialNumber;
 
     @Column(name = "investigator_id")
-    private Long investigatorId;
+    private long investigatorId;
 }

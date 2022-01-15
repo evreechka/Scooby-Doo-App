@@ -1,5 +1,6 @@
 package com.example.scoobydoo.entities;
 
+import com.example.scoobydoo.entities.enums.MonsterFeatureType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,10 +11,10 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Monster_Type")
+@Table(name = "MONSTER_TYPE")
 public class MonsterType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monster_type_id")
     private long id;
 
@@ -22,9 +23,12 @@ public class MonsterType {
     private String name;
 
     @Column(name = "monster_feature")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private MonsterFeatureType monsterFeature;
-
+    //TODO
     @ManyToMany(mappedBy = "monsterTypes")
     private Set<Item> items;
+    //TODO
+    @OneToMany(mappedBy = "monsterType")
+    private Set<Monster> monsters;
 }

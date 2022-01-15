@@ -1,5 +1,6 @@
 package com.example.scoobydoo.entities;
 
+import com.example.scoobydoo.entities.embedded_keys.EquipmentCaseKey;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,22 +16,24 @@ public class EquipmentCase {
     @EmbeddedId
     private EquipmentCaseKey id;
 
-    @ManyToOne
-    @MapsId("itemId")
-    @JoinColumn(name = "item_id")
-    private Item item;
-
-    @ManyToOne
-    @MapsId("caseId")
-    @JoinColumn(name = "case_id")
-    private CriminalCase criminalCase;
+    @Min(1)
+    @Column(name = "necessary_count")
+    private int necessaryCount;
 
     @Min(0)
     @Max(10)
     @Column(name = "usefulness")
     private int usefulness;
 
-    @Min(0)
-    @Column(name = "necessary_count")
-    private int necessaryCount;
+    //TODO
+    @ManyToOne
+    @MapsId("equipmentId")
+    @JoinColumn(name = "equipment_id", referencedColumnName = "item_id")
+    private Item item;
+
+    //TODO
+    @ManyToOne
+    @MapsId("caseId")
+    @JoinColumn(name = "case_id", referencedColumnName = "case_id")
+    private CriminalCase criminalCase;
 }

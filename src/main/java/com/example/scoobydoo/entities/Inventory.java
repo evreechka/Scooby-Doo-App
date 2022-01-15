@@ -11,10 +11,10 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Item")
+@Table(name = "INVENTORY")
 public class Inventory {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_serial_num")
     private long id;
 
@@ -22,12 +22,12 @@ public class Inventory {
     @Column(name = "is_available")
     private boolean isAvailable;
 
-    @NotNull
     @Column(name = "deposit_date")
     private LocalDateTime depositDate;
 
+    //TODO
     @ManyToOne
-    @JoinColumn(name="item_id")
+    @JoinColumn(name="item_id", referencedColumnName = "item_id")
     private Item item;
 
     @OneToMany(mappedBy = "inventory") //TODO

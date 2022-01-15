@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EntityScan("com.example.scoobydoo.entities")
-@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.example.scoobydoo.repos")
 @SpringBootApplication
 public class ScoobyDooApplication {

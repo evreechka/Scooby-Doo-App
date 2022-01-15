@@ -1,4 +1,4 @@
-package com.example.scoobydoo.entities;
+package com.example.scoobydoo.entities.embedded_keys;
 
 import lombok.Data;
 
@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Embeddable
 public class TrapItemKey implements Serializable {
     @Column(name = "item_id")
-    private Long itemId;
+    private long itemId;
 
     @Column(name = "trap_id")
-    private Long trapId;
+    private long trapId;
 }

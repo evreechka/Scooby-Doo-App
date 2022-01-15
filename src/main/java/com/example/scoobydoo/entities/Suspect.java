@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -13,27 +14,30 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "Suspect")
 public class Suspect {
-    @EmbeddedId
-    private SuspectKey id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "suspect_id")
+    private long id;
 
-    @NotBlank
+    @NotNull
     @Column(name = "motive")
     private String motive;
 
-    @Min(0)
+    @Min(1)
     @Column(name = "involvement")
     private int involvement;
 
+    //TODO
     @ManyToOne
-    @MapsId("visitId")
-    @JoinColumn(name = "visit_id")
+    @JoinColumn(name = "visit_id", referencedColumnName = "visit_id")
     private CrimeVisit crimeVisit;
 
+    //TODO
     @ManyToOne
-    @MapsId("characterId")
-    @JoinColumn(name = "character_id")
+    @JoinColumn(name = "character_id", referencedColumnName = "character_id")
     private Character characterId;
 
+    //TODO
     @ManyToMany(mappedBy = "suspects")
     private Set<Clue> clues;
 }

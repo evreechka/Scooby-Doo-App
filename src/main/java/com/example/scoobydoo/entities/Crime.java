@@ -1,43 +1,44 @@
 package com.example.scoobydoo.entities;
 
+import com.example.scoobydoo.entities.enums.CrimeStatusType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Crime")
+@Table(name = "CRIME")
 public class Crime {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "crime_id")
     private long id;
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "crima_status")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "crime_status")
     private CrimeStatusType crimeStatus;
 
-    @NotBlank
     @Column(name = "description")
     private String description;
 
-    @Min(0)
+    @Min(1)
     @Column(name = "fee")
     private float fee;
-
+//TODO
     @ManyToOne
     @JoinColumn(name="sheriff_id")
     private Character sheriff;
-
+//TODO
     @ManyToMany
     @JoinTable(
-            name = "Investigator_Case",
-            joinColumns = @JoinColumn(name = "crime_id"),
-            inverseJoinColumns = @JoinColumn(name = "investigator_id"))
+            name = "INVESTIGATOR_CRIME",
+            joinColumns = @JoinColumn(name = "crime_id", referencedColumnName = "crime_id"),
+            inverseJoinColumns = @JoinColumn(name = "investigator_id", referencedColumnName = "investigator_id"))
     private Set<Investigator> investigators;
 }

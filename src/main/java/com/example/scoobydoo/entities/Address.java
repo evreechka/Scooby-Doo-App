@@ -6,29 +6,30 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Address")
+@Table(name = "ADDRESS")
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id")
     private long id;
 
-    @NotBlank
+    @NotNull
     @Column(name = "city")
     private String city;
 
-    @NotBlank
+    @NotNull
     @Column(name = "avenue")
     private String avenue;
 
     @Min(1)
     @Column(name = "house_num")
-    private int houseNumber;
+    private long houseNumber;
 
     @ManyToMany(mappedBy = "livingPlaces")
     private Set<Character> residents;
