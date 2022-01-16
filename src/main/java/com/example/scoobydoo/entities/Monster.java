@@ -1,16 +1,20 @@
 package com.example.scoobydoo.entities;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "MONSTER")
-public class Monster {
+public class Monster implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monster_id")

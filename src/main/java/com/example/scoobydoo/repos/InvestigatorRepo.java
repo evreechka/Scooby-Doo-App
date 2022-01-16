@@ -8,4 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface InvestigatorRepo extends JpaRepository<Investigator, Long> {
+    Investigator findInvestigatorByInvestigatorId(long investigatorId);
 }

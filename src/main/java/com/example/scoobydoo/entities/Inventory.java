@@ -1,18 +1,22 @@
 package com.example.scoobydoo.entities;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "INVENTORY")
-public class Inventory {
+public class Inventory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_serial_num")

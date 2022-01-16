@@ -3,19 +3,23 @@ package com.example.scoobydoo.entities;
 import com.example.scoobydoo.entities.enums.SexType;
 import com.example.scoobydoo.entities.enums.SystemRoleType;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "CHARACTER")
-public class Character {
+public class Character implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "character_id")
@@ -48,7 +52,6 @@ public class Character {
 //
 //    @OneToMany(mappedBy = "character") //TODO
 //    private Set<Suspect> suspects;
-
     @ManyToMany //TODO
     @JoinTable(
             name = "LIVING_PLACE",

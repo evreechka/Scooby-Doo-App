@@ -2,19 +2,23 @@ package com.example.scoobydoo.entities;
 
 import com.example.scoobydoo.entities.enums.OrderStatusType;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "CASE_ORDER")
-public class CaseOrder {
+public class CaseOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")

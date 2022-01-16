@@ -2,17 +2,21 @@ package com.example.scoobydoo.entities;
 
 import com.example.scoobydoo.entities.embedded_keys.EquipmentCaseKey;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "Equipment_Case")
-public class EquipmentCase {
+public class EquipmentCase implements Serializable {
     @EmbeddedId
     private EquipmentCaseKey id;
 

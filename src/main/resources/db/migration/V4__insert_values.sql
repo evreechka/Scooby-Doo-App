@@ -69,11 +69,11 @@ VALUES (1, 'FEARLESS'),
        (5, 'SPEED');
 
 INSERT INTO PROFILE (username, password, profile_photo, user_id)
-VALUES ('bestCatcher', '12ddd345', null, 1),
-       ('beautyGirl2002', 'ddddd', null, 2),
-       ('foodLover', 'foooood', null, 3),
-       ('velma brain', '12345dddd6789', null, 4),
-       ('scoobs', 'scoobysnax', null, 5);
+VALUES ('bestCatcher', '$2a$10$9e1psHZNgq0sw8qFmPHsi.sLpB7XTrqI9gcG8SgkhGTP8R.8.B9Fe', null, 1),
+       ('beautyGirl2002', '$2a$10$k.QXoepc0C8nAJPDLgqgG.FT7nlbdd984H/XsY6FK7T1xT1.wjYGi', null, 2),
+       ('foodLover', '$2a$10$mx.HBoNtOgqN24KeID/x8.EgCq4NwXtD0AWMPMAEtjJO7RBlK5Ii.', null, 3),
+       ('velma brain', '$2a$10$QzlHzMfCKkNOB0zzioNRS.nO3syzIEKYPKIwH6lSg2jbMG06ESA4.', null, 4),
+       ('scoobs', '$2a$10$MIEH.rwf6vGw5o08z66p7Olwt3L6TwvFZLMxfVomf8Tbi7gw8OgMK', null, 5);
 
 INSERT INTO BANK_ACCOUNT (balance, owner_id)
 VALUES (1000.0, 1),

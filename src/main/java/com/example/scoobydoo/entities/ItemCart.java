@@ -2,18 +2,22 @@ package com.example.scoobydoo.entities;
 
 import com.example.scoobydoo.entities.embedded_keys.CartKey;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "ITEM_CART")
-public class ItemCart {
+public class ItemCart implements Serializable {
     @EmbeddedId
     private CartKey id;
 

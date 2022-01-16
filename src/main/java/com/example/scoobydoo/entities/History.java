@@ -2,16 +2,20 @@ package com.example.scoobydoo.entities;
 
 import com.example.scoobydoo.entities.embedded_keys.HistoryKey;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "HISTORY")
-public class History {
+public class History implements Serializable {
     @EmbeddedId
     private HistoryKey id;
 

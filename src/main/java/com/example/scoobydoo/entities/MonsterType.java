@@ -2,17 +2,21 @@ package com.example.scoobydoo.entities;
 
 import com.example.scoobydoo.entities.enums.MonsterFeatureType;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "MONSTER_TYPE")
-public class MonsterType {
+public class MonsterType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monster_type_id")
