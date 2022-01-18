@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS PROFILE
     profile_id    BIGSERIAL PRIMARY KEY,
     username      TEXT NOT NULL,
     password      TEXT NOT NULL,
-    profile_photo BYTEA,
+    profile_photo TEXT,
     user_id       BIGINT UNIQUE,
     FOREIGN KEY (user_id) REFERENCES INVESTIGATOR (investigator_id)
 );

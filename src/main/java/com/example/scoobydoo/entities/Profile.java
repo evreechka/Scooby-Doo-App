@@ -1,5 +1,6 @@
 package com.example.scoobydoo.entities;
 
+import com.example.scoobydoo.entities.enums.SystemRoleType;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +32,20 @@ public class Profile implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "profile_photo")
+    private String photo;
+
     //TODO
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "investigator_id")
     private Investigator user;
+
+    public boolean isAdmin() {
+        return getUser().getCharacter().getRole().toString().equals(SystemRoleType.ADMIN.name());
+    }
+    public boolean isSheriff() {
+        return getUser().getCharacter().getRole().toString().equals(SystemRoleType.SHERIFF.name());
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
