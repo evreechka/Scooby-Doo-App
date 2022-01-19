@@ -41,16 +41,6 @@
                     <a class="nav-link" href="/trap">Traps</a>
                 </li>
             </#if>
-            <#if profile?? && isAdmin>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile/delete">Delete User</a>
-                </li>
-            </#if>
-            <#if profile?? && isAdmin>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile/add">Add User</a>
-                </li>
-            </#if>
         </ul>
         <#if profile??>
             <@l.logout/>

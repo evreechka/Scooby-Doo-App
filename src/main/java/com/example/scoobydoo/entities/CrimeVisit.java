@@ -48,10 +48,10 @@ public class CrimeVisit implements Serializable {
 
     //TODO
     @ManyToOne
-    @JoinColumn(name="scene_id")
+    @JoinColumn(name="scene_id", referencedColumnName = "scene_id")
     private CrimeScene crimeScene;
     //TODO
     @ManyToOne
-    @JoinColumn(name="crime_id")
+    @JoinColumn(name="crime_id", referencedColumnName = "crime_id")
     private Crime crime;
 }

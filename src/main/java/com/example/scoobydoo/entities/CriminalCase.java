@@ -50,4 +50,7 @@ public class CriminalCase implements Serializable {
     //TODO
     @OneToMany(mappedBy = "criminalCase") //TODO
     private Set<EquipmentCase> equipments;
+
+    @OneToMany(mappedBy = "criminalCase")
+    private Set<CaseOrder> orders;
 }

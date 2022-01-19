@@ -1,13 +1,11 @@
 package com.example.scoobydoo.entities;
 
 import com.example.scoobydoo.entities.enums.CrimeStatusType;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
@@ -33,6 +31,15 @@ public class Crime implements Serializable {
 
     @Column(name = "fee", columnDefinition = "DOUBLE PRECISION CHECK ( fee > 0.0 )")
     private float fee;
+
+    @OneToOne(mappedBy = "crime")
+    private Contention contention;
+
+    @OneToMany(mappedBy = "crime")
+    private Set<CriminalCase> criminalCases;
+    @OneToMany(mappedBy = "crime")
+    private Set<CrimeVisit> crimeVisits;
+
 //TODO
     @ManyToOne
     @JoinColumn(name="sheriff_id")

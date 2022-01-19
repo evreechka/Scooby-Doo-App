@@ -1,5 +1,7 @@
 package com.example.scoobydoo.services;
 
+import com.example.scoobydoo.entities.Address;
+import com.example.scoobydoo.entities.Character;
 import com.example.scoobydoo.entities.Crime;
 import com.example.scoobydoo.entities.Profile;
 import com.example.scoobydoo.entities.enums.SystemRoleType;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,5 +34,19 @@ public class CrimeService {
 
     public Crime getCrime(long crimeId) {
         return crimeRepo.findCrimeById(crimeId);
+    }
+
+    public String getDamage(long crimeId) {
+        int damage = getCrime(crimeId).getContention().getDamageCritically();
+        if (damage >= 0 && damage <= 4)
+            return "small";
+        else if (damage >= 5 && damage <= 7)
+            return "middle";
+        return "large";
+    }
+
+    public Set<Address> getVictimHomes(long crimeId) {
+        Character character = crimeRepo.findCrimeById(crimeId).getContention().getCharacter();
+        return character.getLivingPlaces();
     }
 }

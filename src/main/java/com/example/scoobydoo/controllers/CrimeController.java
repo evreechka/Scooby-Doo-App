@@ -21,6 +21,8 @@ public class CrimeController {
     @GetMapping("/crime/{crimeId}")
     public String getCrimeInfo(@PathVariable long crimeId, Model model) {
         model.addAttribute("crime", crimeService.getCrime(crimeId));
+        model.addAttribute("damage", crimeService.getDamage(crimeId));
+        model.addAttribute("victim_homes",crimeService.getVictimHomes(crimeId));
         return "crime";
     }
 }
