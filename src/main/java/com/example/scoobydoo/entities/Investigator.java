@@ -24,6 +24,12 @@ public class Investigator implements Serializable {
     @JoinColumn(name = "investigator_id", referencedColumnName = "character_id")
     private Character character;
 
+    @OneToOne(mappedBy = "owner")
+    private BankAccount bankAccount;
+
+    @OneToOne(mappedBy = "user")
+    private Profile profile;
+
     @Column(name = "feature")
     @Enumerated(EnumType.STRING)
     private FeatureType feature;
@@ -37,4 +43,12 @@ public class Investigator implements Serializable {
     //TODO
     @ManyToMany(mappedBy = "investigators")
     private Set<Crime> crimes;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Investigator user = (Investigator) o;
+        return investigatorId == user.getInvestigatorId();
+    }
 }

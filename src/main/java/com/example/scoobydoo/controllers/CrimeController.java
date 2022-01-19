@@ -7,14 +7,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class CrimeController {
     @Autowired
     private CrimeService crimeService;
     @GetMapping()
-    public String getMainPage(Model model, @AuthenticationPrincipal UserDetails profile) {
-        model.addAttribute("crimes", crimeService.getAllCrimes(profile));
+    public String getMainPage(Model model, @AuthenticationPrincipal UserDetails profileDetails) {
+        model.addAttribute("crimes", crimeService.getAllCrimes(profileDetails));
         return "main";
+    }
+    @GetMapping("/crime/{crimeId}")
+    public String getCrimeInfo(@PathVariable long crimeId, Model model) {
+        model.addAttribute("crime", crimeService.getCrime(crimeId));
+        return "crime";
     }
 }

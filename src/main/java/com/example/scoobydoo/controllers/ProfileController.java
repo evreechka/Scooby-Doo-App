@@ -3,6 +3,8 @@ package com.example.scoobydoo.controllers;
 import com.example.scoobydoo.entities.Profile;
 import com.example.scoobydoo.services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,11 +37,10 @@ public class ProfileController {
     }
 
     @PostMapping("/{profileId}/edit")
-    public String editProfile(@PathVariable long profileId, Model model, @RequestParam(required = false) MultipartFile file, @RequestParam(required = false) String password, @RequestParam(required = false) String username) throws IOException {
+    public String editProfile(@PathVariable long profileId, Model model, @RequestParam(required = false) MultipartFile file, @RequestParam(required = false) String password, @RequestParam(required = false) String username, @RequestParam(required = false) String age, @AuthenticationPrincipal UserDetails profileDetails) {
         Map<String, String> feedback;
         try {
-            feedback = profileService.saveChanges(profileId, username, password, file);
-            System.out.println(feedback.size());
+            feedback = profileService.saveChanges(profileId, username, password, age, file, profileDetails);
             if (feedback.isEmpty()) {
                 model.addAttribute("success", "Changes are successfully saved!");
                 model.addAttribute("user_profile", profileService.getProfile(profileId));
@@ -50,5 +51,19 @@ public class ProfileController {
             model.addAttribute("photoError", "Problems with saving photo! Try later :(");
         }
         return "edit_profile";
+    }
+
+    @PostMapping("/{profileId}/delete")
+    public String deleteProfile(@PathVariable long profileId, @AuthenticationPrincipal UserDetails profileDetails, Model model) {
+        Map<String, String> feedback;
+        feedback = profileService.deleteProfile(profileId, profileDetails);
+        if (feedback != null) {
+            if (feedback.get("logout") != null)
+                return "redirect:/logout";
+            else
+                model.mergeAttributes(feedback);
+
+        }
+        return "users_list";
     }
 }

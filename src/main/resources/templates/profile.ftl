@@ -15,9 +15,11 @@
                 <li class="list-group-item">${age} years of old</li>
                 <li class="list-group-item">I've taken part in ${crime_count} crimes</li>
                 <li class="list-group-item">My main feature is ${feature}</li>
+                <li class="list-group-item">Money: ${bank_account}$</li>
             </ul>
         </div>
-        <a class="btn btn-dark" href="/profile/${activeId}/edit" role="button">Edit</a>
+        <#if activeId == profileId>
+            <a class="btn btn-dark" href="/profile/${activeId}/edit" role="button">Edit</a>
+        </#if>
     </div>
-<#--    TODO(add bank account)-->
 </@c.page>

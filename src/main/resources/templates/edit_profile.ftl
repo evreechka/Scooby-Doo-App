@@ -17,6 +17,11 @@
             ${success}
         </div>
     </#if>
+    <#if error??>
+        <div class="alert alert-danger" role="alert">
+            ${error}
+        </div>
+    </#if>
     <div id="collapseExample">
         <div class="form-group mt-3">
             <form method="post" enctype="multipart/form-data" action="/profile/${activeId}/edit">
@@ -51,6 +56,18 @@
                         <#if passwordError??>
                             <div class="invalid-feedback">
                                 ${passwordError}
+                            </div>
+                        </#if>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Age:</label>
+                    <div class="col-sm-6">
+                        <input type="text" name="age"
+                               class="form-control ${(ageError??)?string('is-invalid', '')}"/>
+                        <#if ageError??>
+                            <div class="invalid-feedback">
+                                ${ageError}
                             </div>
                         </#if>
                     </div>

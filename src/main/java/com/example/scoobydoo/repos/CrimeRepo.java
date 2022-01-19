@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface CrimeRepo extends JpaRepository<Crime, Long> {
-    @Override
     List<Crime> findAll();
+    Crime findCrimeById(long crimeId);
 }

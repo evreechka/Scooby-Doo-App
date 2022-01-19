@@ -28,4 +28,8 @@ public class CrimeService {
         crimes.sort(Comparator.comparing(Crime::getCrimeStatus));
         return crimes;
     }
+
+    public Crime getCrime(long crimeId) {
+        return crimeRepo.findCrimeById(crimeId);
+    }
 }
