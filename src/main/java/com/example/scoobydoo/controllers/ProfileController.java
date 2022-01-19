@@ -15,6 +15,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
 
+import static com.example.scoobydoo.utils.ControllerUtils.getErrors;
+
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
@@ -32,7 +34,15 @@ public class ProfileController {
 
     @GetMapping("/{profileId}/edit")
     public String getEditPage(@PathVariable long profileId, Model model) {
-        model.addAttribute("user_profile", profileService.getProfile(profileId));
+        model.addAttribute("user_profile", profileService.getProfileById(profileId));
+        return "edit_profile";
+    }
+    @GetMapping("/add")
+    public String getEditPage(@AuthenticationPrincipal UserDetails profileDetails, Model model) {
+        if (profileService.getProfileByUsername(profileDetails.getUsername()).isAdmin()) {
+            return "add_user";
+        }
+        model.addAttribute("error", "Permission denied!");
         return "edit_profile";
     }
 
@@ -43,7 +53,7 @@ public class ProfileController {
             feedback = profileService.saveChanges(profileId, username, password, age, file, profileDetails);
             if (feedback.isEmpty()) {
                 model.addAttribute("success", "Changes are successfully saved!");
-                model.addAttribute("user_profile", profileService.getProfile(profileId));
+                model.addAttribute("user_profile", profileService.getProfileById(profileId));
             } else {
                 model.mergeAttributes(feedback);
             }
@@ -65,5 +75,18 @@ public class ProfileController {
 
         }
         return "users_list";
+    }
+    @PostMapping("/add")
+    public String addProfile(@AuthenticationPrincipal UserDetails profileDetails, @Valid Profile profile, BindingResult bindingResult, Model model, @RequestParam String feature, @RequestParam String characterId, MultipartFile file) {
+        if (bindingResult.hasErrors()) {
+            model.mergeAttributes(getErrors(bindingResult));
+            System.out.println(1);
+        } else {
+            Map<String, String> feedback = profileService.createProfile(profileDetails, profile, feature, characterId, file);
+            model.addAttribute(feedback);
+            if (feedback.get("success") != null)
+                return "users_list";
+        }
+        return "add_user";
     }
 }

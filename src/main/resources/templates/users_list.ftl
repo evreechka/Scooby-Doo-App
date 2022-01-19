@@ -13,6 +13,16 @@
                 </form>
             </td>
         </#if>
+        <#if success??>
+            <div class="alert alert-success" role="alert">
+                ${success}
+            </div>
+        </#if>
+        <#if error??>
+            <div class="alert alert-danger" role="alert">
+                ${error}
+            </div>
+        </#if>
         <table class="table table-striped">
             <#list users as user>
                 <tr>

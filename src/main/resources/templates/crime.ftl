@@ -47,7 +47,8 @@
         </div>
         <h3>Victim</h3>
         <div style="word-break: break-all">
-            Full name: ${crime.getContention().getCharacter().getName()} ${crime.getContention().getCharacter().getSurname()}
+            Full
+            name: ${crime.getContention().getCharacter().getName()} ${crime.getContention().getCharacter().getSurname()}
         </div>
         <div>Age: ${crime.getContention().getCharacter().getAge()}</div>
         <div>Sex: ${crime.getContention().getCharacter().getSex()}</div>
@@ -55,7 +56,8 @@
             <ul class="list-group" style="word-break: break-all">
                 <#list victim_homes as home>
                     <li class="list-group-item">
-                        <b class="text-wrap text-break">${home.getCity()}, ${home.getAvenue()} avenue, ${home.getHouseNumber()}</b>
+                        <b class="text-wrap text-break">${home.getCity()}, ${home.getAvenue()}
+                            avenue, ${home.getHouseNumber()}</b>
                     </li>
                 </#list>
             </ul>
@@ -85,23 +87,11 @@
                             <p class="card-text text-wrap text-break">Motive: ${cc.getQuilt().getMotive()}</p>
                         </#if>
                         <p class="card-text">Severity: ${cc.getSeverity() * 100 / 10}%</p>
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <form action="/order/${cc.getId()}" method="get">
-                                <button type="submit" class="btn btn-dark">
-                                    See orders
-                                </button>
-                            </form>
-                            <form action="/suspect/${cc.getId()}" method="get">
-                                <button type="submit" class="btn btn-dark">
-                                    See Suspects
-                                </button>
-                            </form>
-                            <form action="/clue/${cc.getId()}" method="get">
-                                <button type="submit" class="btn btn-dark">
-                                    See clues
-                                </button>
-                            </form>
-                        </div>
+                        <form action="/criminal_case/${cc.getId()}" method="get">
+                            <button type="submit" class="btn btn-dark">
+                                More information
+                            </button>
+                        </form>
                     </div>
                 </div>
             </#list>
@@ -123,7 +113,8 @@
                     <th scope="row">${visit.getVisitNumber()}</th>
                     <td>${visit.getSeverityDestruction() * 100 / 10}%</td>
                     <td>${visit.getDateVisit()}</td>
-                    <td style="word-break: break-all">${visit.getCrimeScene().getName()}, ${visit.getCrimeScene().getPlace()}</td>
+                    <td style="word-break: break-all">${visit.getCrimeScene().getName()}
+                        , ${visit.getCrimeScene().getPlace()}</td>
                     <td style="word-break: break-all">${visit.getCrimeScene().getAddress().getCity()}
                         , ${visit.getCrimeScene().getAddress().getAvenue()}
                         avenue, ${visit.getCrimeScene().getAddress().getHouseNumber()}</td>

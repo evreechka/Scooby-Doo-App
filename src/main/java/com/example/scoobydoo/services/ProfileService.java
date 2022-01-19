@@ -1,13 +1,16 @@
 package com.example.scoobydoo.services;
 
+import com.example.scoobydoo.entities.BankAccount;
 import com.example.scoobydoo.entities.Character;
 import com.example.scoobydoo.entities.Investigator;
 import com.example.scoobydoo.entities.Profile;
+import com.example.scoobydoo.entities.enums.FeatureType;
 import com.example.scoobydoo.entities.enums.SystemRoleType;
 import com.example.scoobydoo.repos.BankAccountRepo;
 import com.example.scoobydoo.repos.CharacterRepo;
 import com.example.scoobydoo.repos.InvestigatorRepo;
 import com.example.scoobydoo.repos.ProfileRepo;
+import com.example.scoobydoo.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +32,8 @@ public class ProfileService implements UserDetailsService {
     private String uploadPath;
     @Autowired
     private CharacterRepo characterRepo;
+    @Autowired
+    private InvestigatorService investigatorService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,7 +59,7 @@ public class ProfileService implements UserDetailsService {
         return params;
     }
 
-    public Profile getProfile(long profileId) {
+    public Profile getProfileById(long profileId) {
         return profileRepo.findProfileById(profileId);
     }
 
@@ -63,15 +68,8 @@ public class ProfileService implements UserDetailsService {
             return Map.of("error", "Permission denied!");
         Map<String, String> map = new HashMap<>();
         Profile profile = profileRepo.findProfileById(profileId);
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists())
-                uploadDir.mkdir();
-            String uuid = java.util.UUID.randomUUID().toString();
-            String resultFileName = uuid + "." + file.getOriginalFilename();
-            file.transferTo(new File(uploadPath + System.getProperty("file.separator") + resultFileName));
-            profile.setPhoto(resultFileName);
-        }
+        if (!ControllerUtils.savePhoto(file, uploadPath, profile))
+            map.put("photoError", "Some troubles to upload photo :(");
         if (!username.isBlank() && !username.equals(profile.getUsername())) {
             if (profileRepo.findProfileByUsername(username) == null)
                 profile.setUsername(username);
@@ -110,5 +108,39 @@ public class ProfileService implements UserDetailsService {
         }
         profileRepo.delete(deletedProfile);
         return null;
+    }
+
+    public Profile getProfileByUsername(String username) {
+        return profileRepo.findProfileByUsername(username);
+    }
+
+    public Map<String, String> createProfile(UserDetails profileDetails, Profile profile, String feature, String characterIdString, MultipartFile file) {
+        if (!profileRepo.findProfileByUsername(profileDetails.getUsername()).isAdmin()) {
+            return Map.of("error", "Permission denied!");
+        }
+        if (profileRepo.findProfileByUsername(profile.getUsername()) != null)
+            return Map.of("usernameError", "Profile with username=" + profile.getUsername() + " is already exists!");
+        if (profile.getPassword().isBlank())
+            return Map.of("passwordError", "Password can't be blank");
+        long characterId;
+        try {
+            characterId = Long.parseLong(characterIdString);
+        } catch (NumberFormatException e) {
+            return Map.of("idError", "Invalid format of the number!");
+        }
+        if (characterRepo.findCharacterById(characterId) == null)
+            return Map.of("idError", "Character with id=" + characterIdString + " doesn't exist!");
+        if (profile.getUser().getInvestigatorId() == characterId)
+            return Map.of("idError", "User with id=" + characterIdString + " is already exists!");
+        if (!ControllerUtils.savePhoto(file, uploadPath, profile))
+            return Map.of("photoError", "Some troubles to upload photo :(");
+        Character character = characterRepo.findCharacterById(characterId);
+        character.setRole(SystemRoleType.INVESTIGATOR);
+        characterRepo.save(character);
+        Investigator newInvestigator = investigatorService.createInvestigator(characterId, feature);
+        profile.setUser(newInvestigator);
+        profileRepo.save(profile);
+        System.out.println("WELL");
+        return Map.of("success", "Profile is successfully created");
     }
 }

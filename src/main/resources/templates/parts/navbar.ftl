@@ -41,6 +41,11 @@
                     <a class="nav-link" href="/trap">Traps</a>
                 </li>
             </#if>
+            <#if profile??>
+                <li class="nav-item">
+                    <a class="nav-link" href="/character">Characters</a>
+                </li>
+            </#if>
         </ul>
         <#if profile??>
             <@l.logout/>

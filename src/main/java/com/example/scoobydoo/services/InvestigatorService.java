@@ -2,6 +2,7 @@ package com.example.scoobydoo.services;
 
 import com.example.scoobydoo.entities.Investigator;
 import com.example.scoobydoo.entities.Profile;
+import com.example.scoobydoo.entities.enums.FeatureType;
 import com.example.scoobydoo.entities.enums.SystemRoleType;
 import com.example.scoobydoo.repos.InventoryRepo;
 import com.example.scoobydoo.repos.InvestigatorRepo;
@@ -19,11 +20,17 @@ public class InvestigatorService {
     @Autowired
     private InvestigatorRepo investigatorRepo;
     @Autowired
-    private ProfileRepo profileRepo;
-
+    private BankAccountService bankAccountService;
     public List<Investigator> getAllInvestigators() {
         List<Investigator> users = investigatorRepo.findAll();
         users = users.stream().filter(user -> user.getCharacter().getRole().name().equals(SystemRoleType.INVESTIGATOR.name()) ||user.getCharacter().getRole().name().equals(SystemRoleType.ADMIN.name())).collect(Collectors.toList());
         return users;
+    }
+    public Investigator createInvestigator(long id, String feature) {
+        Investigator newInvestigator = new Investigator();
+        newInvestigator.setInvestigatorId(id);
+        newInvestigator.setFeature(FeatureType.valueOf(feature));
+        bankAccountService.createEmptyAccount(newInvestigator);
+        return newInvestigator;
     }
 }
