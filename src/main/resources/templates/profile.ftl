@@ -13,10 +13,11 @@
             <h5 class="card-title">${name} ${surname}</h5>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">${age} years of old</li>
-                <li class="list-group-item">I've take part in ${crime_count} crimes</li>
+                <li class="list-group-item">I've taken part in ${crime_count} crimes</li>
                 <li class="list-group-item">My main feature is ${feature}</li>
             </ul>
         </div>
         <a class="btn btn-dark" href="/profile/${activeId}/edit" role="button">Edit</a>
     </div>
+<#--    TODO(add bank account)-->
 </@c.page>

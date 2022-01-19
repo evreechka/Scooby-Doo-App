@@ -25,13 +25,13 @@
             </div>
         </div>
         <button class="btn btn-primary" type="submit">
-            Sign In
+            Log In
         </button>
     </form>
 </#macro>
 
 <#macro logout>
     <form action="/logout" method="post">
-        <button class="btn btn-primary" type="submit">Sign Out</button>
+        <button class="btn btn-outline-danger btn-sm" type="submit">Log out</button>
     </form>
 </#macro>

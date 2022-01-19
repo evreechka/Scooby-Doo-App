@@ -41,10 +41,10 @@ public class Profile implements UserDetails {
     private Investigator user;
 
     public boolean isAdmin() {
-        return getUser().getCharacter().getRole().toString().equals(SystemRoleType.ADMIN.name());
+        return getUser().getCharacter().getRole().name().equals(SystemRoleType.ADMIN.name());
     }
     public boolean isSheriff() {
-        return getUser().getCharacter().getRole().toString().equals(SystemRoleType.SHERIFF.name());
+        return getUser().getCharacter().getRole().name().equals(SystemRoleType.SHERIFF.name());
     }
 
     @Override

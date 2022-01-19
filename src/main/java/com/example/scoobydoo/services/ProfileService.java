@@ -71,13 +71,13 @@ public class ProfileService implements UserDetailsService {
                 file.transferTo(new File(uploadPath + System.getProperty("file.separator") + resultFileName));
                 profile.setPhoto(resultFileName);
         }
-        if (username != null && !username.equals(profile.getUsername())) {
+        if (username != null && !username.isEmpty() &&!username.equals(profile.getUsername())) {
             if (profileRepo.findProfileByUsername(username) == null)
                 profile.setUsername(username);
             else
                 map.put("usernameError", "Profile with username=" + username + " is already exists");
         }
-        if (password != null)
+        if (password != null && !password.isEmpty())
             profile.setPassword(password);
         profileRepo.save(profile);
         return map;

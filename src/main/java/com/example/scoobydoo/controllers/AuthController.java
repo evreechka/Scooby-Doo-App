@@ -23,9 +23,4 @@ public class AuthController {
             model.addAttribute("error", "Incorrect username or password");
         return "login";
     }
-    @GetMapping()
-    public String getMainPage() {
-        return "main";
-    }
-
 }

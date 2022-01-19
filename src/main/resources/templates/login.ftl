@@ -1,4 +1,4 @@
-<#import "parts/common_login.ftl" as cl>
+<#import "parts/common.ftl" as cl>
 <#import "parts/login.ftl" as l>
 
 <@cl.page>

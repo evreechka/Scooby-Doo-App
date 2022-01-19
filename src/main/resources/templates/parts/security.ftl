@@ -6,7 +6,8 @@ known = Session.SPRING_SECURITY_CONTEXT??
     <#assign
     profile = Session.SPRING_SECURITY_CONTEXT.authentication.principal
     activeId = profile.getId()
-        isAdmin = profile.isAdmin()
+    isAdmin = profile.isAdmin()
+    isSheriff = profile.isSheriff()
     >
 <#else>
     <#assign
