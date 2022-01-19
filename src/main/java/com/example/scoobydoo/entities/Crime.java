@@ -31,8 +31,7 @@ public class Crime implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Min(1)
-    @Column(name = "fee")
+    @Column(name = "fee", columnDefinition = "DOUBLE PRECISION CHECK ( fee > 0.0 )")
     private float fee;
 //TODO
     @ManyToOne

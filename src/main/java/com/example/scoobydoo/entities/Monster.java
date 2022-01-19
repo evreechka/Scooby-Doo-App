@@ -26,12 +26,11 @@ public class Monster implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Min(0)
-    @Column(name = "weight")
+    @Column(name = "weight", columnDefinition = "DOUBLE PRECISION CHECK (weight > 0.0)")
     private float weight;
 
     @Min(0)
-    @Column(name = "height")
+    @Column(name = "height", columnDefinition = "DOUBLE PRECISION CHECK (height > 0.0)")
     private float height;
 
     @Column(name = "internet_inform")

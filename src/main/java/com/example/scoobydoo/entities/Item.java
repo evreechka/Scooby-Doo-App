@@ -31,8 +31,7 @@ public class Item implements Serializable {
     @Column(name = "type")
     private ItemType type;
 
-    @Min(1)
-    @Column(name = "cost")
+    @Column(name = "cost", columnDefinition = "DOUBLE PRECISION CHECK (cost > 0.0)")
     private float cost;
 
     @OneToMany(mappedBy = "item") //TODO

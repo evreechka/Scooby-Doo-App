@@ -36,8 +36,7 @@ public class CaseOrder implements Serializable {
     @Column(name = "order_status")
     private OrderStatusType orderStatus;
 
-    @Min(1)
-    @Column(name = "total_cost")
+    @Column(name = "total_cost", columnDefinition = "DOUBLE PRECISION CHECK (total_cost > 0.0)")
     private float totalCost;
     //TODO
     @ManyToOne

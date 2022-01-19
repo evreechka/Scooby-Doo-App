@@ -20,8 +20,7 @@ public class BankAccount implements Serializable {
     @Column(name = "bank_account_id")
     private long id;
 
-    @Min(1)
-    @Column(name = "balance")
+    @Column(name = "balance", columnDefinition = "DOUBLE PRECISION CHECK (balance > 0.0)")
     private float balance;
 
     //TODO
