@@ -6,8 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,11 +23,11 @@ public class Clue implements Serializable {
     @Column(name = "clue_id")
     private long id;
 
-    @NotNull
+    @NotBlank(message = "name cannot be blank")
     @Column(name = "name")
     private String name;
 
-    @NotNull
+    @NotBlank(message = "description cannot be blank")
     @Column(name = "description")
     private String description;
 
@@ -45,5 +47,5 @@ public class Clue implements Serializable {
             name = "SUSPECT_CLUE",
             joinColumns = @JoinColumn(name = "clue_id", referencedColumnName = "clue_id"),
             inverseJoinColumns = @JoinColumn(name = "suspect_id", referencedColumnName = "suspect_id"))
-    private Set<Suspect> suspects;
+    private Set<Suspect> suspects = new HashSet<>();
 }

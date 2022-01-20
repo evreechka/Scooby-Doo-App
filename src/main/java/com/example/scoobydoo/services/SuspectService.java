@@ -37,4 +37,7 @@ public class SuspectService {
         suspectRepo.save(suspect);
         return null;
     }
+    public Suspect getSuspect(long suspectId) {
+        return suspectRepo.findSuspectById(suspectId);
+    }
 }

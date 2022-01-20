@@ -8,4 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface ContentionRepo extends JpaRepository<Contention, Long> {
+    Contention findContentionById(long contentionId);
 }

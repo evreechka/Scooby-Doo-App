@@ -8,4 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface CaseOrderRepo extends JpaRepository<CaseOrder, Long> {
+    CaseOrder findCaseOrderById(long orderId);
 }

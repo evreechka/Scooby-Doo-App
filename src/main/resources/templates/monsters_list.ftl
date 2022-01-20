@@ -4,13 +4,6 @@
 <@c.page>
     <#if profile??>
         <h3>Monsters</h3>
-        <td>
-            <form action="/monster/add" method="get">
-                <button type="submit" class="btn btn-dark">
-                    Add new monster
-                </button>
-            </form>
-        </td>
         <table class="table table-striped">
             <thead>
             <tr>

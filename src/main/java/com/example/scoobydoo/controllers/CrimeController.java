@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
@@ -28,6 +29,12 @@ public class CrimeController {
         model.addAttribute("victim_homes",crimeService.getVictimHomes(crimeId));
         return "crime";
     }
+    @GetMapping("/crime/{contentionId}/add")
+    public String getAddCrimePage(@PathVariable long contentionId, Model model) {
+        model.addAttribute("contentionId", contentionId);
+        model.addAttribute("investigators", crimeService.getInvestigators());
+        return "add_crime";
+    }
     @PostMapping("/crime/{crimeId}/close")
     public String closeCrime(@PathVariable long crimeId, Model model, @AuthenticationPrincipal UserDetails profileDetails) {
         Map<String, String> feedback = crimeService.closeCrime(crimeId, profileDetails);
@@ -36,5 +43,15 @@ public class CrimeController {
         model.addAttribute("damage", crimeService.getDamage(crimeId));
         model.addAttribute("victim_homes",crimeService.getVictimHomes(crimeId));
         return "crime";
+    }
+    @PostMapping("/crime/{contentionId}/add")
+    public String createCrime(@PathVariable long contentionId, Model model, @RequestParam String description, @RequestParam String fee, @RequestParam String sheriffId, @RequestParam String[] invIds) {
+        Map<String, String> feedback = crimeService.createCrime(contentionId, description, fee, sheriffId, invIds);
+        if (feedback == null)
+            return "redirect:/crime";
+        model.mergeAttributes(feedback);
+        model.addAttribute("contentionId", contentionId);
+        model.addAttribute("investigators", crimeService.getInvestigators());
+        return "add_crime";
     }
 }

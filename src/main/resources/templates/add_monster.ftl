@@ -1,8 +1,8 @@
-<#include "security.ftl">
-<#import "common.ftl" as c>
+<#include "parts/security.ftl">
+<#import "parts/common.ftl" as c>
 <@c.page>
     <#if profile??>
-        <form method="post" action="/monster/add">
+        <form method="post" action="/monster/${crimeId}/add">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Name:</label>
                 <div class="col-sm-6">

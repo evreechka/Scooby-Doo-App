@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -56,4 +57,12 @@ public class CriminalCase implements Serializable {
 
     @OneToMany(mappedBy = "criminalCase")
     private Set<Clue> clues;
+
+    public Set<Suspect> getAllSuspect() {
+        Set<Suspect> suspects = new HashSet<>();
+        for (CrimeVisit visit: getCrime().getCrimeVisits()) {
+            suspects.addAll(visit.getSuspects());
+        }
+        return suspects;
+    }
 }

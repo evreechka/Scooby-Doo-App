@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import javax.persistence.AssociationOverride;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +22,10 @@ public class CrimeService {
     private ProfileRepo profileRepo;
     @Autowired
     private InvestigatorService investigatorService;
-
+    @Autowired
+    private CharacterService characterService;
+    @Autowired
+    private ContentionService contentionService;
     public List<Crime> getAllCrimes(UserDetails profileDetails) {
         List<Crime> crimes = crimeRepo.findAll();
         Profile profile = profileRepo.findProfileByUsername(profileDetails.getUsername());
@@ -69,5 +70,45 @@ public class CrimeService {
         }
         crime.setCrimeStatus(CrimeStatusType.CLOSED);
         return Map.of("success", "Crime successfully closed!");
+    }
+    public List<Investigator> getInvestigators() {
+        return investigatorService.getAllInvestigators();
+    }
+
+    public Map<String, String> createCrime(long contentionId, String description, String feeString, String sheriffIdString, String[] invIds) {
+        float fee;
+        try {
+            fee = Float.parseFloat(feeString);
+        } catch (NumberFormatException e) {
+            return Map.of("feeError", "Invalid format");
+        }
+        if (fee <= 0)
+            return Map.of("feeError", "Should be > 0.0");
+        long sheriffId;
+        try {
+            sheriffId = Long.parseLong(sheriffIdString);
+        } catch (NumberFormatException e) {
+            return Map.of("idError", "Invalid format!");
+        }
+        Character sheriff = characterService.getCharacter(sheriffId);
+        if (sheriff == null)
+            return Map.of("idError", "Character with id=" + sheriffIdString + " doesn't exist!");
+        if (!sheriff.getRole().name().equals(SystemRoleType.SHERIFF.name())) {
+            return Map.of("idError", "Character with id=" + sheriffIdString + " isn't a sheriff!");
+        }
+        Crime crime = new Crime();
+        crime.setCrimeVisits(new HashSet<>());
+        crime.setCriminalCases(new HashSet<>());
+        crime.setDescription(description);
+        crime.setCrimeStatus(CrimeStatusType.ACTIVE);
+        crime.setContention(contentionService.getContention(contentionId));
+        crime.setFee(fee);
+        crime.setSheriff(sheriff);
+        crime.setInvestigators(new HashSet<>());
+        for (String inv: invIds) {
+            crime.getInvestigators().add(investigatorService.getInvestigatorById(Long.parseLong(inv)));
+        }
+        crimeRepo.save(crime);
+        return null;
     }
 }

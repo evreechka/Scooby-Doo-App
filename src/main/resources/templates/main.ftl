@@ -4,6 +4,11 @@
 <@c.page>
     <#if profile??>
         <h3>Crimes</h3>
+        <form action="/contention/add">
+            <button type="submit" class="btn btn-dark">
+                Add Crime
+            </button>
+        </form>
         <table class="table">
             <#list crimes as crime>
                 <tr>
