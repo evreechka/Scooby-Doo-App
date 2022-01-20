@@ -8,8 +8,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public interface TrapCaseRepo extends PagingAndSortingRepository<TrapCase, Long> {
     Page<TrapCase> findAll(@NotNull Pageable pageable);
+
+    List<TrapCase> findAll();
+
 }

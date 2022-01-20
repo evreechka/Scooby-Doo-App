@@ -16,4 +16,8 @@ public class TrapCaseService {
     public List<TrapCase> getAllTraps(int x, int y) {
         return trapCaseRepo.findAll(PageRequest.of(x, y)).getContent();
     }
+
+    public List<TrapCase> findAll() {
+        return trapCaseRepo.findAll();
+    }
 }

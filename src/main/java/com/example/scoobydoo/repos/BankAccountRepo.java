@@ -15,4 +15,5 @@ public interface BankAccountRepo extends JpaRepository<BankAccount, Long> {
     @Modifying
     @Query("DELETE FROM BankAccount where id=?1")
     void delete(long investigatorId);
+
 }

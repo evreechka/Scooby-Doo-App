@@ -16,4 +16,6 @@ public class InventoryService {
     public List<Inventory> getAllItems(int x, int y) {
         return inventoryRepo.findAll(PageRequest.of(x, y)).getContent();
     }
+
+
 }

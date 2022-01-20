@@ -22,4 +22,7 @@
             <a class="btn btn-dark" href="/profile/${activeId}/edit" role="button">Edit</a>
         </#if>
     </div>
+    <form action="/order/make/${inv_id}" method="get">
+        <button class="btn btn-dark">Create inventory</button>
+    </form>
 </@c.page>

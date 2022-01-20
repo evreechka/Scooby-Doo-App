@@ -56,6 +56,7 @@ public class ProfileService implements UserDetailsService {
         params.put("crime_count", investigator.getCrimes().size());
         params.put("feature", investigator.getFeature());
         params.put("bank_account", investigator.getBankAccount().getBalance());
+        params.put("inv_id", investigator.getInvestigatorId());
         return params;
     }
 
