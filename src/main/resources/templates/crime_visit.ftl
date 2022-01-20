@@ -4,7 +4,7 @@
 <@c.page>
     <#if profile??>
         <h1>Crime visit ${crime_visit.getVisitNumber()}</h1>
-        <h3>Command od Investigators</h3>
+        <h3>Command of Investigators</h3>
         <#list crime_visit.getParticipants() as inv>
             <div style="word-break: break-all">
                 <b>${inv.getInvestigator().getCharacter().getName()} ${inv.getInvestigator().getCharacter().getSurname()}
@@ -26,7 +26,7 @@
         </div>
         <hr>
         <h3>Victims</h3>
-        <form action="/victim/${crime_visit.getId()}/add">
+        <form action="/victim/${crime_visit.getId()?c}/add">
             <button type="submit" class="btn btn-dark"
                     <#if crime_visit.getCrime().getCrimeStatus() == 'CLOSED'>disabled</#if>>
                 Add Victim
@@ -52,7 +52,7 @@
         </table>
         <hr>
         <h3>Suspects</h3>
-        <form action="/suspect/${crime_visit.getId()}/add">
+        <form action="/suspect/${crime_visit.getId()?c}/add">
             <button type="submit" class="btn btn-dark"
                     <#if crime_visit.getCrime().getCrimeStatus() == 'CLOSED'>disabled</#if>>
                 Add Suspect
@@ -60,7 +60,7 @@
         </form>
         <ul class="list-group">
             <#list crime_visit.getSuspects() as suspect>
-                <li class="list-group-item" style="word-break: break-all">suspect</li>
+                <li class="list-group-item" style="word-break: break-all">${suspect.getCharacterId().getName()} ${suspect.getCharacterId().getSurname()}</li>
             </#list>
         </ul>
     </#if>

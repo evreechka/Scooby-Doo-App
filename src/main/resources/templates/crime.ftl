@@ -76,26 +76,26 @@
         </div>
         <hr>
         <h3>Criminal cases:</h3>
-        <form action="/criminal_case/${crime.getId()}/add" method="get">
+        <form action="/criminal_case/${crime.getId()?c}/add" method="get">
             <button type="submit" class="btn btn-dark" <#if crime.getCrimeStatus().name() == 'CLOSED'>disabled</#if>>
                 Add Criminal case
             </button>
         </form>
         <div class="list-group">
             <#list crime.getCriminalCases() as cc>
-                <a href="/criminal_case/${cc.getId()}" class="list-group-item list-group-item-action">Criminal case ${cc.getId()}</a>
+                <a href="/criminal_case/${cc.getId()?c}" class="list-group-item list-group-item-action">Criminal case ${cc.getId()}</a>
             </#list>
         </div>
         <hr>
         <h3>Crime Visits</h3>
-        <form action="/crime_visit/${crime.getId()}/add" method="get">
+        <form action="/crime_visit/${crime.getId()?c}/add" method="get">
             <button type="submit" class="btn btn-dark" <#if crime.getCrimeStatus().name() == 'CLOSED'>disabled</#if>>
                 Add Crime visit
             </button>
         </form>
         <div class="list-group">
             <#list crime.getCrimeVisits() as cv>
-                <a href="/crime_visit/${cv.getId()}" class="list-group-item list-group-item-action">Crime visit ${cv.getVisitNumber()}</a>
+                <a href="/crime_visit/${cv.getId()?c}" class="list-group-item list-group-item-action">Crime visit ${cv.getVisitNumber()}</a>
             </#list>
         </div>
     </#if>

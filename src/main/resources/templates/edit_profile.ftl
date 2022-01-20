@@ -24,7 +24,7 @@
     </#if>
     <div id="collapseExample">
         <div class="form-group mt-3">
-            <form method="post" enctype="multipart/form-data" action="/profile/${activeId}/edit">
+            <form method="post" enctype="multipart/form-data" action="/profile/${activeId?c}/edit">
                 <div class="form-group">
                     <div class="custom-file">
                         <input type="file" name="file" id="customFile">

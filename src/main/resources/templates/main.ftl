@@ -14,7 +14,7 @@
                         </div>
                     </td>
                     <td>
-                        <form action="/crime/${crime.getId()}" method="get">
+                        <form action="/crime/${crime.getId()?c}" method="get">
                             <button type="submit" class="btn btn-secondary">
                                 More information
                             </button>

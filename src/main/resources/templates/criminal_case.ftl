@@ -5,7 +5,7 @@
     <#if profile??>
         <h1>Criminal case ${criminal_case.getId()}</h1>
         <#if isAdmin && criminal_case.getQuilt()>
-            <form action="/criminal_case/${criminal_case.getId()}/close">
+            <form action="/criminal_case/${criminal_case.getId()?c}/close">
                 <button type="submit" class="btn btn-dark">
                     Close Criminal case
                 </button>
@@ -18,7 +18,7 @@
         </div>
         <div class="progress">
             <div class="progress-bar bg-<#if severity == 'nothing'>success<#elseif severity == 'small'>info<#elseif severity == 'middle'>warning<#else>danger</#if>"
-                 role="progressbar" style="width: ${crime.getContention().getDamageCritically() * 100 / 10}%"
+                 role="progressbar" style="width: ${criminal_case.getSeverity() * 100 / 10}%"
                  aria-valuenow="${criminal_case.getSeverity() * 100 / 10}"
                  aria-valuemin="0" aria-valuemax="10">
                 ${criminal_case.getSeverity()}
@@ -64,12 +64,12 @@
         <h3>Orders</h3>
         <div class="list-group">
             <#list criminal_case.getOrders() as order>
-                <a href="/order/${order.getId()}" class="list-group-item list-group-item-action">Order #${order.getId()}</a>
+                <a href="/order/${order.getId()?c}" class="list-group-item list-group-item-action">Order #${order.getId()}</a>
             </#list>
         </div>
         <hr>
         <h3>Clues</h3>
-        <form action="/clue/${criminal_case.getId()}/add">
+        <form action="/clue/${criminal_case.getId()?c}/add">
             <button type="submit" class="btn btn-dark" <#if criminal_case.getQuilt()??>disabled</#if>>
                 Add Clue
             </button>

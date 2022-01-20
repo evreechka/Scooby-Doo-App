@@ -2,7 +2,7 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
     <#if profile??>
-        <form method="post" action="/victim/${crimeVisitId}/add">
+        <form method="post" action="/victim/${crimeVisitId?c}/add">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Indication:</label>
                 <textarea name="indication"

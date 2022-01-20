@@ -2,7 +2,7 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
     <#if profile??>
-        <form method="post" action="/suspect/${crimeVisitId}/add">
+        <form method="post" action="/suspect/${crimeVisitId?c}/add">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Motive:</label>
                     <textarea name="motive"
