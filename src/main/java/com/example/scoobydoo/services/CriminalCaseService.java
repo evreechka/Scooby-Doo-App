@@ -17,6 +17,10 @@ public class CriminalCaseService {
     private CriminalCaseRepo criminalCaseRepo;
     @Autowired
     private SuspectService suspectService;
+    @Autowired
+    private CrimeService crimeService;
+    @Autowired
+    private MonsterService monsterService;
     public CriminalCase getCriminalCaseById(long criminalCaseId) {
         return criminalCaseRepo.findCriminalCasesById(criminalCaseId);
     }
@@ -41,7 +45,7 @@ public class CriminalCaseService {
             return Map.of("error", "Not enough evidence");
         }
         CriminalCase criminalCase = criminalCaseRepo.findCriminalCasesById(criminalCaseId);
-        Set<Suspect> suspects = getAllSuspect(criminalCase);
+        Set<Suspect> suspects = criminalCase.getAllSuspect();
         for (Clue clue: criminalCase.getClues()) {
             suspects.stream().filter(suspect -> clue.getSuspects().contains(suspect)).forEach(Suspect::incInvolvement);
         }
@@ -65,11 +69,11 @@ public class CriminalCaseService {
         }
         return Map.of("guilt", guilt);
     }
-    private Set<Suspect> getAllSuspect(CriminalCase criminalCase) {
-        Set<Suspect> suspects = new HashSet<>();
-        for (CrimeVisit visit: criminalCase.getCrime().getCrimeVisits()) {
-            suspects.addAll(visit.getSuspects());
-        }
-        return suspects;
+    public void addCriminalCase(long crimeId, long monsterId, CriminalCase criminalCase) {
+        criminalCase.setCrime(crimeService.getCrime(crimeId));
+        criminalCase.setMonster(monsterService.getMonster(monsterId));
+        criminalCase.setClues(new HashSet<>());
+        criminalCase.setEquipments(new HashSet<>());
+        criminalCase.setOrders(new HashSet<>());
     }
 }

@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -25,17 +22,19 @@ public class MonsterController {
         model.addAttribute("monsters", monsterService.getAllMonsters());
         return "monsters_list";
     }
-    @GetMapping("/add")
-    public String getAddMonsterPage() {
+    @GetMapping("{crimeId}/add")
+    public String getAddMonsterPage(@PathVariable long crimeId, Model model) {
+        model.addAttribute("crimeId", crimeId);
         return "add_monster";
     }
-    @PostMapping("/add")
-    public String createMonster(@Valid Monster monster, BindingResult bindingResult, Model model, @RequestParam String type) {
+    @PostMapping("{crimeId}/add")
+    public String createMonster(@PathVariable long crimeId, @Valid Monster monster, BindingResult bindingResult, Model model, @RequestParam String type) {
         if (bindingResult.hasErrors()) {
             model.mergeAttributes(getErrors(bindingResult));
         } else {
-            monsterService.createMonster(monster, type);
-            return "redirect:/monster";
+            long monsterId = monsterService.createMonster(monster, type).getId();
+            String url = "/criminal_case/" + crimeId + "/" + monsterId + "/add";
+            return "redirect:" + url;
         }
         return "add_monster";
     }

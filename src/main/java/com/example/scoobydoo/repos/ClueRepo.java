@@ -8,4 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface ClueRepo extends JpaRepository<Clue, Long> {
+    Clue findClueById(long clueId);
 }

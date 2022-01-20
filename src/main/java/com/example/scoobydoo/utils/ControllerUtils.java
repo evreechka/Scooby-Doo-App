@@ -27,6 +27,9 @@ public class ControllerUtils {
         if (errors.get("heightError") != null) {
             errors.put("heightError", "height should be float number more than 0.0");
         }
+        if (errors.get("severityError") != null) {
+            errors.put("severityError", "age should be number between 0 and 10");
+        }
         return errors;
     }
     public static boolean savePhoto(MultipartFile file, String uploadPath, Profile profile) {
@@ -45,10 +48,4 @@ public class ControllerUtils {
         }
         return true;
     }
-//    public static long getId(String id) {
-//        System.out.println(id);
-//        id = id.replaceAll("\\s+","");
-//        System.out.println(id);
-//        return Long.parseLong(id);
-//    }
 }

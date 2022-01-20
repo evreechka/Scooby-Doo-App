@@ -76,7 +76,7 @@
         </div>
         <hr>
         <h3>Criminal cases:</h3>
-        <form action="/criminal_case/${crime.getId()?c}/add" method="get">
+        <form action="/monster/${crime.getId()?c}/add" method="get">
             <button type="submit" class="btn btn-dark" <#if crime.getCrimeStatus().name() == 'CLOSED'>disabled</#if>>
                 Add Criminal case
             </button>

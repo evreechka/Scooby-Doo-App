@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -25,7 +26,6 @@ public class Contention implements Serializable {
     @Column(name = "contention_id")
     private long id;
 
-    @NotNull
     @Column(name = "date_contention")
     private LocalDateTime dateContention;
 

@@ -19,8 +19,11 @@ public class MonsterService {
         return monsterRepo.findAll();
     }
 
-    public void createMonster(Monster monster, String type) {
+    public Monster createMonster(Monster monster, String type) {
         monster.setMonsterType(monsterTypeService.getMonsterTypeByName(type));
-        monsterRepo.save(monster);
+        return monsterRepo.save(monster);
+    }
+    public Monster getMonster(long monsterId) {
+        return monsterRepo.findMonsterById(monsterId);
     }
 }
