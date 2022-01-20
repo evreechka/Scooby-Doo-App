@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.Map;
 
 import static com.example.scoobydoo.utils.ControllerUtils.getErrors;

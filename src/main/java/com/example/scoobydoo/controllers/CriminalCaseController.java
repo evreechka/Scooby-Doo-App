@@ -1,6 +1,5 @@
 package com.example.scoobydoo.controllers;
 
-import com.example.scoobydoo.entities.CriminalCase;
 import com.example.scoobydoo.services.CriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
