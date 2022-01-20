@@ -53,4 +53,7 @@ public class CriminalCase implements Serializable {
 
     @OneToMany(mappedBy = "criminalCase")
     private Set<CaseOrder> orders;
+
+    @OneToMany(mappedBy = "criminalCase")
+    private Set<Clue> clues;
 }

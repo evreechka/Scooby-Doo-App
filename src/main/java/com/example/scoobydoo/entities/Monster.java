@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -20,6 +22,7 @@ public class Monster implements Serializable {
     @Column(name = "monster_id")
     private long id;
 
+    @NotBlank(message = "name shouldn't be blank")
     @Column(name = "name")
     private String name;
 
@@ -29,7 +32,6 @@ public class Monster implements Serializable {
     @Column(name = "weight", columnDefinition = "DOUBLE PRECISION CHECK (weight > 0.0)")
     private float weight;
 
-    @Min(0)
     @Column(name = "height", columnDefinition = "DOUBLE PRECISION CHECK (height > 0.0)")
     private float height;
 

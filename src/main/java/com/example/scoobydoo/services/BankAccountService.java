@@ -10,11 +10,19 @@ import org.springframework.stereotype.Service;
 public class BankAccountService {
     @Autowired
     private BankAccountRepo bankAccountRepo;
-    public BankAccount createEmptyAccount(Investigator owner) {
+    public void createAccount(Investigator owner) {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setBalance(0F);
+        bankAccount.setBalance(100F);
         bankAccount.setOwner(owner);
         bankAccountRepo.save(bankAccount);
-        return bankAccount;
+    }
+    public void deleteBankAccount(long id) {
+        bankAccountRepo.delete(id);
+    }
+
+    public void addFee(BankAccount bankAccount, float fee) {
+        float newBalance = bankAccount.getBalance() + fee;
+        bankAccount.setBalance(newBalance);
+        bankAccountRepo.save(bankAccount);
     }
 }

@@ -1,9 +1,8 @@
 package com.example.scoobydoo.services;
 
-import com.example.scoobydoo.entities.Address;
+import com.example.scoobydoo.entities.*;
 import com.example.scoobydoo.entities.Character;
-import com.example.scoobydoo.entities.Crime;
-import com.example.scoobydoo.entities.Profile;
+import com.example.scoobydoo.entities.enums.CrimeStatusType;
 import com.example.scoobydoo.entities.enums.SystemRoleType;
 import com.example.scoobydoo.repos.CrimeRepo;
 import com.example.scoobydoo.repos.ProfileRepo;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,6 +22,9 @@ public class CrimeService {
     private CrimeRepo crimeRepo;
     @Autowired
     private ProfileRepo profileRepo;
+    @Autowired
+    private InvestigatorService investigatorService;
+
     public List<Crime> getAllCrimes(UserDetails profileDetails) {
         List<Crime> crimes = crimeRepo.findAll();
         Profile profile = profileRepo.findProfileByUsername(profileDetails.getUsername());
@@ -48,5 +51,23 @@ public class CrimeService {
     public Set<Address> getVictimHomes(long crimeId) {
         Character character = crimeRepo.findCrimeById(crimeId).getContention().getCharacter();
         return character.getLivingPlaces();
+    }
+
+    public Map<String, String> closeCrime(long crimeId, UserDetails profileDetails) {
+        Crime crime = crimeRepo.findCrimeById(crimeId);
+        if (crime.getSheriff().getId() != profileRepo.findProfileByUsername(profileDetails.getUsername()).getUser().getInvestigatorId()) {
+            return Map.of("error", "Permission denied!");
+        }
+        for (CriminalCase criminalCase : crime.getCriminalCases()) {
+            if (criminalCase.getQuilt() == null || criminalCase.getPunishment() == null)
+                return Map.of("error", "Not all criminal cases are closed!");
+        }
+        Set<Investigator> investigators = crime.getInvestigators();
+        float fee = crime.getFee() / investigators.size();
+        for (Investigator investigator : investigators) {
+            investigatorService.addFee(investigator, fee);
+        }
+        crime.setCrimeStatus(CrimeStatusType.CLOSED);
+        return Map.of("success", "Crime successfully closed!");
     }
 }

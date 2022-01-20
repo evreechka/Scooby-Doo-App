@@ -8,4 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface MonsterTypeRepo extends JpaRepository<MonsterType, Long> {
+    MonsterType findMonsterTypeByName(String name);
 }

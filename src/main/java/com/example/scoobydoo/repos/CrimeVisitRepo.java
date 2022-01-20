@@ -8,4 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface CrimeVisitRepo extends JpaRepository<CrimeVisit, Long> {
+    CrimeVisit findCrimeVisitById(long crimeVisitId);
 }

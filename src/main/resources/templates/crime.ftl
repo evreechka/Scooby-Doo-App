@@ -9,20 +9,31 @@
              role="alert">
             ${crime.getCrimeStatus()}
         </div>
+        <#if success??>
+            <div class="alert alert-success" role="alert">
+                ${success}
+            </div>
+        </#if>
+        <#if error??>
+            <div class="alert alert-danger" role="alert">
+                ${error}
+            </div>
+        </#if>
         <#if isSheriff && crime.getCrimeStatus() != 'CLOSED'>
-            <form action="/clue/${cc.getId()}" method="get">
+            <form action="/crime/${crime.getId()}/close" method="post">
                 <button type="submit" class="btn btn-dark">
-                    See clues
+                   Close Crime
                 </button>
             </form>
         </#if>
         <#if crime.getDescription()??>
-            <p>
+            <p style="word-break: break-all">
                 <b>Description: ${crime.getDescription()}</b>
             </p>
         </#if>
-        <h3>Sheriff: ${crime.getSheriff().getName()} ${crime.getSheriff().getSurname()}</h3>
+        <h3 style="word-break: break-all">Sheriff: ${crime.getSheriff().getName()} ${crime.getSheriff().getSurname()}</h3>
         <h3>Fee: ${crime.getFee()}$</h3>
+        <hr>
         <h3>Contention</h3>
         <div>
             <b>
@@ -45,10 +56,10 @@
                 ${crime.getContention().getDamageCritically()}
             </div>
         </div>
+        <hr>
         <h3>Victim</h3>
         <div style="word-break: break-all">
-            Full
-            name: ${crime.getContention().getCharacter().getName()} ${crime.getContention().getCharacter().getSurname()}
+            Full name: ${crime.getContention().getCharacter().getName()} ${crime.getContention().getCharacter().getSurname()}
         </div>
         <div>Age: ${crime.getContention().getCharacter().getAge()}</div>
         <div>Sex: ${crime.getContention().getCharacter().getSex()}</div>
@@ -63,64 +74,29 @@
             </ul>
 
         </div>
+        <hr>
         <h3>Criminal cases:</h3>
-        <div class="card-group">
+        <form action="/criminal_case/${crime.getId()}/add" method="get">
+            <button type="submit" class="btn btn-dark" <#if crime.getCrimeStatus().name() == 'CLOSED'>disabled</#if>>
+                Add Criminal case
+            </button>
+        </form>
+        <div class="list-group">
             <#list crime.getCriminalCases() as cc>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Criminal case ${cc.getId()}</h5>
-                        <div class="card-text" style="word-break: break-all">
-                            Monster: ${cc.getMonster().getName()}
-                            <form action="/monster/${cc.getMonster().getId()}" method="get">
-                                <button type="submit" class="btn btn-primary">
-                                    See Monster Information
-                                </button>
-                            </form>
-                        </div>
-                        <#if cc.getPunishment()??>
-                            <p class="card-text">Punishment: ${cc.getPunishment()}</p>
-                        </#if>
-                        <#if cc.getQuilt()??>
-                            <p class="card-text" style="word-break: break-all">
-                                <b>Quilt: ${cc.getQuilt().getCharacterId().getName()} ${cc.getQuilt().getCharacterId().getSurname()}</b>
-                            </p>
-                            <p class="card-text text-wrap text-break">Motive: ${cc.getQuilt().getMotive()}</p>
-                        </#if>
-                        <p class="card-text">Severity: ${cc.getSeverity() * 100 / 10}%</p>
-                        <form action="/criminal_case/${cc.getId()}" method="get">
-                            <button type="submit" class="btn btn-dark">
-                                More information
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <a href="/criminal_case/${cc.getId()}" class="list-group-item list-group-item-action">Criminal case ${cc.getId()}</a>
             </#list>
         </div>
+        <hr>
         <h3>Crime Visits</h3>
-        <table class="table table-sm align-middle">
-            <thead>
-            <tr>
-                <th scope="col">Visit number</th>
-                <th scope="col">Destruction</th>
-                <th scope="col">Date</th>
-                <th scope="col">CrimeScene</th>
-                <th scope="col">Address</th>
-            </tr>
-            </thead>
-            <tbody>
-            <#list crime.getCrimeVisits() as visit>
-                <tr class="align-top">
-                    <th scope="row">${visit.getVisitNumber()}</th>
-                    <td>${visit.getSeverityDestruction() * 100 / 10}%</td>
-                    <td>${visit.getDateVisit()}</td>
-                    <td style="word-break: break-all">${visit.getCrimeScene().getName()}
-                        , ${visit.getCrimeScene().getPlace()}</td>
-                    <td style="word-break: break-all">${visit.getCrimeScene().getAddress().getCity()}
-                        , ${visit.getCrimeScene().getAddress().getAvenue()}
-                        avenue, ${visit.getCrimeScene().getAddress().getHouseNumber()}</td>
-                </tr>
+        <form action="/crime_visit/${crime.getId()}/add" method="get">
+            <button type="submit" class="btn btn-dark" <#if crime.getCrimeStatus().name() == 'CLOSED'>disabled</#if>>
+                Add Crime visit
+            </button>
+        </form>
+        <div class="list-group">
+            <#list crime.getCrimeVisits() as cv>
+                <a href="/crime_visit/${cv.getId()}" class="list-group-item list-group-item-action">Crime visit ${cv.getVisitNumber()}</a>
             </#list>
-            </tbody>
-        </table>
+        </div>
     </#if>
 </@cl.page>

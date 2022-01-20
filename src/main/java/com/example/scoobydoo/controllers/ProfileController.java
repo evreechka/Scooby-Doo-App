@@ -74,18 +74,17 @@ public class ProfileController {
                 model.mergeAttributes(feedback);
 
         }
-        return "users_list";
+        return "redirect:/investigator";
     }
     @PostMapping("/add")
     public String addProfile(@AuthenticationPrincipal UserDetails profileDetails, @Valid Profile profile, BindingResult bindingResult, Model model, @RequestParam String feature, @RequestParam String characterId, MultipartFile file) {
         if (bindingResult.hasErrors()) {
             model.mergeAttributes(getErrors(bindingResult));
-            System.out.println(1);
         } else {
             Map<String, String> feedback = profileService.createProfile(profileDetails, profile, feature, characterId, file);
-            model.addAttribute(feedback);
-            if (feedback.get("success") != null)
-                return "users_list";
+            model.mergeAttributes(feedback);
+            if (feedback == null)
+                return "redirect:/investigator";
         }
         return "add_user";
     }

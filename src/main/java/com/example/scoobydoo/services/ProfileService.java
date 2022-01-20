@@ -107,6 +107,10 @@ public class ProfileService implements UserDetailsService {
             return Map.of("logout", "logout");
         }
         profileRepo.delete(deletedProfile);
+        investigatorService.deleteInvestigator(deletedProfile.getUser().getInvestigatorId());
+        Character character = deletedProfile.getUser().getCharacter();
+        character.setRole(SystemRoleType.USER);
+        characterRepo.save(character);
         return null;
     }
 
@@ -120,8 +124,6 @@ public class ProfileService implements UserDetailsService {
         }
         if (profileRepo.findProfileByUsername(profile.getUsername()) != null)
             return Map.of("usernameError", "Profile with username=" + profile.getUsername() + " is already exists!");
-        if (profile.getPassword().isBlank())
-            return Map.of("passwordError", "Password can't be blank");
         long characterId;
         try {
             characterId = Long.parseLong(characterIdString);
@@ -130,7 +132,7 @@ public class ProfileService implements UserDetailsService {
         }
         if (characterRepo.findCharacterById(characterId) == null)
             return Map.of("idError", "Character with id=" + characterIdString + " doesn't exist!");
-        if (profile.getUser().getInvestigatorId() == characterId)
+        if (investigatorService.getInvestigatorById(characterId) != null)
             return Map.of("idError", "User with id=" + characterIdString + " is already exists!");
         if (!ControllerUtils.savePhoto(file, uploadPath, profile))
             return Map.of("photoError", "Some troubles to upload photo :(");
@@ -140,7 +142,6 @@ public class ProfileService implements UserDetailsService {
         Investigator newInvestigator = investigatorService.createInvestigator(characterId, feature);
         profile.setUser(newInvestigator);
         profileRepo.save(profile);
-        System.out.println("WELL");
-        return Map.of("success", "Profile is successfully created");
+        return null;
     }
 }

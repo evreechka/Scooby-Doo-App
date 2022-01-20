@@ -13,21 +13,11 @@
                 </form>
             </td>
         </#if>
-        <#if success??>
-            <div class="alert alert-success" role="alert">
-                ${success}
-            </div>
-        </#if>
-        <#if error??>
-            <div class="alert alert-danger" role="alert">
-                ${error}
-            </div>
-        </#if>
         <table class="table table-striped">
             <#list users as user>
                 <tr>
                     <td>${user.getCharacter().getId()}</td>
-                    <td>${user.getCharacter().getName()} ${user.getCharacter().getSurname()}</td>
+                    <td style="word-break: break-all">${user.getCharacter().getName()} ${user.getCharacter().getSurname()}</td>
                     <td>${user.getCharacter().getSex().name()}</td>
                     <td><form action="/profile/${user.getProfile().getId()}" method="get">
                             <button type="submit" class="btn btn-secondary">

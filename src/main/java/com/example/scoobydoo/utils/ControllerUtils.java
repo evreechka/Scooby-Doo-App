@@ -17,7 +17,17 @@ public class ControllerUtils {
                 fieldError -> fieldError.getField() + "Error",
                 FieldError::getDefaultMessage
         );
-        return bindingResult.getFieldErrors().stream().collect(collector);
+        Map<String, String> errors = bindingResult.getFieldErrors().stream().collect(collector);
+        if (errors.get("ageError") != null) {
+            errors.put("ageError", "age should be number between 1 and 119");
+        }
+        if (errors.get("weightError") != null) {
+            errors.put("weightError", "weight should be float number more than 0.0");
+        }
+        if (errors.get("heightError") != null) {
+            errors.put("heightError", "height should be float number more than 0.0");
+        }
+        return errors;
     }
     public static boolean savePhoto(MultipartFile file, String uploadPath, Profile profile) {
         if (file != null && !file.getOriginalFilename().isEmpty()) {

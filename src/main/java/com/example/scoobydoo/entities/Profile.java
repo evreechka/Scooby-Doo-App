@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
@@ -24,11 +25,12 @@ public class Profile implements UserDetails {
     @Column(name = "profile_id")
     private long id;
 
-    @NotNull
+
+    @NotBlank(message = "username can't be blank")
     @Column(name = "username")
     private String username;
 
-    @NotNull
+    @NotBlank(message = "password can't be blank")
     @Column(name = "password")
     private String password;
 
@@ -36,7 +38,7 @@ public class Profile implements UserDetails {
     private String photo;
 
     //TODO
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "investigator_id")
     private Investigator user;
 

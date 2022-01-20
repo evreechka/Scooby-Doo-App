@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
@@ -25,16 +26,16 @@ public class Character implements Serializable {
     @Column(name = "character_id")
     private long id;
 
-    @NotNull
+    @NotBlank(message = "name shouldn't be blank")
     @Column(name = "name")
     private String name;
 
-    @NotNull
+    @NotBlank(message = "surname shouldn't be blank")
     @Column(name = "surname")
     private String surname;
 
-    @Min(1)
-    @Max(119)
+    @Min(value = 1, message = "Age should be > 0")
+    @Max(value = 119, message = "Age should be < 120")
     @Column(name = "age")
     private int age;
 
@@ -42,16 +43,11 @@ public class Character implements Serializable {
     @Column(name = "sex")
     private SexType sex;
 
-    @NotNull
+    @NotNull(message = "Role in system shouldn't be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "system_role")
     private SystemRoleType role;
 
-//    @OneToMany(mappedBy = "character") //TODO
-//    private Set<Victim> victims;
-//
-//    @OneToMany(mappedBy = "character") //TODO
-//    private Set<Suspect> suspects;
     @ManyToMany //TODO
     @JoinTable(
             name = "LIVING_PLACE",

@@ -23,14 +23,17 @@ public class Suspect implements Serializable {
     @Column(name = "suspect_id")
     private long id;
 
-    @NotNull
+    @NotBlank(message = "Motive cannot be blank")
     @Column(name = "motive")
     private String motive;
 
-    @Min(1)
+    @Min(0)
     @Column(name = "involvement")
-    private int involvement;
+    private int involvement = 0;
 
+    public void incInvolvement() {
+        involvement++;
+    }
     //TODO
     @ManyToOne
     @JoinColumn(name = "visit_id", referencedColumnName = "visit_id")
