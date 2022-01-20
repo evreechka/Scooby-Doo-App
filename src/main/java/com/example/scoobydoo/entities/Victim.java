@@ -37,6 +37,7 @@ public class Victim implements Serializable {
     @Column(name = "indication")
     private String indication;
 
+    @NotNull
     @Column(name = "date_indication")
     private LocalDateTime dateIndication;
 

@@ -45,4 +45,10 @@ public class ControllerUtils {
         }
         return true;
     }
+//    public static long getId(String id) {
+//        System.out.println(id);
+//        id = id.replaceAll("\\s+","");
+//        System.out.println(id);
+//        return Long.parseLong(id);
+//    }
 }

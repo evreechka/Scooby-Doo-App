@@ -1,19 +1,12 @@
 package com.example.scoobydoo.controllers;
 
-import com.example.scoobydoo.entities.Suspect;
-import com.example.scoobydoo.entities.Victim;
-import com.example.scoobydoo.services.SuspectService;
 import com.example.scoobydoo.services.VictimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Map;
-
-import static com.example.scoobydoo.utils.ControllerUtils.getErrors;
 
 @Controller
 @RequestMapping("/victim")
