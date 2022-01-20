@@ -15,7 +15,7 @@
             </tr>
             </thead>
             <tbody>
-            <#list items as item>
+            <#list object.getPage(page_counter) as item>
                 <tr>
                     <td>${item.getId()}</td>
                     <td style="word-break: break-all">${item.getItem().getName()}</td>
@@ -27,4 +27,7 @@
             </tbody>
         </table>
     </#if>
+    <form>
+        <button type="submit" class="btn btn-dark" onsubmit="${object.increment()}">Next</button>
+    </form>
 </@c.page>
