@@ -27,9 +27,6 @@ public class Investigator implements Serializable {
     @OneToOne(mappedBy = "owner")
     private BankAccount bankAccount;
 
-    @OneToOne(mappedBy = "user")
-    private Profile profile;
-
     @Column(name = "feature")
     @Enumerated(EnumType.STRING)
     private FeatureType feature;

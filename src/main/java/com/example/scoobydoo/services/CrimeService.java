@@ -29,8 +29,8 @@ public class CrimeService {
     public List<Crime> getAllCrimes(UserDetails profileDetails) {
         List<Crime> crimes = crimeRepo.findAll();
         Profile profile = profileRepo.findProfileByUsername(profileDetails.getUsername());
-        if (profile.getUser().getCharacter().getRole().toString().equals(SystemRoleType.SHERIFF.name())) {
-            crimes = crimes.stream().filter(crime -> crime.getSheriff().getId() == profile.getUser().getCharacter().getId()).collect(Collectors.toList());
+        if (profile.isSheriff()) {
+            crimes = crimes.stream().filter(crime -> crime.getSheriff().getId() == profile.getUser().getId()).collect(Collectors.toList());
         }
         crimes.sort(Comparator.comparing(Crime::getCrimeStatus));
         return crimes;
@@ -57,7 +57,7 @@ public class CrimeService {
     public Map<String, String> closeCrime(long crimeId, UserDetails profileDetails) {
         Crime crime = crimeRepo.findCrimeById(crimeId);
         Map<String, String> map = new HashMap<>();
-        if (crime.getSheriff().getId() != profileRepo.findProfileByUsername(profileDetails.getUsername()).getUser().getInvestigatorId()) {
+        if (crime.getSheriff().getId() != profileRepo.findProfileByUsername(profileDetails.getUsername()).getUser().getId()) {
             map.put("error", "Permission denied!");
             return map;
         }
@@ -109,7 +109,7 @@ public class CrimeService {
             map.put("idError", "Character with id=" + sheriffIdString + " doesn't exist!");
             return map;
         }
-        if (!sheriff.getRole().name().equals(SystemRoleType.SHERIFF.name())) {
+        if (!sheriff.getProfile().isSheriff()) {
             map = new HashMap<>();
             map.put("idError", "Character with id=" + sheriffIdString + " isn't a sheriff!");
             return map;

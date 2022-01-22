@@ -18,7 +18,7 @@ public class InvestigatorService {
     private BankAccountService bankAccountService;
     public List<Investigator> getAllInvestigators() {
         List<Investigator> users = investigatorRepo.findAll();
-        users = users.stream().filter(user -> user.getCharacter().getRole().name().equals(SystemRoleType.INVESTIGATOR.name()) ||user.getCharacter().getRole().name().equals(SystemRoleType.ADMIN.name())).collect(Collectors.toList());
+        users = users.stream().filter(user -> user.getCharacter().getProfile().isInvestigator() ||user.getCharacter().getProfile().isAdmin()).collect(Collectors.toList());
         return users;
     }
     public Investigator createInvestigator(long id, String feature) {

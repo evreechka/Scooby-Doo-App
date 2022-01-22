@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Access;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +24,15 @@ public class ClueService {
         return criminalCaseService.getCriminalCaseById(criminalCaseId);
     }
     public Map<String, String> saveClue(Clue clue, long criminalCaseId, String visitNumberString) {
+        Map<String, String> map = new HashMap<>();
         CriminalCase criminalCase = criminalCaseService.getCriminalCaseById(criminalCaseId);
         CrimeVisit crimeVisit = null;
         int visitNumber;
         try {
             visitNumber = Integer.parseInt(visitNumberString);
         } catch (NumberFormatException e) {
-            return Map.of("visitError", "Incorrect format!");
+            map.put("visitError", "Incorrect format!");
+            return map;
         }
         for (CrimeVisit visit: criminalCase.getCrime().getCrimeVisits()) {
             if (visit.getVisitNumber() == visitNumber) {
@@ -38,7 +41,8 @@ public class ClueService {
             }
         }
         if (crimeVisit == null) {
-            return Map.of("visitError", "Crime visit with number=" + visitNumberString + " doesn't exist");
+            map.put("visitError", "Crime visit with number=" + visitNumberString + " doesn't exist");
+            return map;
         }
         clue.setCrimeVisit(crimeVisit);
         clue.setCriminalCase(criminalCase);

@@ -42,7 +42,7 @@ public class ProfileService implements UserDetailsService {
 
     public Map<String, Object> getInvestigatorProfile(long profileId) {
         Profile profile = profileRepo.findProfileById(profileId);
-        Investigator investigator = profile.getUser();
+        Investigator investigator = profile.getUser().getInvestigator();
         Map<String, Object> params = new HashMap<>();
         System.out.println(profile.getPhoto());
         if (profile.getPhoto() != null) {
@@ -82,7 +82,7 @@ public class ProfileService implements UserDetailsService {
         if (!password.trim().isEmpty())
             profile.setPassword(password);
         if (!stringAge.trim().isEmpty()) {
-            Character character = profileRepo.findProfileByUsername(username).getUser().getCharacter();
+            Character character = profileRepo.findProfileByUsername(username).getUser();
             try {
                 int age = Integer.parseInt(stringAge);
                 if (age <= 0 || age > 120) {
@@ -104,7 +104,7 @@ public class ProfileService implements UserDetailsService {
         Map<String, String> map = new HashMap<>();
         Profile activeProfile = profileRepo.findProfileByUsername(profileDetails.getUsername());
         Profile deletedProfile = profileRepo.findProfileById(profileId);
-        if (!activeProfile.getUser().getCharacter().getRole().name().equals(SystemRoleType.ADMIN.name())) {
+        if (!activeProfile.isAdmin()) {
             map.put("error", "Permission denied!");
             return map;
         }
@@ -114,10 +114,7 @@ public class ProfileService implements UserDetailsService {
             return map;
         }
         profileRepo.delete(deletedProfile);
-        investigatorService.deleteInvestigator(deletedProfile.getUser().getInvestigatorId());
-        Character character = deletedProfile.getUser().getCharacter();
-        character.setRole(SystemRoleType.USER);
-        characterRepo.save(character);
+        investigatorService.deleteInvestigator(deletedProfile.getUser().getId());
         return null;
     }
 
@@ -154,11 +151,8 @@ public class ProfileService implements UserDetailsService {
             map.put("photoError", "Some troubles to upload photo :(");
             return map;
         }
-        Character character = characterRepo.findCharacterById(characterId);
-        character.setRole(SystemRoleType.INVESTIGATOR);
-        characterRepo.save(character);
         Investigator newInvestigator = investigatorService.createInvestigator(characterId, feature);
-        profile.setUser(newInvestigator);
+        profile.setUser(newInvestigator.getCharacter());
         profileRepo.save(profile);
         return null;
     }
