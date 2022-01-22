@@ -4,7 +4,7 @@
 <@c.page>
     <#if profile??>
         <h3>Crimes</h3>
-        <form action="/contention/add">
+        <form action="/crime/add">
             <button type="submit" class="btn btn-dark">
                 Add Crime
             </button>

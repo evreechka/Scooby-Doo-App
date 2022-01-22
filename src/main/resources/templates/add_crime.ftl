@@ -2,10 +2,12 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
     <#if profile??>
-        <form method="post" action="/crime/${contentionId?c}/add">
+        <h3>Create Crime</h3>
+        <form method="post" action="/crime/add">
+            <div><b>Crime data</b></div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Description:</label>
-                <textarea type="text" name="description"
+                <label class="col-sm-2 col-form-label">Crime description:</label>
+                <textarea type="text" name="crimeDescription"
                           class="form-control ${(descriptionError??)?string('is-invalid', '')}"></textarea>
             </div>
             <div class="form-group row">
@@ -20,19 +22,19 @@
                     </#if>
                 </div>
             </div>
-
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Sheriff Id:</label>
-                <div class="col-sm-6">
-                    <input type="text" name="sheriffId"
-                           class="form-control ${(idError??)?string('is-invalid', '')}"/>
-                    <#if idError??>
-                        <div class="invalid-feedback">
-                            ${idError}
-                        </div>
-                    </#if>
-                </div>
+            <div><b>Choose Sheriff</b></div>
+            <div class="form-check">
+                <#list sheriffs as sheriff>
+                    <div>
+                        <input class="form-check-input" type="checkbox" value="${sheriff.getId()?c}"
+                               id="${sheriff.getId()}" name="sheriffId">
+                        <label class="form-check-label" for="${sheriff.getId()}" style="word-break: break-all">
+                            ${sheriff.getName()} ${sheriff.getSurname()}
+                        </label>
+                    </div>
+                </#list>
             </div>
+            <div><b>Choose Investigators</b></div>
             <div class="form-check">
                 <#list investigators as inv>
                     <div>
@@ -44,8 +46,179 @@
                     </div>
                 </#list>
             </div>
+            <div><b>Choose Crime Scene</b></div>
+            <div class="form-check">
+                <#list crime_scenes as scene>
+                    <div>
+                        <input class="form-check-input" type="checkbox" value="${scene.getId()?c}"
+                               id="${scene.getId()}" name="crimeSceneId">
+                        <label class="form-check-label" for="${scene.getId()}" style="word-break: break-all">
+                            ${scene.getName()} ${scene.getPlace()}
+                        </label>
+                    </div>
+                </#list>
+            </div>
+            <div><b>Victim data</b></div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Name:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="name"
+                           class="form-control ${(nameError??)?string('is-invalid', '')}"/>
+                    <#if nameError??>
+                        <div class="invalid-feedback">
+                            ${nameError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Surname:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="surname"
+                           class="form-control ${(surnameError??)?string('is-invalid', '')}"/>
+                    <#if surnameError??>
+                        <div class="invalid-feedback">
+                            ${surnameError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Age:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="age"
+                           class="form-control ${(ageError??)?string('is-invalid', '')}"/>
+                    <#if ageError??>
+                        <div class="invalid-feedback">
+                            ${ageError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Sex</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="sex">
+                    <option value="FEMALE" selected>FEMALE</option>
+                    <option value="MALE">MALE</option>
+                    <option value="OTHER">OTHER</option>
+                </select>
+            </div>
+            <div><b>Contention data</b></div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Contention description:</label>
+                <textarea type="text" name="description"
+                          class="form-control ${(descriptionError??)?string('is-invalid', '')}"></textarea>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Damage Critically:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="damageCritically"
+                           class="form-control ${(damageCriticallyError??)?string('is-invalid', '')}"/>
+                    <#if damageCriticallyError??>
+                        <div class="invalid-feedback">
+                            ${damageCriticallyError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div><b>Monster data</b></div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Name:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="name"
+                           class="form-control ${(nameError??)?string('is-invalid', '')}"/>
+                    <#if nameError??>
+                        <div class="invalid-feedback">
+                            ${nameError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Monster description:</label>
+                <textarea type="text" name="monsterDescription"
+                          class="form-control ${(descriptionError??)?string('is-invalid', '')}"></textarea>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Weight:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="weight"
+                           class="form-control ${(weightError??)?string('is-invalid', '')}"/>
+                    <#if weightError??>
+                        <div class="invalid-feedback">
+                            ${weightError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Height:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="height"
+                           class="form-control ${(heightError??)?string('is-invalid', '')}"/>
+                    <#if heightError??>
+                        <div class="invalid-feedback">
+                            ${heightError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Monster type</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="type">
+                    <option value="Witch" selected>Witch</option>
+                    <option value="Zombie">Zombie</option>
+                    <option value="Fantom">Fantom</option>
+                    <option value="Vampire">Vampire</option>
+                    <option value="Ghost">Ghost</option>
+                    <option value="Goblin">Goblin</option>
+                    <option value="Aliens">Aliens</option>
+                    <option value="Fish">Fish</option>
+                    <option value="Fairy">Fairy</option>
+                    <option value="Pirate">Pirate</option>
+                    <option value="Toxic">Toxic</option>
+                    <option value="Dinosaur">Dinosaur</option>
+                    <option value="Alligator">Alligator</option>
+                    <option value="FireBender">FireBender</option>
+                    <option value="Werewolf">Werewolf</option>
+                    <option value="Beast">Beast</option>
+                    <option value="Bird">Bird</option>
+                    <option value="Skeleton">Skeleton</option>
+                    <option value="Bully">Bully</option>
+                </select>
+            </div>
+            <div><b>Criminal Case data</b></div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Severity:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="severity"
+                           class="form-control ${(severityError??)?string('is-invalid', '')}"/>
+                    <#if severityError??>
+                        <div class="invalid-feedback">
+                            ${severityError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div><b>Crime Visit data</b></div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Visit Destruction:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="severityDestruction"
+                           class="form-control ${(severityDestructionError??)?string('is-invalid', '')}"/>
+                    <#if severityDestructionError??>
+                        <div class="invalid-feedback">
+                            ${severityDestructionError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
             <button class="btn btn-dark" type="submit">
-                Save
+                Create
             </button>
         </form>
     </#if>

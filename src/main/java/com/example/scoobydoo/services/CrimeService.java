@@ -3,14 +3,13 @@ package com.example.scoobydoo.services;
 import com.example.scoobydoo.entities.*;
 import com.example.scoobydoo.entities.Character;
 import com.example.scoobydoo.entities.enums.CrimeStatusType;
-import com.example.scoobydoo.entities.enums.SystemRoleType;
 import com.example.scoobydoo.repos.CrimeRepo;
 import com.example.scoobydoo.repos.ProfileRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.AssociationOverride;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +25,14 @@ public class CrimeService {
     private CharacterService characterService;
     @Autowired
     private ContentionService contentionService;
+    @Autowired
+    private MonsterService monsterService;
+    @Autowired
+    private CriminalCaseService criminalCaseService;
+    @Autowired
+    private CrimeVisitService crimeVisitService;
+    @Autowired
+    private CrimeSceneService crimeSceneService;
     public List<Crime> getAllCrimes(UserDetails profileDetails) {
         List<Crime> crimes = crimeRepo.findAll();
         Profile profile = profileRepo.findProfileByUsername(profileDetails.getUsername());
@@ -79,54 +86,31 @@ public class CrimeService {
     public List<Investigator> getInvestigators() {
         return investigatorService.getAllInvestigators();
     }
-
-    public Map<String, String> createCrime(long contentionId, String description, String feeString, String sheriffIdString, String[] invIds) {
-        float fee;
-        Map<String, String> map = null;
-        try {
-            fee = Float.parseFloat(feeString);
-        } catch (NumberFormatException e) {
-            map = new HashMap<>();
-            map.put("feeError", "Invalid format");
-            return map;
-        }
-        if (fee <= 0) {
-            map = new HashMap<>();
-            map.put("feeError", "Should be > 0.0");
-            return map;
-        }
-        long sheriffId;
-        try {
-            sheriffId = Long.parseLong(sheriffIdString);
-        } catch (NumberFormatException e) {
-            map = new HashMap<>();
-            map.put("idError", "Invalid format!");
-            return map;
-        }
-        Character sheriff = characterService.getCharacter(sheriffId);
-        if (sheriff == null) {
-            map = new HashMap<>();
-            map.put("idError", "Character with id=" + sheriffIdString + " doesn't exist!");
-            return map;
-        }
-        if (!sheriff.getProfile().isSheriff()) {
-            map = new HashMap<>();
-            map.put("idError", "Character with id=" + sheriffIdString + " isn't a sheriff!");
-            return map;
-        }
-        Crime crime = new Crime();
+    //contention
+    //crime visit
+    //criminalCase
+    public void createCrime(Crime crime, Character victim, Contention contention, Monster monster, CriminalCase criminalCase, CrimeVisit crimeVisit, String sheriffId, String crimeSceneId, String[] invIds, String type) {
+        characterService.createCharacter(victim);
+        contention.setDateContention(LocalDateTime.now());
+        contention.setCharacter(victim);
+        monsterService.createMonster(monster, type);
+        contentionService.createContention(contention);
+        criminalCase.setMonster(monster);
+        criminalCaseService.createCriminalCase(criminalCase);
+        crime.setInvestigators(new HashSet<>());
+        crime.setContention(contention);
         crime.setCrimeVisits(new HashSet<>());
         crime.setCriminalCases(new HashSet<>());
-        crime.setDescription(description);
+        crime.setSheriff(characterService.getCharacter(Long.parseLong(sheriffId)));
         crime.setCrimeStatus(CrimeStatusType.ACTIVE);
-        crime.setContention(contentionService.getContention(contentionId));
-        crime.setFee(fee);
-        crime.setSheriff(sheriff);
-        crime.setInvestigators(new HashSet<>());
         for (String inv: invIds) {
             crime.getInvestigators().add(investigatorService.getInvestigatorById(Long.parseLong(inv)));
         }
+        crime.getCriminalCases().add(criminalCase);
         crimeRepo.save(crime);
-        return null;
+        String[] roles = new String[]{"CLUE_SEARCHER", "VICTIM_INTERVIEW", "CRIME_SCENE_INSPECTOR"};
+        crimeVisitService.addCrimeVisit(crime, crimeVisit, crimeSceneId, roles);
+        crime.getCrimeVisits().add(crimeVisit);
+        crimeRepo.save(crime);
     }
 }

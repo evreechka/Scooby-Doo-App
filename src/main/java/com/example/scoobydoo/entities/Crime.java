@@ -27,7 +27,7 @@ public class Crime implements Serializable {
     private CrimeStatusType crimeStatus;
 
     @Column(name = "description")
-    private String description;
+    private String crimeDescription;
 
     @Column(name = "fee", columnDefinition = "DOUBLE PRECISION CHECK ( fee > 0.0 )")
     private float fee;

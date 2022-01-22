@@ -27,20 +27,4 @@ public class CharacterController {
         model.addAttribute("characters", characterService.getAllCharacters());
         return "character_list";
     }
-
-    @GetMapping("/add")
-    public String getAddCharacterPage() {
-        return "add_character";
-    }
-
-    @PostMapping("/add")
-    public String saveCharacter(@Valid Character character, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.mergeAttributes(getErrors(bindingResult));
-        } else {
-            characterService.createCharacter(character);
-            return "redirect:/character";
-        }
-        return "add_character";
-    }
 }

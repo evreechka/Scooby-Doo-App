@@ -30,7 +30,7 @@ public class Contention implements Serializable {
     private LocalDateTime dateContention;
 
     @Column(name = "description")
-    private String description;
+    private String contentionDescription;
 
     @Min(0)
     @Max(10)

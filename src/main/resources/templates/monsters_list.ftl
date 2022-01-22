@@ -22,7 +22,7 @@
                     <td>${monster.getId()}</td>
                     <td style="word-break: break-all">${monster.getName()}</td>
                     <td style="word-break: break-all">
-                        <#if monster.getDescription()??>${monster.getDescription()}<#else></#if>
+                        <#if monster.getMonsterDescription()??>${monster.getMonsterDescription()}<#else></#if>
                     </td>
                     <td>${monster.getHeight()}</td>
                     <td>${monster.getWeight()}</td>

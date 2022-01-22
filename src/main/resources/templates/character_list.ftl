@@ -4,13 +4,6 @@
 <@c.page>
     <#if profile??>
         <h3>Characters</h3>
-        <td>
-            <form action="/character/add" method="get">
-                <button type="submit" class="btn btn-dark">
-                    Add new character
-                </button>
-            </form>
-        </td>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -28,7 +21,7 @@
                     <td style="word-break: break-all">${char.getName()} ${char.getSurname()}</td>
                     <td>${char.getAge()}</td>
                     <td>${char.getSex().name()}</td>
-                    <td>${char.getRole().name()}</td>
+                    <td><#if char.getProfile()??>${char.getProfile().getRole()}</#if></td>
                 </tr>
             </#list>
             </tbody>

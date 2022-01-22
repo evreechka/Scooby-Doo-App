@@ -2,71 +2,41 @@ package com.example.scoobydoo.services;
 
 import com.example.scoobydoo.entities.Crime;
 import com.example.scoobydoo.entities.CrimeVisit;
-import com.example.scoobydoo.entities.Investigator;
-import com.example.scoobydoo.entities.VisitParticipant;
-import com.example.scoobydoo.entities.embedded_keys.VisitParticipantKey;
-import com.example.scoobydoo.entities.enums.VisitRoleType;
 import com.example.scoobydoo.repos.CrimeVisitRepo;
-import com.example.scoobydoo.repos.VisitParticipantRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class CrimeVisitService {
     @Autowired
     private CrimeVisitRepo crimeVisitRepo;
     @Autowired
-    private CrimeService crimeService;
+    private VisitParticipantService visitParticipantService;
     @Autowired
-    private VisitParticipantRepo visitParticipantRepo;
+    private CrimeSceneService crimeSceneService;
     public CrimeVisit getCrimeVisit(long crimeVisitId) {
         return crimeVisitRepo.findCrimeVisitById(crimeVisitId);
     }
 
-    public Map<String,String> addCrimeVisit(long crimeId, String severityDestructionString) {
-       int severityDestruction;
-       Map<String, String> map = new HashMap<>();
-        try {
-            severityDestruction = Integer.parseInt(severityDestructionString);
-        } catch (NumberFormatException e) {
-            map.put("severityDestructionError", "Invalid format!");
-            return map;
+    public void addCrimeVisit(Crime crime, CrimeVisit crimeVisit, String crimeScene, String[] roles) {
+        int visitNumber = getVisitNumber(crime);
+        crimeVisit.setCrime(crime);
+        crimeVisit.setCrimeScene(crimeSceneService.getCrimeScene(Long.parseLong(crimeScene)));
+        crimeVisit.setCrimeScene(crimeVisit.getCrimeScene());
+        crimeVisit.setDateVisit(LocalDateTime.now());
+        crimeVisit.setVisitNumber(visitNumber + 1);
+        crimeVisitRepo.save(crimeVisit);
+        visitParticipantService.setVisitParticipant(crime, crimeVisit, roles);
+    }
 
-        }
-        if (severityDestruction < 0 || severityDestruction > 10) {
-            map.put("severityDestructionError", "Invalid format!");
-            return map;
-        }
-        String[] roles = new String[]{"CLUE_SEARCHER", "VICTIM_INTERVIEW", "CRIME_SCENE_INSPECTOR"};
-        CrimeVisit crimeVisit = new CrimeVisit();
-        Crime crime = crimeService.getCrime(crimeId);
+    private int getVisitNumber(Crime crime) {
         int visitNumber = 1;
         for(CrimeVisit visit: crimeVisitRepo.findAllByCrime(crime)) {
             if (visit.getVisitNumber() > visitNumber)
                 visitNumber = visit.getVisitNumber();
         }
-        crimeVisit.setCrime(crime);
-        crimeVisit.setCrimeScene(crimeVisit.getCrimeScene());
-        crimeVisit.setDateVisit(LocalDateTime.now());
-        crimeVisit.setVisitNumber(visitNumber + 1);
-        crimeVisitRepo.save(crimeVisit);
-        for (Investigator investigator: crime.getInvestigators()) {
-            VisitParticipant visitParticipant = new VisitParticipant();
-            VisitParticipantKey id = new VisitParticipantKey();
-            id.setVisitId(crimeVisit.getId());
-            id.setParticipantId(investigator.getInvestigatorId());
-            visitParticipant.setId(id);
-            visitParticipant.setCrimeVisit(crimeVisit);
-            visitParticipant.setInvestigator(investigator);
-            visitParticipant.setVisitRole(VisitRoleType.valueOf(roles[(int) Math.round(Math.random() * 2)]));
-            visitParticipantRepo.save(visitParticipant);
-        }
-        return null;
+        return visitNumber;
     }
 }

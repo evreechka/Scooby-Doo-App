@@ -1,6 +1,7 @@
 package com.example.scoobydoo.services;
 
 import com.example.scoobydoo.entities.Character;
+import com.example.scoobydoo.entities.CrimeVisit;
 import com.example.scoobydoo.entities.Victim;
 import com.example.scoobydoo.entities.embedded_keys.VictimKey;
 import com.example.scoobydoo.repos.VictimRepo;
@@ -20,7 +21,7 @@ public class VictimService {
 
     @Autowired
     private CrimeVisitService crimeVisitService;
-    public Map<String, String> addVictim(String indication, String characterIdString, long crimeVisitId) {
+    public Map<String, String> addVictim(String indication, String userId, CrimeVisit crimeVisit) {
         Map<String, String> map = new HashMap<>();
         Victim victim = new Victim();
         VictimKey id = new VictimKey();
@@ -28,24 +29,13 @@ public class VictimService {
             map.put("indicationError", "Indication cannot be blank");
             return map;
         }
-        long characterId;
-        try {
-            characterId = Long.parseLong(characterIdString);
-        } catch (NumberFormatException e) {
-            map.put("idError", "Invalid format of the number!");
-            return map;
-        }
-        Character character = characterService.getCharacter(characterId);
-        if (character == null) {
-            map.put("idError", "Character with id=" + characterIdString + " doesn't exist!");
-            return map;
-        }
-        id.setVisitId(crimeVisitId);
-        id.setCharacterId(characterId);
+        Character character = characterService.getCharacter(Long.parseLong(userId));
+        id.setVisitId(crimeVisit.getId());
+        id.setCharacterId(character.getId());
         victim.setIndication(indication);
         victim.setDateIndication(LocalDateTime.now());
         victim.setCharacter(character);
-        victim.setCrimeVisit(crimeVisitService.getCrimeVisit(crimeVisitId));
+        victim.setCrimeVisit(crimeVisit);
         victimRepo.save(victim);
         return null;
     }

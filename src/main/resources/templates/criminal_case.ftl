@@ -27,7 +27,7 @@
         <#if criminal_case.getQuilt()??>
             <h3>Quilt</h3>
             <div style="word-break: break-all">
-                <b>Quilt:</b> ${criminal_case.getQuilt().getCharacterId().getName()} ${criminal_case.getQuilt().getCharacterId().getSurname()}
+                <b>Quilt:</b> ${criminal_case.getQuilt().getCharacter().getName()} ${criminal_case.getQuilt().getCharacter().getSurname()}
             </div>
             <div style="word-break: break-all">
                 <b>Motive:</b> ${criminal_case.getQuilt().getMotive()}
@@ -38,9 +38,9 @@
         <div style="word-break: break-all">
             <b>Name: </b>${criminal_case.getMonster().getName()}
         </div>
-        <#if criminal_case.getMonster().getDescription()??>
+        <#if criminal_case.getMonster().getMonsterDescription()??>
             <div style="word-break: break-all">
-                <b>Description: </b>${criminal_case.getMonster().getDescription()}
+                <b>Description: </b>${criminal_case.getMonster().getMonsterDescription()}
             </div>
         </#if>
         <div>

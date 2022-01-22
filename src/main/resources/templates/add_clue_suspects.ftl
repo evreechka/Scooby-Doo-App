@@ -2,6 +2,7 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
     <#if profile??>
+        <h3>Add Suspects to Clue ${clueId}</h3>
         <form method="post" action="/clue/${criminalCase.getId()?c}/${clueId?c}/add_suspects">
             <div class="form-check">
                 <#list criminalCase.getAllSuspect() as suspect>
@@ -9,7 +10,7 @@
                         <input class="form-check-input" type="checkbox" value="${suspect.getId()?c}"
                                id="${suspect.getId()}" name="suspectIds">
                         <label class="form-check-label" for="${suspect.getId()}" style="word-break: break-all">
-                            ${suspect.getCharacterId().getName()} ${suspect.getCharacterId().getSurname()}
+                            ${suspect.getCharacter().getName()} ${suspect.getCharacter().getSurname()}
                         </label>
                     </div>
                 </#list>

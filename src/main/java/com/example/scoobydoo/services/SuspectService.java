@@ -22,25 +22,10 @@ public class SuspectService {
         suspectRepo.save(suspect);
     }
 
-    public Map<String, String> addSuspect(long crimeVisitId, Suspect suspect, String characterIdString) {
-        CrimeVisit crimeVisit = crimeVisitService.getCrimeVisit(crimeVisitId);
-        long characterId;
-        Map<String, String> map = new HashMap<>();
-        try {
-            characterId = Long.parseLong(characterIdString);
-        } catch (NumberFormatException e) {
-            map.put("idError", "Invalid format of the number!");
-            return map;
-        }
-        Character character = characterService.getCharacter(characterId);
-        if (character == null) {
-            map.put("idError", "Character with id=" + characterIdString + " doesn't exist!");
-            return map;
-        }
-        suspect.setCharacterId(character);
+    public void addSuspect(CrimeVisit crimeVisit, Suspect suspect, String userId) {
+        suspect.setCharacter(characterService.getCharacter(Long.parseLong(userId)));
         suspect.setCrimeVisit(crimeVisit);
         suspectRepo.save(suspect);
-        return null;
     }
     public Suspect getSuspect(long suspectId) {
         return suspectRepo.findSuspectById(suspectId);

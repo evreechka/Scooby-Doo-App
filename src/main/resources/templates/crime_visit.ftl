@@ -60,7 +60,7 @@
         </form>
         <ul class="list-group">
             <#list crime_visit.getSuspects() as suspect>
-                <li class="list-group-item" style="word-break: break-all">${suspect.getCharacterId().getName()} ${suspect.getCharacterId().getSurname()}</li>
+                <li class="list-group-item" style="word-break: break-all">${suspect.getCharacter().getName()} ${suspect.getCharacter().getSurname()}</li>
             </#list>
         </ul>
     </#if>

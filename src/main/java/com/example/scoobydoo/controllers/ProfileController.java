@@ -37,14 +37,6 @@ public class ProfileController {
         model.addAttribute("user_profile", profileService.getProfileById(profileId));
         return "edit_profile";
     }
-    @GetMapping("/add")
-    public String getEditPage(@AuthenticationPrincipal UserDetails profileDetails, Model model) {
-        if (profileService.getProfileByUsername(profileDetails.getUsername()).isAdmin()) {
-            return "add_user";
-        }
-        model.addAttribute("error", "Permission denied!");
-        return "edit_profile";
-    }
 
     @PostMapping("/{profileId}/edit")
     public String editProfile(@PathVariable long profileId, Model model, @RequestParam(required = false) MultipartFile file, @RequestParam(required = false) String password, @RequestParam(required = false) String username, @RequestParam(required = false) String age, @AuthenticationPrincipal UserDetails profileDetails) {
@@ -62,30 +54,4 @@ public class ProfileController {
         }
         return "edit_profile";
     }
-
-//    @PostMapping("/{profileId}/delete")
-//    public String deleteProfile(@PathVariable long profileId, @AuthenticationPrincipal UserDetails profileDetails, Model model) {
-//        Map<String, String> feedback;
-//        feedback = profileService.deleteProfile(profileId, profileDetails);
-//        if (feedback != null) {
-//            if (feedback.get("logout") != null)
-//                return "redirect:/logout";
-//            else
-//                model.mergeAttributes(feedback);
-//
-//        }
-//        return "redirect:/investigator";
-//    }
-//    @PostMapping("/add")
-//    public String addProfile(@AuthenticationPrincipal UserDetails profileDetails, @Valid Profile profile, BindingResult bindingResult, Model model, @RequestParam String feature, @RequestParam String characterId, MultipartFile file) {
-//        if (bindingResult.hasErrors()) {
-//            model.mergeAttributes(getErrors(bindingResult));
-//        } else {
-////            Map<String, String> feedback = profileService.createProfile(profileDetails, profile, feature, characterId, file);
-//            model.mergeAttributes(feedback);
-//            if (feedback == null)
-//                return "redirect:/investigator";
-//        }
-//        return "add_user";
-//    }
 }

@@ -18,8 +18,6 @@ public class CriminalCaseService {
     @Autowired
     private SuspectService suspectService;
     @Autowired
-    private CrimeService crimeService;
-    @Autowired
     private MonsterService monsterService;
     public CriminalCase getCriminalCaseById(long criminalCaseId) {
         return criminalCaseRepo.findCriminalCasesById(criminalCaseId);
@@ -78,11 +76,16 @@ public class CriminalCaseService {
         map.put("guilt", guilt);
         return map;
     }
-    public void addCriminalCase(long crimeId, long monsterId, CriminalCase criminalCase) {
-        criminalCase.setCrime(crimeService.getCrime(crimeId));
-        criminalCase.setMonster(monsterService.getMonster(monsterId));
+    public void addCriminalCase(Crime crime, Monster monster, String type, CriminalCase criminalCase) {
+        monsterService.createMonster(monster, type);
+        criminalCase.setCrime(crime);
+        criminalCase.setMonster(monster);
         criminalCase.setClues(new HashSet<>());
         criminalCase.setEquipments(new HashSet<>());
         criminalCase.setOrders(new HashSet<>());
+        createCriminalCase(criminalCase);
+    }
+    public void createCriminalCase(CriminalCase criminalCase) {
+        criminalCaseRepo.save(criminalCase);
     }
 }

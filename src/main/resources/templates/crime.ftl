@@ -26,9 +26,9 @@
                 </button>
             </form>
         </#if>
-        <#if crime.getDescription()??>
+        <#if crime.getCrimeDescription()??>
             <p style="word-break: break-all">
-                <b>Description: ${crime.getDescription()}</b>
+                <b>Description: ${crime.getCrimeDescription()}</b>
             </p>
         </#if>
         <h3 style="word-break: break-all">Sheriff: ${crime.getSheriff().getName()} ${crime.getSheriff().getSurname()}</h3>
@@ -41,7 +41,7 @@
             </b>
         </div>
         <p style="word-break: break-all">
-            ${crime.getContention().getDescription()}
+            ${crime.getContention().getContentionDescription()}
         </p>
         <div>
             <b>
@@ -76,7 +76,7 @@
         </div>
         <hr>
         <h3>Criminal cases:</h3>
-        <form action="/monster/${crime.getId()?c}/add" method="get">
+        <form action="/criminal_case/${crime.getId()?c}/add" method="get">
             <button type="submit" class="btn btn-dark" <#if crime.getCrimeStatus().name() == 'CLOSED'>disabled</#if>>
                 Add Criminal case
             </button>

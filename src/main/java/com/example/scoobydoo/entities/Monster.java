@@ -27,7 +27,7 @@ public class Monster implements Serializable {
     private String name;
 
     @Column(name = "description")
-    private String description;
+    private String monsterDescription;
 
     @Column(name = "weight", columnDefinition = "DOUBLE PRECISION CHECK (weight > 0.0)")
     private float weight;

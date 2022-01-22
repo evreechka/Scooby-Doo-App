@@ -2,6 +2,7 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
     <#if profile??>
+        <h3>Add Clue to Criminal case ${criminalCaseId}</h3>
         <form method="post" action="/clue/${criminalCaseId?c}/add">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Name:</label>

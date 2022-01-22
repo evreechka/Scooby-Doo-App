@@ -42,7 +42,7 @@ public class Suspect implements Serializable {
     //TODO
     @ManyToOne
     @JoinColumn(name = "character_id", referencedColumnName = "character_id")
-    private Character characterId;
+    private Character character;
 
     //TODO
     @ManyToMany(mappedBy = "suspects")

@@ -92,70 +92,25 @@ public class ProfileService implements UserDetailsService {
         return map;
     }
 
-//    public Map<String, String> deleteProfile(long profileId, UserDetails profileDetails) {
-//        Map<String, String> map = new HashMap<>();
-//        Profile activeProfile = profileRepo.findProfileByUsername(profileDetails.getUsername());
-//        Profile deletedProfile = profileRepo.findProfileById(profileId);
-//        if (!activeProfile.isAdmin()) {
-//            map.put("error", "Permission denied!");
-//            return map;
-//        }
-//        if (activeProfile.getId() == deletedProfile.getId()) {
-//            profileRepo.delete(deletedProfile);
-//            map.put("logout", "logout");
-//            return map;
-//        }
-//        profileRepo.delete(deletedProfile);
-//        investigatorService.deleteInvestigator(deletedProfile.getUser().getId());
-//        return null;
-//    }
-
     public Profile getProfileByUsername(String username) {
         return profileRepo.findProfileByUsername(username);
     }
-
-//    public Map<String, String> createProfile(UserDetails profileDetails, Profile profile, String feature, String characterIdString, MultipartFile file) {
-//        Map<String, String> map = new HashMap<>();
-//        if (!profileRepo.findProfileByUsername(profileDetails.getUsername()).isAdmin()) {
-//            map.put("error", "Permission denied!");
-//            return map;
-//        }
-//        if (profileRepo.findProfileByUsername(profile.getUsername()) != null) {
-//            map.put("usernameError", "Profile with username=" + profile.getUsername() + " is already exists!");
-//            return map;
-//        }
-//        long characterId;
-//        try {
-//            characterId = Long.parseLong(characterIdString);
-//        } catch (NumberFormatException e) {
-//            map.put("idError", "Invalid format of the number!");
-//            return map;
-//        }
-//        if (characterRepo.findCharacterById(characterId) == null) {
-//            map.put("idError", "Character with id=" + characterIdString + " doesn't exist!");
-//            return map;
-//        }
-//        if (investigatorService.getInvestigatorById(characterId) != null) {
-//            map.put("idError", "User with id=" + characterIdString + " is already exists!");
-//            return map;
-//        }
-//        if (!ControllerUtils.savePhoto(file, uploadPath, profile)) {
-//            map.put("photoError", "Some troubles to upload photo :(");
-//            return map;
-//        }
-//        Investigator newInvestigator = investigatorService.createInvestigator(characterId, feature);
-//        profile.setUser(newInvestigator.getCharacter());
-//        profileRepo.save(profile);
-//        return null;
-//    }
 
     public void createProfile(Profile profile, Character character) {
         Character existingCharacter = characterService.findCharacterAttributes(character.getName(), character.getSurname(), character.getAge());
         if (existingCharacter == null) {
             existingCharacter = characterService.createCharacter(character);
         }
-        profile.setUser(existingCharacter);
-        profile.setPassword(passwordEncoder.encode(profile.getPassword()));
-        profileRepo.save(profile);
+        if (existingCharacter.getProfile() == null) {
+            profile.setUser(existingCharacter);
+            profile.setPassword(passwordEncoder.encode(profile.getPassword()));
+            profileRepo.save(profile);
+        } else {
+            existingCharacter.getProfile().setUsername(profile.getUsername());
+            existingCharacter.getProfile().setPassword(passwordEncoder.encode(profile.getPassword()));
+            existingCharacter.getProfile().setRole(profile.getRole());
+            profileRepo.save(existingCharacter.getProfile());
+        }
+
     }
 }

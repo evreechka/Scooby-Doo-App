@@ -1,6 +1,8 @@
 package com.example.scoobydoo.controllers;
 
+import com.example.scoobydoo.entities.Crime;
 import com.example.scoobydoo.entities.CriminalCase;
+import com.example.scoobydoo.entities.Monster;
 import com.example.scoobydoo.services.CriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -8,10 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,9 +27,8 @@ public class CriminalCaseController {
         model.mergeAttributes(criminalCaseService.getSeverityGradation(criminalCaseId));
         return "criminal_case";
     }
-    @GetMapping("/{crimeId}/{monsterId}/add")
-    public String getAddCriminalCasePage(@PathVariable long crimeId, @PathVariable long monsterId, Model model) {
-        model.addAttribute("monsterId", monsterId);
+    @GetMapping("/{crimeId}/add")
+    public String getAddCriminalCasePage(@PathVariable long crimeId, Model model) {
         model.addAttribute("crimeId", crimeId);
         return "add_criminal_case";
     }
@@ -42,13 +40,14 @@ public class CriminalCaseController {
         return "criminal_case";
     }
 
-    @PostMapping("/{crimeId}/{monsterId}/add")
-    public String addCriminalCase(@PathVariable long monsterId, @PathVariable long crimeId, @Valid CriminalCase criminalCase, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.mergeAttributes(getErrors(bindingResult));
+    @PostMapping("/{crimeId}/add")
+    public String addCriminalCase(@PathVariable(name = "crimeId") Crime crime, @Valid CriminalCase criminalCase, BindingResult criminalCaseBindingResult, @Valid Monster monster, BindingResult monsterBindingResult, @RequestParam String type, Model model) {
+        if (criminalCaseBindingResult.hasErrors() || monsterBindingResult.hasErrors()) {
+            model.mergeAttributes(getErrors(criminalCaseBindingResult));
+            model.mergeAttributes(getErrors(monsterBindingResult));
         } else {
-            criminalCaseService.addCriminalCase(crimeId, monsterId, criminalCase);
-            return "redirect:/crime/" + crimeId;
+            criminalCaseService.addCriminalCase(crime, monster, type, criminalCase);
+            return "redirect:/crime/" + crime.getId();
         }
         return "add_criminal_case";
     }
