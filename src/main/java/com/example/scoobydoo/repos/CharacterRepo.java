@@ -9,4 +9,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface CharacterRepo extends JpaRepository<Character, Long> {
     Character findCharacterById(Long characterId);
+    Character findCharacterByNameAndSurnameAndAge(String name, String surname, Integer age);
 }

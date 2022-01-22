@@ -63,29 +63,29 @@ public class ProfileController {
         return "edit_profile";
     }
 
-    @PostMapping("/{profileId}/delete")
-    public String deleteProfile(@PathVariable long profileId, @AuthenticationPrincipal UserDetails profileDetails, Model model) {
-        Map<String, String> feedback;
-        feedback = profileService.deleteProfile(profileId, profileDetails);
-        if (feedback != null) {
-            if (feedback.get("logout") != null)
-                return "redirect:/logout";
-            else
-                model.mergeAttributes(feedback);
-
-        }
-        return "redirect:/investigator";
-    }
-    @PostMapping("/add")
-    public String addProfile(@AuthenticationPrincipal UserDetails profileDetails, @Valid Profile profile, BindingResult bindingResult, Model model, @RequestParam String feature, @RequestParam String characterId, MultipartFile file) {
-        if (bindingResult.hasErrors()) {
-            model.mergeAttributes(getErrors(bindingResult));
-        } else {
-            Map<String, String> feedback = profileService.createProfile(profileDetails, profile, feature, characterId, file);
-            model.mergeAttributes(feedback);
-            if (feedback == null)
-                return "redirect:/investigator";
-        }
-        return "add_user";
-    }
+//    @PostMapping("/{profileId}/delete")
+//    public String deleteProfile(@PathVariable long profileId, @AuthenticationPrincipal UserDetails profileDetails, Model model) {
+//        Map<String, String> feedback;
+//        feedback = profileService.deleteProfile(profileId, profileDetails);
+//        if (feedback != null) {
+//            if (feedback.get("logout") != null)
+//                return "redirect:/logout";
+//            else
+//                model.mergeAttributes(feedback);
+//
+//        }
+//        return "redirect:/investigator";
+//    }
+//    @PostMapping("/add")
+//    public String addProfile(@AuthenticationPrincipal UserDetails profileDetails, @Valid Profile profile, BindingResult bindingResult, Model model, @RequestParam String feature, @RequestParam String characterId, MultipartFile file) {
+//        if (bindingResult.hasErrors()) {
+//            model.mergeAttributes(getErrors(bindingResult));
+//        } else {
+////            Map<String, String> feedback = profileService.createProfile(profileDetails, profile, feature, characterId, file);
+//            model.mergeAttributes(feedback);
+//            if (feedback == null)
+//                return "redirect:/investigator";
+//        }
+//        return "add_user";
+//    }
 }

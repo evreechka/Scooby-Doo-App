@@ -1,14 +1,8 @@
 package com.example.scoobydoo.services;
 
-import com.example.scoobydoo.entities.BankAccount;
 import com.example.scoobydoo.entities.Character;
 import com.example.scoobydoo.entities.Investigator;
 import com.example.scoobydoo.entities.Profile;
-import com.example.scoobydoo.entities.enums.FeatureType;
-import com.example.scoobydoo.entities.enums.SystemRoleType;
-import com.example.scoobydoo.repos.BankAccountRepo;
-import com.example.scoobydoo.repos.CharacterRepo;
-import com.example.scoobydoo.repos.InvestigatorRepo;
 import com.example.scoobydoo.repos.ProfileRepo;
 import com.example.scoobydoo.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +24,9 @@ public class ProfileService implements UserDetailsService {
     @Autowired
     private String uploadPath;
     @Autowired
-    private CharacterRepo characterRepo;
+    private CharacterService characterService;
     @Autowired
-    private InvestigatorService investigatorService;
-
+    private PasswordEncoder passwordEncoder;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return profileRepo.findProfileByUsername(username);
@@ -80,7 +72,7 @@ public class ProfileService implements UserDetailsService {
                 map.put("usernameError", "Profile with username=" + username + " is already exists");
         }
         if (!password.trim().isEmpty())
-            profile.setPassword(password);
+            profile.setPassword(passwordEncoder.encode(password));
         if (!stringAge.trim().isEmpty()) {
             Character character = profileRepo.findProfileByUsername(username).getUser();
             try {
@@ -89,7 +81,7 @@ public class ProfileService implements UserDetailsService {
                     map.put("ageError", "Age can be between 1 and 120");
                 } else {
                     character.setAge(age);
-                    characterRepo.save(character);
+                    characterService.createCharacter(character);
                 }
             } catch (NumberFormatException e) {
                 map.put("ageError", "Invalid format");
@@ -100,60 +92,70 @@ public class ProfileService implements UserDetailsService {
         return map;
     }
 
-    public Map<String, String> deleteProfile(long profileId, UserDetails profileDetails) {
-        Map<String, String> map = new HashMap<>();
-        Profile activeProfile = profileRepo.findProfileByUsername(profileDetails.getUsername());
-        Profile deletedProfile = profileRepo.findProfileById(profileId);
-        if (!activeProfile.isAdmin()) {
-            map.put("error", "Permission denied!");
-            return map;
-        }
-        if (activeProfile.getId() == deletedProfile.getId()) {
-            profileRepo.delete(deletedProfile);
-            map.put("logout", "logout");
-            return map;
-        }
-        profileRepo.delete(deletedProfile);
-        investigatorService.deleteInvestigator(deletedProfile.getUser().getId());
-        return null;
-    }
+//    public Map<String, String> deleteProfile(long profileId, UserDetails profileDetails) {
+//        Map<String, String> map = new HashMap<>();
+//        Profile activeProfile = profileRepo.findProfileByUsername(profileDetails.getUsername());
+//        Profile deletedProfile = profileRepo.findProfileById(profileId);
+//        if (!activeProfile.isAdmin()) {
+//            map.put("error", "Permission denied!");
+//            return map;
+//        }
+//        if (activeProfile.getId() == deletedProfile.getId()) {
+//            profileRepo.delete(deletedProfile);
+//            map.put("logout", "logout");
+//            return map;
+//        }
+//        profileRepo.delete(deletedProfile);
+//        investigatorService.deleteInvestigator(deletedProfile.getUser().getId());
+//        return null;
+//    }
 
     public Profile getProfileByUsername(String username) {
         return profileRepo.findProfileByUsername(username);
     }
 
-    public Map<String, String> createProfile(UserDetails profileDetails, Profile profile, String feature, String characterIdString, MultipartFile file) {
-        Map<String, String> map = new HashMap<>();
-        if (!profileRepo.findProfileByUsername(profileDetails.getUsername()).isAdmin()) {
-            map.put("error", "Permission denied!");
-            return map;
+//    public Map<String, String> createProfile(UserDetails profileDetails, Profile profile, String feature, String characterIdString, MultipartFile file) {
+//        Map<String, String> map = new HashMap<>();
+//        if (!profileRepo.findProfileByUsername(profileDetails.getUsername()).isAdmin()) {
+//            map.put("error", "Permission denied!");
+//            return map;
+//        }
+//        if (profileRepo.findProfileByUsername(profile.getUsername()) != null) {
+//            map.put("usernameError", "Profile with username=" + profile.getUsername() + " is already exists!");
+//            return map;
+//        }
+//        long characterId;
+//        try {
+//            characterId = Long.parseLong(characterIdString);
+//        } catch (NumberFormatException e) {
+//            map.put("idError", "Invalid format of the number!");
+//            return map;
+//        }
+//        if (characterRepo.findCharacterById(characterId) == null) {
+//            map.put("idError", "Character with id=" + characterIdString + " doesn't exist!");
+//            return map;
+//        }
+//        if (investigatorService.getInvestigatorById(characterId) != null) {
+//            map.put("idError", "User with id=" + characterIdString + " is already exists!");
+//            return map;
+//        }
+//        if (!ControllerUtils.savePhoto(file, uploadPath, profile)) {
+//            map.put("photoError", "Some troubles to upload photo :(");
+//            return map;
+//        }
+//        Investigator newInvestigator = investigatorService.createInvestigator(characterId, feature);
+//        profile.setUser(newInvestigator.getCharacter());
+//        profileRepo.save(profile);
+//        return null;
+//    }
+
+    public void createProfile(Profile profile, Character character) {
+        Character existingCharacter = characterService.findCharacterAttributes(character.getName(), character.getSurname(), character.getAge());
+        if (existingCharacter == null) {
+            existingCharacter = characterService.createCharacter(character);
         }
-        if (profileRepo.findProfileByUsername(profile.getUsername()) != null) {
-            map.put("usernameError", "Profile with username=" + profile.getUsername() + " is already exists!");
-            return map;
-        }
-        long characterId;
-        try {
-            characterId = Long.parseLong(characterIdString);
-        } catch (NumberFormatException e) {
-            map.put("idError", "Invalid format of the number!");
-            return map;
-        }
-        if (characterRepo.findCharacterById(characterId) == null) {
-            map.put("idError", "Character with id=" + characterIdString + " doesn't exist!");
-            return map;
-        }
-        if (investigatorService.getInvestigatorById(characterId) != null) {
-            map.put("idError", "User with id=" + characterIdString + " is already exists!");
-            return map;
-        }
-        if (!ControllerUtils.savePhoto(file, uploadPath, profile)) {
-            map.put("photoError", "Some troubles to upload photo :(");
-            return map;
-        }
-        Investigator newInvestigator = investigatorService.createInvestigator(characterId, feature);
-        profile.setUser(newInvestigator.getCharacter());
+        profile.setUser(existingCharacter);
+        profile.setPassword(passwordEncoder.encode(profile.getPassword()));
         profileRepo.save(profile);
-        return null;
     }
 }

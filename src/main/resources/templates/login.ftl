@@ -3,6 +3,16 @@
 
 <@cl.page>
     <h5>Login</h5>
+    <form action="/register" method="get">
+        <button type="submit" class="btn btn-dark">
+            Registration
+        </button>
+    </form>
+    <#if success??>
+        <div class="alert alert-success" role="alert">
+            ${success}
+        </div>
+    </#if>
     <#if error??>
         <div class="alert alert-danger" role="alert">
             ${error}

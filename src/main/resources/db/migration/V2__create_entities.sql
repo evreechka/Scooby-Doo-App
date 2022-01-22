@@ -1,19 +1,8 @@
-CREATE TYPE monster_feature_type as enum ('WATERING','POWERFUL','CUTTER','FLYING','EXPLOSIVE', 'NONE', 'WITCHCRAFT');
-CREATE type sex_type as enum ('FEMALE','MALE','OTHER');
-CREATE type system_role_type as enum ('USER','SHERIFF','ADMIN','INVESTIGATOR');
-CREATE type place_type as enum ('PUBLIC','PRIVATE_HOUSE','COMPANY_BUILDING','STREET');
-CREATE type feature_type as enum ('INTELLECT','INTUITION','SPEED','FEARLESS');
-CREATE type visit_role_type as enum ('CLUE_SEARCHER','VICTIM_INTERVIEW','CRIME_SCENE_INSPECTOR','BAIT','BOBBY_TRAPS','TRAP_MANAGER');
-CREATE type order_status_type as enum ('NOT_CONFIRMED','ON_WAY','READY');
-CREATE type item_type as enum ('TRAP','EQUIPMENT');
-CREATE type punishment_type as enum ('NONE','PUBLIC_WORKS','FINE','ARREST');
-CREATE type crime_status_type as enum ('ACTIVE','POSTPON','CLOSED');
-
 CREATE TABLE IF NOT EXISTS MONSTER_TYPE
 (
     monster_type_id BIGSERIAL PRIMARY KEY,
     name            TEXT NOT NULL,
-    monster_feature monster_feature_type
+    monster_feature text
 );
 
 CREATE TABLE IF NOT EXISTS MONSTER
@@ -34,7 +23,7 @@ CREATE TABLE IF NOT EXISTS CHARACTER
     name         TEXT             NOT NULL,
     surname      TEXT             NOT NULL,
     age          INT CHECK (age > 0 AND age < 120),
-    sex          sex_type
+    sex          text
 );
 
 CREATE TABLE IF NOT EXISTS ADDRESS
@@ -57,7 +46,7 @@ CREATE TABLE IF NOT EXISTS CRIME_SCENE
 (
     scene_id   BIGSERIAL PRIMARY KEY,
     name       TEXT NOT NULL,
-    place      place_type,
+    place      text,
     address_id BIGINT UNIQUE,
     FOREIGN KEY (address_id) REFERENCES ADDRESS (address_id)
 );
@@ -65,7 +54,7 @@ CREATE TABLE IF NOT EXISTS CRIME_SCENE
 CREATE TABLE IF NOT EXISTS CRIME
 (
     crime_id     BIGSERIAL PRIMARY KEY,
-    crime_status crime_status_type NOT NULL,
+    crime_status text NOT NULL,
     description  TEXT,
     fee          DOUBLE PRECISION CHECK ( fee > 0.0 ),
     sheriff_id   BIGINT,
@@ -108,7 +97,7 @@ CREATE TABLE IF NOT EXISTS SUSPECT
 CREATE TABLE IF NOT EXISTS CRIMINAL_CASE
 (
     case_id       BIGSERIAL PRIMARY KEY,
-    punishment    punishment_type,
+    punishment    text,
     severity_case INT CHECK ( severity_case >= 0 AND severity_case <= 10 ),
     monster_id    BIGINT UNIQUE,
     quilt_id      BIGINT,
@@ -140,7 +129,7 @@ CREATE TABLE IF NOT EXISTS SUSPECT_CLUE
 CREATE TABLE IF NOT EXISTS INVESTIGATOR
 (
     investigator_id BIGINT PRIMARY KEY,
-    feature         feature_type,
+    feature         text,
     FOREIGN KEY (investigator_id) REFERENCES CHARACTER (character_id)
 );
 
@@ -150,7 +139,7 @@ CREATE TABLE IF NOT EXISTS PROFILE
     username      TEXT NOT NULL,
     password      TEXT NOT NULL,
     profile_photo TEXT,
-    system_role  system_role_type NOT NULL,
+    system_role  text NOT NULL,
     user_id       BIGINT UNIQUE,
     FOREIGN KEY (user_id) REFERENCES CHARACTER (character_id)
 );
@@ -165,7 +154,7 @@ CREATE TABLE IF NOT EXISTS BANK_ACCOUNT
 
 CREATE TABLE IF NOT EXISTS VISIT_PARTICIPANT
 (
-    visit_role     visit_role_type,
+    visit_role     text,
     visit_id       BIGINT,
     participant_id BIGINT,
     FOREIGN KEY (participant_id) REFERENCES INVESTIGATOR (investigator_id),
@@ -177,7 +166,7 @@ CREATE TABLE IF NOT EXISTS CASE_ORDER
     order_id     BIGSERIAL PRIMARY KEY,
     date_order   TIMESTAMP NOT NULL,
     date_deliver TIMESTAMP NOT NULL,
-    order_status order_status_type,
+    order_status text,
     total_cost   DOUBLE PRECISION CHECK (total_cost > 0.0),
     case_id      BIGINT,
     orderer_id   BIGINT,
@@ -189,7 +178,7 @@ CREATE TABLE IF NOT EXISTS ITEM
 (
     item_id BIGSERIAL PRIMARY KEY,
     name    TEXT NOT NULL,
-    type    item_type,
+    type    text,
     cost    DOUBLE PRECISION CHECK ( cost > 0.0 )
 );
 
