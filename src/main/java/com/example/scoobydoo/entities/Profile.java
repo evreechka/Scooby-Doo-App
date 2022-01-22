@@ -46,7 +46,7 @@ public class Profile implements UserDetails {
 
     //TODO
     @OneToOne()
-    @JoinColumn(name = "user_id", referencedColumnName = "investigator_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "character_id")
     private Character user;
 
     public boolean isAdmin() {

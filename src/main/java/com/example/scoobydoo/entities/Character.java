@@ -43,7 +43,7 @@ public class Character implements Serializable {
     @Column(name = "sex")
     private SexType sex;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "character")
     private Investigator investigator;
 
     @OneToOne(mappedBy = "user")
