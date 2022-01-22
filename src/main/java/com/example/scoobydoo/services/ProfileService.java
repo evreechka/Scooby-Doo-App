@@ -65,21 +65,23 @@ public class ProfileService implements UserDetailsService {
     }
 
     public Map<String, String> saveChanges(long profileId, String username, String password, String stringAge, MultipartFile file, UserDetails profileDetails) throws IOException {
-        if (profileId != profileRepo.findProfileByUsername(profileDetails.getUsername()).getId())
-            return Map.of("error", "Permission denied!");
         Map<String, String> map = new HashMap<>();
+        if (profileId != profileRepo.findProfileByUsername(profileDetails.getUsername()).getId()) {
+            map.put("error", "Permission denied!");
+            return map;
+        }
         Profile profile = profileRepo.findProfileById(profileId);
         if (!ControllerUtils.savePhoto(file, uploadPath, profile))
             map.put("photoError", "Some troubles to upload photo :(");
-        if (!username.isBlank() && !username.equals(profile.getUsername())) {
+        if (!username.trim().isEmpty() && !username.equals(profile.getUsername())) {
             if (profileRepo.findProfileByUsername(username) == null)
                 profile.setUsername(username);
             else
                 map.put("usernameError", "Profile with username=" + username + " is already exists");
         }
-        if (!password.isBlank())
+        if (!password.trim().isEmpty())
             profile.setPassword(password);
-        if (!stringAge.isBlank()) {
+        if (!stringAge.trim().isEmpty()) {
             Character character = profileRepo.findProfileByUsername(username).getUser().getCharacter();
             try {
                 int age = Integer.parseInt(stringAge);
@@ -99,13 +101,17 @@ public class ProfileService implements UserDetailsService {
     }
 
     public Map<String, String> deleteProfile(long profileId, UserDetails profileDetails) {
+        Map<String, String> map = new HashMap<>();
         Profile activeProfile = profileRepo.findProfileByUsername(profileDetails.getUsername());
         Profile deletedProfile = profileRepo.findProfileById(profileId);
-        if (!activeProfile.getUser().getCharacter().getRole().name().equals(SystemRoleType.ADMIN.name()))
-            return Map.of("error", "Permission denied!");
+        if (!activeProfile.getUser().getCharacter().getRole().name().equals(SystemRoleType.ADMIN.name())) {
+            map.put("error", "Permission denied!");
+            return map;
+        }
         if (activeProfile.getId() == deletedProfile.getId()) {
             profileRepo.delete(deletedProfile);
-            return Map.of("logout", "logout");
+            map.put("logout", "logout");
+            return map;
         }
         profileRepo.delete(deletedProfile);
         investigatorService.deleteInvestigator(deletedProfile.getUser().getInvestigatorId());
@@ -120,23 +126,34 @@ public class ProfileService implements UserDetailsService {
     }
 
     public Map<String, String> createProfile(UserDetails profileDetails, Profile profile, String feature, String characterIdString, MultipartFile file) {
+        Map<String, String> map = new HashMap<>();
         if (!profileRepo.findProfileByUsername(profileDetails.getUsername()).isAdmin()) {
-            return Map.of("error", "Permission denied!");
+            map.put("error", "Permission denied!");
+            return map;
         }
-        if (profileRepo.findProfileByUsername(profile.getUsername()) != null)
-            return Map.of("usernameError", "Profile with username=" + profile.getUsername() + " is already exists!");
+        if (profileRepo.findProfileByUsername(profile.getUsername()) != null) {
+            map.put("usernameError", "Profile with username=" + profile.getUsername() + " is already exists!");
+            return map;
+        }
         long characterId;
         try {
             characterId = Long.parseLong(characterIdString);
         } catch (NumberFormatException e) {
-            return Map.of("idError", "Invalid format of the number!");
+            map.put("idError", "Invalid format of the number!");
+            return map;
         }
-        if (characterRepo.findCharacterById(characterId) == null)
-            return Map.of("idError", "Character with id=" + characterIdString + " doesn't exist!");
-        if (investigatorService.getInvestigatorById(characterId) != null)
-            return Map.of("idError", "User with id=" + characterIdString + " is already exists!");
-        if (!ControllerUtils.savePhoto(file, uploadPath, profile))
-            return Map.of("photoError", "Some troubles to upload photo :(");
+        if (characterRepo.findCharacterById(characterId) == null) {
+            map.put("idError", "Character with id=" + characterIdString + " doesn't exist!");
+            return map;
+        }
+        if (investigatorService.getInvestigatorById(characterId) != null) {
+            map.put("idError", "User with id=" + characterIdString + " is already exists!");
+            return map;
+        }
+        if (!ControllerUtils.savePhoto(file, uploadPath, profile)) {
+            map.put("photoError", "Some troubles to upload photo :(");
+            return map;
+        }
         Character character = characterRepo.findCharacterById(characterId);
         character.setRole(SystemRoleType.INVESTIGATOR);
         characterRepo.save(character);

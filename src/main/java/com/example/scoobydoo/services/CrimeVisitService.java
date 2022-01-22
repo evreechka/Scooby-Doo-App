@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,16 +31,19 @@ public class CrimeVisitService {
 
     public Map<String,String> addCrimeVisit(long crimeId, String severityDestructionString) {
        int severityDestruction;
+       Map<String, String> map = new HashMap<>();
         try {
             severityDestruction = Integer.parseInt(severityDestructionString);
         } catch (NumberFormatException e) {
-            return Map.of("severityDestructionError", "Invalid format!");
+            map.put("severityDestructionError", "Invalid format!");
+            return map;
 
         }
         if (severityDestruction < 0 || severityDestruction > 10) {
-            return Map.of("severityDestructionError", "Invalid format!");
+            map.put("severityDestructionError", "Invalid format!");
+            return map;
         }
-        List<String> roles = List.of("CLUE_SEARCHER", "VICTIM_INTERVIEW", "CRIME_SCENE_INSPECTOR");
+        String[] roles = new String[]{"CLUE_SEARCHER", "VICTIM_INTERVIEW", "CRIME_SCENE_INSPECTOR"};
         CrimeVisit crimeVisit = new CrimeVisit();
         Crime crime = crimeService.getCrime(crimeId);
         int visitNumber = 1;
@@ -59,7 +64,7 @@ public class CrimeVisitService {
             visitParticipant.setId(id);
             visitParticipant.setCrimeVisit(crimeVisit);
             visitParticipant.setInvestigator(investigator);
-            visitParticipant.setVisitRole(VisitRoleType.valueOf(roles.get((int) Math.round(Math.random() * 2))));
+            visitParticipant.setVisitRole(VisitRoleType.valueOf(roles[(int) Math.round(Math.random() * 2)]));
             visitParticipantRepo.save(visitParticipant);
         }
         return null;

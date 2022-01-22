@@ -43,11 +43,6 @@ public class Character implements Serializable {
     @Column(name = "sex")
     private SexType sex;
 
-    @NotNull(message = "Role in system shouldn't be null")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "system_role")
-    private SystemRoleType role;
-
     @ManyToMany //TODO
     @JoinTable(
             name = "LIVING_PLACE",

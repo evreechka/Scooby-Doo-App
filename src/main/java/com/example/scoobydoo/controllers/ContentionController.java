@@ -23,12 +23,12 @@ public class ContentionController {
     }
     @PostMapping("/add")
     private String createContention(Model model, @RequestParam String description, @RequestParam String damageCritically, @RequestParam String characterId) {
-        Map<String, Object> feeadback = contentionService.createContention(description, damageCritically, characterId);
-        if (feeadback.get("success") != null) {
-            Contention contention = (Contention) feeadback.get("success");
+        Map<String, Object> feedback = contentionService.createContention(description, damageCritically, characterId);
+        if (feedback.get("success") != null) {
+            Contention contention = (Contention) feedback.get("success");
             return "redirect:/crime/" + contention.getId() + "/add";
         }
-        model.mergeAttributes(feeadback);
+        model.mergeAttributes(feedback);
         return "add_contention";
     }
 }

@@ -25,24 +25,32 @@ public class CriminalCaseService {
         return criminalCaseRepo.findCriminalCasesById(criminalCaseId);
     }
     public Map<String, String> getSeverityGradation(long criminalCaseId) {
+        Map<String, String> map = new HashMap<>();
         CriminalCase criminalCase = getCriminalCaseById(criminalCaseId);
         if (criminalCase.getSeverity() >= 0 && criminalCase.getSeverity() <= 1) {
-            return Map.of("severity", "nothing");
+            map.put("severity", "nothing");
+            return map;
         } else if (criminalCase.getSeverity() >= 2 && criminalCase.getSeverity() <= 4) {
-            return Map.of("severity", "small");
+            map.put("severity", "small");
+            return map;
         } else if (criminalCase.getSeverity() >= 5 && criminalCase.getSeverity() <= 7) {
-            return Map.of("severity", "middle");
+            map.put("severity", "middle");
+            return map;
         }
-        return Map.of("severity", "large");
+        map.put("severity", "large");
+        return map;
 
     }
     public Map<String, Object> closeCriminalCase(long criminalCaseId, UserDetails profileDetails) {
         Profile activeProfile = profileService.getProfileByUsername(profileDetails.getUsername());
+        Map<String, Object> map = new HashMap<>();
         if (!activeProfile.isAdmin()) {
-            return Map.of("error", "Permission denied!");
+            map.put("error", "Permission denied!");
+            return map;
         }
         if (!criminalCaseRepo.isEnoughEvidence(criminalCaseId)) {
-            return Map.of("error", "Not enough evidence");
+            map.put("error", "Not enough evidence");
+            return map;
         }
         CriminalCase criminalCase = criminalCaseRepo.findCriminalCasesById(criminalCaseId);
         Set<Suspect> suspects = criminalCase.getAllSuspect();
@@ -67,7 +75,8 @@ public class CriminalCaseService {
         } else {
             criminalCase.setPunishment(PunishmentType.ARREST);
         }
-        return Map.of("guilt", guilt);
+        map.put("guilt", guilt);
+        return map;
     }
     public void addCriminalCase(long crimeId, long monsterId, CriminalCase criminalCase) {
         criminalCase.setCrime(crimeService.getCrime(crimeId));

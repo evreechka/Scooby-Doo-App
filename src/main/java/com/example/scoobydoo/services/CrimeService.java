@@ -56,12 +56,16 @@ public class CrimeService {
 
     public Map<String, String> closeCrime(long crimeId, UserDetails profileDetails) {
         Crime crime = crimeRepo.findCrimeById(crimeId);
+        Map<String, String> map = new HashMap<>();
         if (crime.getSheriff().getId() != profileRepo.findProfileByUsername(profileDetails.getUsername()).getUser().getInvestigatorId()) {
-            return Map.of("error", "Permission denied!");
+            map.put("error", "Permission denied!");
+            return map;
         }
         for (CriminalCase criminalCase : crime.getCriminalCases()) {
-            if (criminalCase.getQuilt() == null || criminalCase.getPunishment() == null)
-                return Map.of("error", "Not all criminal cases are closed!");
+            if (criminalCase.getQuilt() == null || criminalCase.getPunishment() == null) {
+                map.put("error", "Not all criminal cases are closed!");
+                return map;
+            }
         }
         Set<Investigator> investigators = crime.getInvestigators();
         float fee = crime.getFee() / investigators.size();
@@ -69,7 +73,8 @@ public class CrimeService {
             investigatorService.addFee(investigator, fee);
         }
         crime.setCrimeStatus(CrimeStatusType.CLOSED);
-        return Map.of("success", "Crime successfully closed!");
+        map.put("success", "Crime successfully closed!");
+        return map;
     }
     public List<Investigator> getInvestigators() {
         return investigatorService.getAllInvestigators();
@@ -77,24 +82,37 @@ public class CrimeService {
 
     public Map<String, String> createCrime(long contentionId, String description, String feeString, String sheriffIdString, String[] invIds) {
         float fee;
+        Map<String, String> map = null;
         try {
             fee = Float.parseFloat(feeString);
         } catch (NumberFormatException e) {
-            return Map.of("feeError", "Invalid format");
+            map = new HashMap<>();
+            map.put("feeError", "Invalid format");
+            return map;
         }
-        if (fee <= 0)
-            return Map.of("feeError", "Should be > 0.0");
+        if (fee <= 0) {
+            map = new HashMap<>();
+            map.put("feeError", "Should be > 0.0");
+            return map;
+        }
         long sheriffId;
         try {
             sheriffId = Long.parseLong(sheriffIdString);
         } catch (NumberFormatException e) {
-            return Map.of("idError", "Invalid format!");
+            map = new HashMap<>();
+            map.put("idError", "Invalid format!");
+            return map;
         }
         Character sheriff = characterService.getCharacter(sheriffId);
-        if (sheriff == null)
-            return Map.of("idError", "Character with id=" + sheriffIdString + " doesn't exist!");
+        if (sheriff == null) {
+            map = new HashMap<>();
+            map.put("idError", "Character with id=" + sheriffIdString + " doesn't exist!");
+            return map;
+        }
         if (!sheriff.getRole().name().equals(SystemRoleType.SHERIFF.name())) {
-            return Map.of("idError", "Character with id=" + sheriffIdString + " isn't a sheriff!");
+            map = new HashMap<>();
+            map.put("idError", "Character with id=" + sheriffIdString + " isn't a sheriff!");
+            return map;
         }
         Crime crime = new Crime();
         crime.setCrimeVisits(new HashSet<>());

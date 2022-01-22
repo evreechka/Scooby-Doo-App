@@ -34,8 +34,7 @@ CREATE TABLE IF NOT EXISTS CHARACTER
     name         TEXT             NOT NULL,
     surname      TEXT             NOT NULL,
     age          INT CHECK (age > 0 AND age < 120),
-    sex          sex_type,
-    system_role  system_role_type NOT NULL
+    sex          sex_type
 );
 
 CREATE TABLE IF NOT EXISTS ADDRESS
@@ -151,8 +150,9 @@ CREATE TABLE IF NOT EXISTS PROFILE
     username      TEXT NOT NULL,
     password      TEXT NOT NULL,
     profile_photo TEXT,
+    system_role  system_role_type NOT NULL,
     user_id       BIGINT UNIQUE,
-    FOREIGN KEY (user_id) REFERENCES INVESTIGATOR (investigator_id)
+    FOREIGN KEY (user_id) REFERENCES CHARACTER (character_id)
 );
 
 CREATE TABLE IF NOT EXISTS BANK_ACCOUNT

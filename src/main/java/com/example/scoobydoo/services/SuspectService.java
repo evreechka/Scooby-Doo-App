@@ -7,6 +7,7 @@ import com.example.scoobydoo.repos.SuspectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -24,14 +25,18 @@ public class SuspectService {
     public Map<String, String> addSuspect(long crimeVisitId, Suspect suspect, String characterIdString) {
         CrimeVisit crimeVisit = crimeVisitService.getCrimeVisit(crimeVisitId);
         long characterId;
+        Map<String, String> map = new HashMap<>();
         try {
             characterId = Long.parseLong(characterIdString);
         } catch (NumberFormatException e) {
-            return Map.of("idError", "Invalid format of the number!");
+            map.put("idError", "Invalid format of the number!");
+            return map;
         }
         Character character = characterService.getCharacter(characterId);
-        if (character == null)
-            return Map.of("idError", "Character with id=" + characterIdString + " doesn't exist!");
+        if (character == null) {
+            map.put("idError", "Character with id=" + characterIdString + " doesn't exist!");
+            return map;
+        }
         suspect.setCharacterId(character);
         suspect.setCrimeVisit(crimeVisit);
         suspectRepo.save(suspect);
