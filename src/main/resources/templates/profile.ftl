@@ -3,7 +3,7 @@
 
 <@c.page>
     <#if profile??>
-        <#if profile.getUser()>
+        <#if isUser>
             <form action="/crime_scene/add" method="get">
                 <button class="btn btn-dark">Generate Crime Scene</button>
             </form>

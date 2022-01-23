@@ -8,11 +8,13 @@ known = Session.SPRING_SECURITY_CONTEXT??
     activeId = profile.getId()
     isAdmin = profile.isAdmin()
     isSheriff = profile.isSheriff()
+        isUser = profile.isUser()
     >
 <#else>
     <#assign
     isAdmin = false
     isSheriff = false
+        isUser = false
     activeId = -1
     >
 </#if>
