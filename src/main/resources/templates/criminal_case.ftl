@@ -36,7 +36,7 @@
         </#if>
         <h3>Monster</h3>
         <div style="word-break: break-all">
-            <b>Name: </b>${criminal_case.getMonster().getName()}
+            <b>Name: </b>${criminal_case.getMonster().getMonsterName()}
         </div>
         <#if criminal_case.getMonster().getMonsterDescription()??>
             <div style="word-break: break-all">

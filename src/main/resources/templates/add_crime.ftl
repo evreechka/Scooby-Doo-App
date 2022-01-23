@@ -136,7 +136,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Name:</label>
                 <div class="col-sm-6">
-                    <input type="text" name="name"
+                    <input type="text" name="monsterName"
                            class="form-control ${(nameError??)?string('is-invalid', '')}"/>
                     <#if nameError??>
                         <div class="invalid-feedback">

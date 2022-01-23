@@ -37,11 +37,11 @@ public class ClueController {
     }
 
     @PostMapping("/{criminalCaseId}/add")
-    public String addClue(@PathVariable long criminalCaseId, @Valid Clue clue, BindingResult bindingResult, Model model, @RequestParam String visitNumberId) {
+    public String addClue(@PathVariable long criminalCaseId, @Valid Clue clue, BindingResult bindingResult, Model model, @RequestParam String crimeVisitId) {
         if (bindingResult.hasErrors()) {
             model.mergeAttributes(getErrors(bindingResult));
         } else {
-            clueService.saveClue(clue, criminalCaseId, visitNumberId);
+            clueService.saveClue(clue, criminalCaseId, crimeVisitId);
             return "redirect:/criminal_case/" + criminalCaseId;
         }
         return "add_clue";

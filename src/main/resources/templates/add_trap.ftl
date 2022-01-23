@@ -1,5 +1,6 @@
 <#include "parts/security.ftl">
 <#import "parts/common.ftl" as c>
+<#assign trap_list = map?keys>
 <@c.page>
     <#if profile??>
         <h3>Add Trap for Criminal case ${criminalCaseId}</h3>
@@ -18,10 +19,10 @@
             </div>
             <div><b>Choose items and count:</b></div>
             <div class="input-group">
-                <#list map.keySet() as item>
+                <#list map as item, count>
                     <span class="input-group-text" id="${item}">${item}</span>
-                    <input name="${item.getName()}" type="text" class="form-control ${(countError??)?string('is-invalid', '')}"
-                           aria-describedby="${item.getId()}" value="${map.get(item)}">
+                    <input name="${item}" type="text" class="form-control ${(countError??)?string('is-invalid', '')}"
+                           aria-describedby="${item}" value="${count}"/>
                     <#if countError??>
                         <div class="invalid-feedback">
                             ${countError}
@@ -29,7 +30,7 @@
                     </#if>
                 </#list>
             </div>
-            <button class="btn btn-dark" type="button" onclick="sendAttributes(map.keySet(), ${criminalCaseId})">
+            <button class="btn btn-dark" type="button" onclick="sendAttributes(trap_list, ${criminalCaseId})">
                 Add
             </button>
         </form>

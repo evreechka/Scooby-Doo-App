@@ -24,7 +24,7 @@ public class Monster implements Serializable {
 
     @NotBlank(message = "name shouldn't be blank")
     @Column(name = "name")
-    private String name;
+    private String monsterName;
 
     @Column(name = "description")
     private String monsterDescription;

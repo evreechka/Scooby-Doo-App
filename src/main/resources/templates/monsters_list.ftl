@@ -20,7 +20,7 @@
             <#list monsters as monster>
                 <tr>
                     <td>${monster.getId()}</td>
-                    <td style="word-break: break-all">${monster.getName()}</td>
+                    <td style="word-break: break-all">${monster.getMonsterName()}</td>
                     <td style="word-break: break-all">
                         <#if monster.getMonsterDescription()??>${monster.getMonsterDescription()}<#else></#if>
                     </td>

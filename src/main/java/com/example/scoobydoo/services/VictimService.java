@@ -18,7 +18,6 @@ public class VictimService {
     private VictimRepo victimRepo;
     @Autowired
     private CharacterService characterService;
-
     @Autowired
     private CrimeVisitService crimeVisitService;
     public Map<String, String> addVictim(String indication, Character character, CrimeVisit crimeVisit) {
@@ -32,10 +31,13 @@ public class VictimService {
         Character newCharacter = characterService.createCharacter(character);
         id.setVisitId(crimeVisit.getId());
         id.setCharacterId(newCharacter.getId());
+        victim.setId(id);
         victim.setIndication(indication);
         victim.setDateIndication(LocalDateTime.now());
         victim.setCharacter(newCharacter);
         victim.setCrimeVisit(crimeVisit);
+        System.out.println(victimRepo);
+        System.out.println(victim);
         victimRepo.save(victim);
         return null;
     }
