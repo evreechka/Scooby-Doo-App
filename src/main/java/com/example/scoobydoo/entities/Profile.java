@@ -58,7 +58,6 @@ public class Profile implements UserDetails {
     public boolean isInvestigator() {
         return role.name().equals(SystemRoleType.INVESTIGATOR.name());
     }
-
     public boolean isUser() {
         return role.name().equals(SystemRoleType.USER.name());
     }

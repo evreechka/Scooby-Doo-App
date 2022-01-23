@@ -37,23 +37,21 @@ public class ProfileService implements UserDetailsService {
     public Map<String, Object> getInvestigatorProfile(long profileId) {
         Profile profile = profileRepo.findProfileById(profileId);
         Map<String, Object> params = new HashMap<>();
-        if (profile.getRole().equals(SystemRoleType.USER)) {
-            params.put("error", "Access denied");
-            return params;
-        }
         Investigator investigator = profile.getUser().getInvestigator();
         if (profile.getPhoto() != null) {
             params.put("photo", profile.getPhoto());
         }
 
         params.put("profileId", profileId);
-        params.put("name", investigator.getCharacter().getName());
-        params.put("surname", investigator.getCharacter().getSurname());
-        params.put("age", investigator.getCharacter().getAge());
-        params.put("crime_count", investigator.getCrimes().size());
-        params.put("feature", investigator.getFeature());
-        params.put("bank_account", investigator.getBankAccount().getBalance());
-        params.put("inv_id", investigator.getInvestigatorId());
+        params.put("name", profile.getUser().getName());
+        params.put("surname", profile.getUser().getSurname());
+        params.put("age", profile.getUser().getAge());
+        if (investigator != null) {
+            params.put("crime_count", investigator.getCrimes().size());
+            params.put("feature", investigator.getFeature());
+            params.put("bank_account", investigator.getBankAccount().getBalance());
+        }
+        params.put("inv_id", profile.getUser().getId());
         return params;
     }
 
