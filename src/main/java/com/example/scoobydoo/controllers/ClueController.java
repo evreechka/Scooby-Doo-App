@@ -24,6 +24,7 @@ public class ClueController {
 
     @GetMapping("/{criminalCaseId}/add")
     public String getAddCluePage(@PathVariable long criminalCaseId, Model model) {
+        model.addAttribute("crimeVisits", clueService.getClueCriminalCase(criminalCaseId).getCrime().getCrimeVisits());
         model.addAttribute("criminalCaseId", criminalCaseId);
         return "add_clue";
     }
@@ -36,14 +37,12 @@ public class ClueController {
     }
 
     @PostMapping("/{criminalCaseId}/add")
-    public String addClue(@PathVariable long criminalCaseId, @Valid Clue clue, BindingResult bindingResult, Model model, @RequestParam String visitNumber) {
+    public String addClue(@PathVariable long criminalCaseId, @Valid Clue clue, BindingResult bindingResult, Model model, @RequestParam String visitNumberId) {
         if (bindingResult.hasErrors()) {
             model.mergeAttributes(getErrors(bindingResult));
         } else {
-            Map<String, String> feedback = clueService.saveClue(clue, criminalCaseId, visitNumber);
-            if (feedback == null)
-                return "redirect:/criminal_case/" + criminalCaseId;
-            model.mergeAttributes(feedback);
+            clueService.saveClue(clue, criminalCaseId, visitNumberId);
+            return "redirect:/criminal_case/" + criminalCaseId;
         }
         return "add_clue";
     }

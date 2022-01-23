@@ -1,5 +1,6 @@
 package com.example.scoobydoo.controllers;
 
+import com.example.scoobydoo.entities.Character;
 import com.example.scoobydoo.entities.CrimeVisit;
 import com.example.scoobydoo.entities.Suspect;
 import com.example.scoobydoo.services.CharacterService;
@@ -32,11 +33,12 @@ public class SuspectController {
     }
 
     @PostMapping("/{crimeVisitId}/add")
-    public String addSuspect(@PathVariable(name = "crimeVisitId") CrimeVisit crimeVisit, @Valid Suspect suspect, BindingResult bindingResult, Model model, @RequestParam String userId) {
-        if (bindingResult.hasErrors()) {
-            model.mergeAttributes(getErrors(bindingResult));
+    public String addSuspect(@PathVariable(name = "crimeVisitId") CrimeVisit crimeVisit, @Valid Suspect suspect, BindingResult suspectBindingResult, @Valid Character character, BindingResult characterBindingResult, Model model) {
+        if (suspectBindingResult.hasErrors() || characterBindingResult.hasErrors()) {
+            model.mergeAttributes(getErrors(suspectBindingResult));
+            model.mergeAttributes(getErrors(characterBindingResult));
         } else {
-            suspectService.addSuspect(crimeVisit, suspect, userId);
+            suspectService.addSuspect(crimeVisit, suspect, character);
             return "redirect:/crime_visit/" + crimeVisit.getId();
         }
         return "add_suspect";

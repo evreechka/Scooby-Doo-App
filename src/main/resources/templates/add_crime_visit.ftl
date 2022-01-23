@@ -17,16 +17,15 @@
                 </div>
             </div>
             <div><b>Choose Crime Scene</b></div>
-            <div class="form-check">
-                <#list crime_scenes as scene>
-                    <div>
-                        <input class="form-check-input" type="checkbox" value="${scene.getId()?c}"
-                               id="${scene.getId()}" name="crimeSceneId">
-                        <label class="form-check-label" for="${scene.getId()}" style="word-break: break-all">
-                            ${scene.getName()} ${scene.getPlace()}
-                        </label>
-                    </div>
-                </#list>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Crime Scenes</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="crimeSceneId">
+                    <#list crime_scenes as scene>
+                        <option value="${scene.getId()?c}" selected>${scene.getName()} ${scene.getPlace()}</option>
+                    </#list>
+                </select>
             </div>
             <button class="btn btn-dark" type="submit">
                 Save

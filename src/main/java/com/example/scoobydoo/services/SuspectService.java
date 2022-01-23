@@ -15,15 +15,14 @@ public class SuspectService {
     @Autowired
     private SuspectRepo suspectRepo;
     @Autowired
-    private CrimeVisitService crimeVisitService;
-    @Autowired
     private CharacterService characterService;
     public void saveInvolvement(Suspect suspect) {
         suspectRepo.save(suspect);
     }
 
-    public void addSuspect(CrimeVisit crimeVisit, Suspect suspect, String userId) {
-        suspect.setCharacter(characterService.getCharacter(Long.parseLong(userId)));
+    public void addSuspect(CrimeVisit crimeVisit, Suspect suspect, Character character) {
+        characterService.createCharacter(character);
+        suspect.setCharacter(character);
         suspect.setCrimeVisit(crimeVisit);
         suspectRepo.save(suspect);
     }

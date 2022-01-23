@@ -20,34 +20,17 @@ public class ClueService {
     private CriminalCaseService criminalCaseService;
     @Autowired
     private SuspectService suspectService;
+    @Autowired
+    private CrimeVisitService crimeVisitService;
     public CriminalCase getClueCriminalCase(long criminalCaseId) {
         return criminalCaseService.getCriminalCaseById(criminalCaseId);
     }
-    public Map<String, String> saveClue(Clue clue, long criminalCaseId, String visitNumberString) {
-        Map<String, String> map = new HashMap<>();
+    public void saveClue(Clue clue, long criminalCaseId, String visitNumberString) {
         CriminalCase criminalCase = criminalCaseService.getCriminalCaseById(criminalCaseId);
-        CrimeVisit crimeVisit = null;
-        int visitNumber;
-        try {
-            visitNumber = Integer.parseInt(visitNumberString);
-        } catch (NumberFormatException e) {
-            map.put("visitError", "Incorrect format!");
-            return map;
-        }
-        for (CrimeVisit visit: criminalCase.getCrime().getCrimeVisits()) {
-            if (visit.getVisitNumber() == visitNumber) {
-                crimeVisit = visit;
-                break;
-            }
-        }
-        if (crimeVisit == null) {
-            map.put("visitError", "Crime visit with number=" + visitNumberString + " doesn't exist");
-            return map;
-        }
+        CrimeVisit crimeVisit = crimeVisitService.getCrimeVisit(Long.parseLong(visitNumberString));
         clue.setCrimeVisit(crimeVisit);
         clue.setCriminalCase(criminalCase);
         clueRepo.save(clue);
-        return null;
     }
 
     public void addSuspects(long clueId, String[] suspectIds) {

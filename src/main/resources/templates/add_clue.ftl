@@ -37,6 +37,17 @@
                     </#if>
                 </div>
             </div>
+            <div><b>Choose Crime visits</b></div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Crime Visits</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="crimeVisitId">
+                    <#list crimeVisits as cv>
+                        <option value="${cv.getId()?c}" selected>Crime visit ${cv.getVisitNumber()}</option>
+                    </#list>
+                </select>
+            </div>
             <button class="btn btn-dark" type="submit">
                 Save
             </button>

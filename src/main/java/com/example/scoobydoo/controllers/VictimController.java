@@ -1,14 +1,19 @@
 package com.example.scoobydoo.controllers;
 
+import com.example.scoobydoo.entities.Character;
 import com.example.scoobydoo.entities.CrimeVisit;
 import com.example.scoobydoo.services.CharacterService;
 import com.example.scoobydoo.services.VictimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
+
+import static com.example.scoobydoo.utils.ControllerUtils.getErrors;
 
 @Controller
 @RequestMapping("/victim")
@@ -25,12 +30,16 @@ public class VictimController {
     }
 
     @PostMapping("/{crimeVisitId}/add")
-    public String addVictim(@PathVariable(name = "crimeVisitId")CrimeVisit crimeVisit, Model model, @RequestParam String userId, @RequestParam String indication) {
-        Map<String, String> feedback = victimService.addVictim(indication, userId, crimeVisit);
-        if (feedback == null) {
-            return "redirect:/crime_visit/" + crimeVisit.getId();
+    public String addVictim(@PathVariable(name = "crimeVisitId")CrimeVisit crimeVisit, Model model, @Valid Character character, BindingResult bindingResult, @RequestParam String indication) {
+        if (bindingResult.hasErrors()) {
+            model.mergeAttributes(getErrors(bindingResult));
+        } else {
+            Map<String, String> feedback = victimService.addVictim(indication, character, crimeVisit);
+            if (feedback == null) {
+                return "redirect:/crime_visit/" + crimeVisit.getId();
+            }
+            model.mergeAttributes(feedback);
         }
-        model.mergeAttributes(feedback);
         return "add_victim";
     }
 }

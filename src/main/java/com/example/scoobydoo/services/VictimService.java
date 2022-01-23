@@ -21,7 +21,7 @@ public class VictimService {
 
     @Autowired
     private CrimeVisitService crimeVisitService;
-    public Map<String, String> addVictim(String indication, String userId, CrimeVisit crimeVisit) {
+    public Map<String, String> addVictim(String indication, Character character, CrimeVisit crimeVisit) {
         Map<String, String> map = new HashMap<>();
         Victim victim = new Victim();
         VictimKey id = new VictimKey();
@@ -29,12 +29,12 @@ public class VictimService {
             map.put("indicationError", "Indication cannot be blank");
             return map;
         }
-        Character character = characterService.getCharacter(Long.parseLong(userId));
+        Character newCharacter = characterService.createCharacter(character);
         id.setVisitId(crimeVisit.getId());
-        id.setCharacterId(character.getId());
+        id.setCharacterId(newCharacter.getId());
         victim.setIndication(indication);
         victim.setDateIndication(LocalDateTime.now());
-        victim.setCharacter(character);
+        victim.setCharacter(newCharacter);
         victim.setCrimeVisit(crimeVisit);
         victimRepo.save(victim);
         return null;
