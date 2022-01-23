@@ -2,12 +2,12 @@ package com.example.scoobydoo.controllers;
 
 import com.example.scoobydoo.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -17,18 +17,22 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @GetMapping("/inventory/{investigator_id}/{crime_id}")
-    public Map<String, String> createInventory(Model model, @PathVariable long investigator_id, @PathVariable long crime_id) {
-        HashMap<String, String> params = new HashMap<>();
-//        params.put("inventory", orderService.inventorySelection(investigator_id, crime_id));
-        return params;
+    @GetMapping("/inventory/{criminal_case_id}")
+    public String createInventory(Model model, @PathVariable long criminal_case_id) {
+        model.addAttribute("map", orderService.inventorySelection(criminal_case_id));
+        model.addAttribute("criminalCaseId", criminal_case_id);
+        return "add_trap";
     }
 
-    @PostMapping("/order/{investigator_id}")
-    public Map<String, String> createInventory(Model model, @PathVariable long investigator_id, @RequestParam List<Long> ids) {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("error", orderService.makeOrder(investigator_id, ids) ? "true" : "false");
-        return params;
-    }
 
+    @PostMapping("/make/{criminal_case_id}")
+    public String makeOrder(Model model, @AuthenticationPrincipal UserDetails userDetails, @RequestParam String name, @RequestParam Map<String, String> itemCount, @PathVariable Long criminal_case_id) {
+        try {
+            if (orderService.makeOrder(userDetails, name, itemCount, criminal_case_id))
+                return "redirect:/criminal_case/" + criminal_case_id;
+            else return "redirect:/order/inventory/" + criminal_case_id;
+        } catch (Exception e) {
+            return "redirect:/order/inventory/" + criminal_case_id;
+        }
+    }
 }

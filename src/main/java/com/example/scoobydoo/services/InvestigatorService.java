@@ -49,4 +49,7 @@ public class InvestigatorService {
         investigator.setFeature(FeatureType.valueOf(feature));
         bankAccountService.createAccount(investigator);
     }
+
+    public void notifyInvestigators() {
+    }
 }
