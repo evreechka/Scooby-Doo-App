@@ -12,13 +12,10 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"
                     style="word-break: break-all">${order.getOrderer().getCharacter().getName()} ${order.getOrderer().getCharacter().getSurname()}</li>
-                <li class="list-group-item"> crimes</li>
-                <li class="list-group-item">My main feature is ${feature}</li>
-                <li class="list-group-item">Money: ${bank_account}$</li>
+                <li class="list-group-item">Total cost: ${order.getTotalCost()}</li>
+                <li class="list-group-item">Order creating time: ${order.getTimeTake()}</li>
+                <li class="list-group-item">Order deliver time: ${order.getTimeReturn()}</li>
             </ul>
         </div>
-        <#if activeId == profileId>
-            <a class="btn btn-dark" href="/profile/${activeId}/edit" role="button">Edit</a>
-        </#if>
     </div>
 </@c.page>
