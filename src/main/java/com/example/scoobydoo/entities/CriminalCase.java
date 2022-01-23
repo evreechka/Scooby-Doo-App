@@ -58,6 +58,9 @@ public class CriminalCase implements Serializable {
     @OneToMany(mappedBy = "criminalCase")
     private Set<Clue> clues;
 
+    @OneToMany(mappedBy = "criminalCase")
+    private Set<TrapCase> trapCases;
+
     public Set<Suspect> getAllSuspect() {
         Set<Suspect> suspects = new HashSet<>();
         for (CrimeVisit visit: getCrime().getCrimeVisits()) {

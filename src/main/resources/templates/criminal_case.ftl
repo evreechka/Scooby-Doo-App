@@ -68,6 +68,30 @@
             </#list>
         </div>
         <hr>
+<#--        /order/inventory/{investigator_id}/{criminal_case_id}-->
+        <h3>Traps</h3>
+        <form action="/order/inventory/${criminal_case.getId()?c}">
+            <button type="submit" class="btn btn-light">
+                Create trap
+            </button>
+        </form>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Usefulness</th>
+            </tr>
+            </thead>
+            <tbody>
+            <#list criminal_case.getTrapCases() as trap>
+                <tr>
+                    <td style="word-break: break-all">${trap.getName()}</td>
+                    <td style="word-break: break-all">${trap.getUsefulness()}</td>
+                </tr>
+            </#list>
+            </tbody>
+        </table>
+        <hr>
         <h3>Clues</h3>
         <form action="/clue/${criminal_case.getId()?c}/add">
             <button type="submit" class="btn btn-light">
