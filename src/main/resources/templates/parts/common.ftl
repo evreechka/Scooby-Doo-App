@@ -32,6 +32,13 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="../../../resources/js/trap.js"></script>
+    <script>
+        document.addEventListener("custom_event", function (event) {
+            if (localStorage.getItem("user") === "inv") {
+                alert("Появилось новое преступление!")
+            }
+        });
+    </script>
     </body>
     </html>
 </#macro>

@@ -69,8 +69,14 @@
                 </#if>
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">
+        <button id="but" class="btn btn-primary" type="submit">
             Create Crime Scene
         </button>
+        <script type="application/javascript">
+            document.getElementById("but").addEventListener('click', function (event) {
+                let eve = new Event("custom_event", {bubbles: true})
+                document.dispatchEvent(eve);
+            });
+        </script>
     </form>
 </@cl.page>
