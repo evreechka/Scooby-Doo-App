@@ -62,7 +62,7 @@ public class CrimeController {
         model.addAttribute("victim_homes", crimeService.getVictimHomes(crimeId));
         return "crime";
     }
-    @PreAuthorize("hasAuthority('SHERIFF')")
+
     @PostMapping("/crime/add")
     public String createCrime(@Valid Crime crime, BindingResult crimeBindingResult, @Valid Character victim, BindingResult victimBindingResult, @Valid Contention contention, BindingResult contentionBindingResult, @Valid Monster monster, BindingResult monsterBindingResult, @Valid CriminalCase criminalCase, BindingResult criminalCaseBindingResult, @Valid CrimeVisit crimeVisit, BindingResult crimeVisitBindingResult, @RequestParam String sheriffId, @RequestParam String[] invIds, @RequestParam String crimeSceneId, @RequestParam String type, Model model, @AuthenticationPrincipal UserDetails profileDetails) {
         if (crimeBindingResult.hasErrors() || victimBindingResult.hasErrors() || contentionBindingResult.hasErrors() || monsterBindingResult.hasErrors() || criminalCaseBindingResult.hasErrors() || crimeVisitBindingResult.hasErrors()) {
@@ -72,10 +72,10 @@ public class CrimeController {
             model.mergeAttributes(getErrors(monsterBindingResult));
             model.mergeAttributes(getErrors(criminalCaseBindingResult));
             model.mergeAttributes(getErrors(crimeVisitBindingResult));
+            return getAddCrimePage(model);
         } else {
             crimeService.createCrime(crime, victim, contention, monster, criminalCase, crimeVisit, sheriffId, crimeSceneId, invIds, type);
             return getMainPage(model, profileDetails);
         }
-        return getAddCrimePage(model);
     }
 }

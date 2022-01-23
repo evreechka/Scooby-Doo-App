@@ -24,7 +24,6 @@ public class CrimeVisit implements Serializable {
     @Column(name = "visit_id")
     private long id;
 
-    @Min(1)
     @Column(name = "visit_num")
     private int visitNumber;
 
@@ -33,7 +32,6 @@ public class CrimeVisit implements Serializable {
     @Column(name = "severity_destruction")
     private int severityDestruction;
 
-    @NotNull
     @Column(name = "date_visit")
     private LocalDateTime dateVisit;
 

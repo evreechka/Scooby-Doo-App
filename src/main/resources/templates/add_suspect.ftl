@@ -6,8 +6,8 @@
         <form method="post" action="/suspect/${crimeVisitId?c}/add">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Motive:</label>
-                    <textarea name="motive"
-                              class="form-control ${(motiveError??)?string('is-invalid', '')}"></textarea>
+                    <input name="motive"
+                              class="form-control ${(motiveError??)?string('is-invalid', '')}"></input>
                     <#if motiveError??>
                         <div class="invalid-feedback">
                             ${motiveError}

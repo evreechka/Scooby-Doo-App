@@ -31,8 +31,8 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Monster description:</label>
-                <textarea type="text" name="monsterDescription"
-                          class="form-control ${(descriptionError??)?string('is-invalid', '')}"></textarea>
+                <input type="text" name="monsterDescription"
+                          class="form-control ${(descriptionError??)?string('is-invalid', '')}"></input>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Weight:</label>

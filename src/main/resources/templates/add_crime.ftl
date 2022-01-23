@@ -7,8 +7,14 @@
             <div><b>Crime data</b></div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Crime description:</label>
-                <textarea type="text" name="crimeDescription"
-                          class="form-control ${(descriptionError??)?string('is-invalid', '')}"></textarea>
+                <input type="text" name="crimeDescription"
+                          class="form-control ${(crimeDescriptionError??)?string('is-invalid', '')}">
+                </input>
+                <#if crimeDescriptionError??>
+                    <div class="invalid-feedback">
+                        ${crimeDescriptionError}
+                    </div>
+                </#if>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">fee:</label>
@@ -106,8 +112,13 @@
             <div><b>Contention data</b></div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Contention description:</label>
-                <textarea type="text" name="description"
-                          class="form-control ${(descriptionError??)?string('is-invalid', '')}"></textarea>
+                <input type="text" name="contentionDescription"
+                          class="form-control ${(contentionDescriptionError??)?string('is-invalid', '')}"></input>
+                <#if contentionDescriptionError??>
+                    <div class="invalid-feedback">
+                        ${contentionDescriptionError}
+                    </div>
+                </#if>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Damage Critically:</label>
@@ -136,8 +147,8 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Monster description:</label>
-                <textarea type="text" name="monsterDescription"
-                          class="form-control ${(descriptionError??)?string('is-invalid', '')}"></textarea>
+                <input type="text" name="monsterDescription"
+                          class="form-control ${(descriptionError??)?string('is-invalid', '')}"></input>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Weight:</label>

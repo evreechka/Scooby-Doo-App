@@ -21,7 +21,6 @@ public class Crime implements Serializable {
     @Column(name = "crime_id")
     private long id;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "crime_status")
     private CrimeStatusType crimeStatus;

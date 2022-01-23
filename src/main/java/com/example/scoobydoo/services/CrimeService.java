@@ -94,11 +94,9 @@ public class CrimeService {
         contention.setDateContention(LocalDateTime.now());
         contention.setCharacter(victim);
         monsterService.createMonster(monster, type);
-        contentionService.createContention(contention);
         criminalCase.setMonster(monster);
         criminalCaseService.createCriminalCase(criminalCase);
         crime.setInvestigators(new HashSet<>());
-        crime.setContention(contention);
         crime.setCrimeVisits(new HashSet<>());
         crime.setCriminalCases(new HashSet<>());
         crime.setSheriff(characterService.getCharacter(Long.parseLong(sheriffId)));
@@ -111,6 +109,10 @@ public class CrimeService {
         String[] roles = new String[]{"CLUE_SEARCHER", "VICTIM_INTERVIEW", "CRIME_SCENE_INSPECTOR"};
         crimeVisitService.addCrimeVisit(crime, crimeVisit, crimeSceneId, roles);
         crime.getCrimeVisits().add(crimeVisit);
+        contention.setCrime(crime);
+        criminalCase.setCrime(crime);
+        criminalCaseService.createCriminalCase(criminalCase);
+        contentionService.createContention(contention);
         crimeRepo.save(crime);
     }
 }

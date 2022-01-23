@@ -37,7 +37,7 @@
             <label class="col-sm-2 col-form-label">City:</label>
             <div class="col-sm-6">
                 <input type="text" name="city"
-                       class="form-control ${(cityError??)?string('is-invalid', '')}" placeholder="Username"/>
+                       class="form-control ${(cityError??)?string('is-invalid', '')}"/>
                 <#if cityError??>
                     <div class="invalid-feedback">
                         ${cityError}
@@ -49,7 +49,7 @@
             <label class="col-sm-2 col-form-label">Avenue:</label>
             <div class="col-sm-6">
                 <input type="text" name="avenue"
-                       class="form-control ${(avenueError??)?string('is-invalid', '')}" placeholder="Username"/>
+                       class="form-control ${(avenueError??)?string('is-invalid', '')}"/>
                 <#if avenueError??>
                     <div class="invalid-feedback">
                         ${avenueError}
@@ -61,7 +61,7 @@
             <label class="col-sm-2 col-form-label">House Number:</label>
             <div class="col-sm-6">
                 <input type="text" name="houseNumber"
-                       class="form-control ${(houseNumberError??)?string('is-invalid', '')}" placeholder="Username"/>
+                       class="form-control ${(houseNumberError??)?string('is-invalid', '')}"/>
                 <#if houseNumberError??>
                     <div class="invalid-feedback">
                         ${houseNumberError}

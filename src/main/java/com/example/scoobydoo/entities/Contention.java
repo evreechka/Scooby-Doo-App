@@ -29,6 +29,7 @@ public class Contention implements Serializable {
     @Column(name = "date_contention")
     private LocalDateTime dateContention;
 
+    @NotNull
     @Column(name = "description")
     private String contentionDescription;
 

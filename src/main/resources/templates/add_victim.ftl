@@ -6,7 +6,7 @@
         <form method="post" action="/victim/${crimeVisitId?c}/add">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Indication:</label>
-                <textarea name="indication"
+                <input name="indication"
                           class="form-control ${(indicationError??)?string('is-invalid', '')}"/>
                 <#if indicationError??>
                     <div class="invalid-feedback">
