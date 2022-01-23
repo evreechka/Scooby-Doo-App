@@ -61,3 +61,16 @@ VALUES ('Rope', 'TRAP', 10.0),
        ('Underground suit', 'EQUIPMENT', 1500.0),
        ('Basic suit', 'EQUIPMENT', 1500.0),
        ('Space Suit', 'EQUIPMENT', 2000.0);
+CREATE OR REPLACE FUNCTION generate_item_monster() RETURNS VOID AS
+$$
+declare
+    it_id   bigint = 0;
+    type_id bigint = 0;
+begin
+    it_id = round(random() * 12) + 1;
+    type_id = round(random() * 18) + 1;
+    INSERT INTO ITEM_MONSTER (item_id, monster_type_id) VALUES (it_id, type_id);
+end;
+$$ LANGUAGE plpgsql;
+SELECT generate_item_monster()
+From generate_series(1, 200);
