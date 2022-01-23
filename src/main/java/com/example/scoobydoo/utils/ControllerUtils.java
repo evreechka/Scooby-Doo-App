@@ -30,6 +30,9 @@ public class ControllerUtils {
         if (errors.get("severityError") != null) {
             errors.put("severityError", "age should be number between 0 and 10");
         }
+        if (errors.get("houseNumberError") != null) {
+            errors.put("houseNumberError", "house number should be number more 0");
+        }
         return errors;
     }
     public static boolean savePhoto(MultipartFile file, String uploadPath, Profile profile) {
