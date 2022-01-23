@@ -2,6 +2,7 @@ package com.example.scoobydoo.services;
 
 import com.example.scoobydoo.entities.*;
 import com.example.scoobydoo.entities.enums.PunishmentType;
+import com.example.scoobydoo.entities.enums.SystemRoleType;
 import com.example.scoobydoo.repos.CriminalCaseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,9 +20,11 @@ public class CriminalCaseService {
     private SuspectService suspectService;
     @Autowired
     private MonsterService monsterService;
+
     public CriminalCase getCriminalCaseById(long criminalCaseId) {
         return criminalCaseRepo.findCriminalCasesById(criminalCaseId);
     }
+
     public Map<String, String> getSeverityGradation(long criminalCaseId) {
         Map<String, String> map = new HashMap<>();
         CriminalCase criminalCase = getCriminalCaseById(criminalCaseId);
@@ -39,10 +42,11 @@ public class CriminalCaseService {
         return map;
 
     }
+
     public Map<String, Object> closeCriminalCase(long criminalCaseId, UserDetails profileDetails) {
         Profile activeProfile = profileService.getProfileByUsername(profileDetails.getUsername());
         Map<String, Object> map = new HashMap<>();
-        if (!activeProfile.isAdmin()) {
+        if (!activeProfile.getRole().equals(SystemRoleType.ADMIN) && !activeProfile.getRole().equals(SystemRoleType.INVESTIGATOR)) {
             map.put("error", "Permission denied!");
             return map;
         }
@@ -52,12 +56,12 @@ public class CriminalCaseService {
         }
         CriminalCase criminalCase = criminalCaseRepo.findCriminalCasesById(criminalCaseId);
         Set<Suspect> suspects = criminalCase.getAllSuspect();
-        for (Clue clue: criminalCase.getClues()) {
+        for (Clue clue : criminalCase.getClues()) {
             suspects.stream().filter(suspect -> clue.getSuspects().contains(suspect)).forEach(Suspect::incInvolvement);
         }
         int max_involvement = -1;
         Suspect guilt = null;
-        for (Suspect suspect: suspects) {
+        for (Suspect suspect : suspects) {
             suspectService.saveInvolvement(suspect);
             if (suspect.getInvolvement() > max_involvement) {
                 max_involvement = suspect.getInvolvement();
@@ -76,6 +80,7 @@ public class CriminalCaseService {
         map.put("guilt", guilt);
         return map;
     }
+
     public void addCriminalCase(Crime crime, Monster monster, String type, CriminalCase criminalCase) {
         monsterService.createMonster(monster, type);
         criminalCase.setCrime(crime);
@@ -85,6 +90,7 @@ public class CriminalCaseService {
         criminalCase.setOrders(new HashSet<>());
         createCriminalCase(criminalCase);
     }
+
     public void createCriminalCase(CriminalCase criminalCase) {
         criminalCaseRepo.save(criminalCase);
     }

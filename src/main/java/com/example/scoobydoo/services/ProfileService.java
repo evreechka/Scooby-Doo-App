@@ -3,6 +3,7 @@ package com.example.scoobydoo.services;
 import com.example.scoobydoo.entities.Character;
 import com.example.scoobydoo.entities.Investigator;
 import com.example.scoobydoo.entities.Profile;
+import com.example.scoobydoo.entities.enums.SystemRoleType;
 import com.example.scoobydoo.repos.ProfileRepo;
 import com.example.scoobydoo.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class ProfileService implements UserDetailsService {
     private CharacterService characterService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return profileRepo.findProfileByUsername(username);
@@ -34,13 +36,16 @@ public class ProfileService implements UserDetailsService {
 
     public Map<String, Object> getInvestigatorProfile(long profileId) {
         Profile profile = profileRepo.findProfileById(profileId);
-        Investigator investigator = profile.getUser().getInvestigator();
         Map<String, Object> params = new HashMap<>();
-        System.out.println(profile.getPhoto());
+        if (profile.getRole().equals(SystemRoleType.USER)) {
+            params.put("error", "Access denied");
+            return params;
+        }
+        Investigator investigator = profile.getUser().getInvestigator();
         if (profile.getPhoto() != null) {
             params.put("photo", profile.getPhoto());
-
         }
+
         params.put("profileId", profileId);
         params.put("name", investigator.getCharacter().getName());
         params.put("surname", investigator.getCharacter().getSurname());

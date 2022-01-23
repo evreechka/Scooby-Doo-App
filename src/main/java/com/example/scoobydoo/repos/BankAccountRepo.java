@@ -12,8 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface BankAccountRepo extends JpaRepository<BankAccount, Long> {
     BankAccount findBankAccountByOwner(Investigator investigator);
+
     @Modifying
     @Query("DELETE FROM BankAccount where id=?1")
     void delete(long investigatorId);
+
+    @Modifying
+    @Query("UPDATE BankAccount ba SET ba.balance = ?2 WHERE ba.id = ?1")
+    void setBalance(Long id, float balance);
 
 }

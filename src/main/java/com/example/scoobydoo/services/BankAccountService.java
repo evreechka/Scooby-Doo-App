@@ -38,4 +38,8 @@ public class BankAccountService {
         bankAccount.setBalance(balance);
         bankAccountRepo.save(bankAccount);
     }
+
+    public void setBalance(Long id, Float balance) {
+        bankAccountRepo.setBalance(id, balance);
+    }
 }

@@ -47,6 +47,7 @@ public class CriminalCaseController {
             model.mergeAttributes(getErrors(monsterBindingResult));
         } else {
             criminalCaseService.addCriminalCase(crime, monster, type, criminalCase);
+            //criminalCaseService.createNotification();
             return "redirect:/crime/" + crime.getId();
         }
         return "add_criminal_case";
