@@ -4,6 +4,11 @@
 <@c.page>
     <#if profile??>
         <h1>Criminal case ${criminal_case.getId()}</h1>
+        <#if error??>
+            <div class="alert alert-danger" role="alert">
+                ${error}
+            </div>
+        </#if>
         <#if (isAdmin || isInvestigator) && !(criminal_case.getQuilt()??)>
             <form action="/criminal_case/${criminal_case.getId()?c}/close" method="post">
                 <button type="submit" class="btn btn-dark">

@@ -70,14 +70,14 @@ public class OrderService {
         BankAccount ba = bankAccountService.findBankAccountByOwner(investigatorService.getInvestigatorById(inv_id));
         if (ba.getBalance() < sum)
             return false;
-        putToInventory(LocalDateTime.now(), items);
         TrapCase trapCase = new TrapCase();
         trapCase.setCriminalCase(criminalCaseService.getCriminalCaseById(criminal_case_id));
         trapCase.setName(name);
         trapCase.setSelected(true);
-        trapCase.setUsefulness(1);
+        trapCase.setUsefulness((int)Math.round(Math.random() * 10));
         trapCaseRepo.save(trapCase);
         bankAccountService.setBalance(ba.getId(), (float) (ba.getBalance() - sum));
+        putToInventory(LocalDateTime.now(), items);
         return true;
     }
 

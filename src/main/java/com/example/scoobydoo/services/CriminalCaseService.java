@@ -50,7 +50,7 @@ public class CriminalCaseService {
     public Map<String, Object> closeCriminalCase(long criminalCaseId, UserDetails profileDetails) {
         Profile activeProfile = profileService.getProfileByUsername(profileDetails.getUsername());
         Map<String, Object> map = new HashMap<>();
-        if (!activeProfile.getRole().equals(SystemRoleType.ADMIN) && !activeProfile.getRole().equals(SystemRoleType.INVESTIGATOR)) {
+        if (!activeProfile.isInvestigator() && !activeProfile.isAdmin()) {
             map.put("error", "Permission denied!");
             return map;
         }
@@ -59,6 +59,10 @@ public class CriminalCaseService {
             return map;
         }
         CriminalCase criminalCase = criminalCaseRepo.findCriminalCasesById(criminalCaseId);
+        if(criminalCase.getTrapCases().isEmpty()) {
+            map.put("error", "You haven't create any traps");
+            return map;
+        }
         String[] arr = {VisitRoleType.BAIT.toString(), VisitRoleType.TRAP_MANAGER.toString(), VisitRoleType.BOBBY_TRAPS.toString()};
         crimeVisitService.addCrimeVisit(criminalCase.getCrime(), new CrimeVisit(), "1", arr);
         Set<Suspect> suspects = criminalCase.getAllSuspect();
