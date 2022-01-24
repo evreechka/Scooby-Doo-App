@@ -17,20 +17,7 @@
                     </#if>
                 </div>
             </div>
-            <div><b>Choose items and count:</b></div>
-            <div class="input-group">
-                <#list map as item, count>
-                    <span class="input-group-text" id="${item}">${item}</span>
-                    <input name="${item}" type="text" class="form-control ${(countError??)?string('is-invalid', '')}"
-                           aria-describedby="${item}" value="${count}"/>
-                    <#if countError??>
-                        <div class="invalid-feedback">
-                            ${countError}
-                        </div>
-                    </#if>
-                </#list>
-            </div>
-            <button class="btn btn-dark" type="button" onclick="sendAttributes(${criminalCaseId})">
+            <button class="btn btn-dark" type="button">
                 Add
             </button>
         </form>
