@@ -62,12 +62,15 @@ public class OrderService {
         BankAccount ba = bankAccountService.findBankAccountByOwner(investigatorService.getInvestigatorById(inv_id));
         List<Item> inv = new ArrayList<>();
         double sum = 0;
+        double prev_sum = 0;
         int count = 0;
         for (Item x : col) {
             sum += x.getCost();
-            count++;
-            if (sum < ba.getBalance() && count < 4)
+            if (sum < ba.getBalance() && count < 3)
                 inv.add(x);
+            else break;
+            count++;
+            prev_sum = sum;
         }
         TrapCase trapCase = new TrapCase();
         trapCase.setCriminalCase(criminalCaseService.getCriminalCaseById(cc_id));
@@ -75,7 +78,7 @@ public class OrderService {
         trapCase.setSelected(true);
         trapCase.setUsefulness((int) Math.round(Math.random() * 10));
         trapCaseRepo.save(trapCase);
-        bankAccountService.setBalance(ba.getId(), (float) (ba.getBalance() - sum));
+        bankAccountService.setBalance(ba.getId(), (float) (ba.getBalance() - prev_sum));
         putToInventory(LocalDateTime.now(), inv);
     }
 
