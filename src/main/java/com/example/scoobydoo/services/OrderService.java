@@ -6,14 +6,12 @@ import com.example.scoobydoo.repos.ItemRepo;
 import com.example.scoobydoo.repos.ProfileRepo;
 import com.example.scoobydoo.repos.TrapCaseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
@@ -59,8 +57,6 @@ public class OrderService {
         MonsterType monsterType = criminal_case.getMonster().getMonsterType();
         List<Item> items = itemRepo.findAll();
         List<Item> col = items.stream().filter(x -> x.getMonsterTypes().stream().anyMatch(y -> y.equals(monsterType))).collect(Collectors.toList());
-        col.sort(Comparator.comparing(Item::getTrapItems, (s1, s2) -> s1.stream().map(x -> x.getTrapCase().getUsefulness()).max(Integer::compareTo).get() >
-                s2.stream().map(x -> x.getTrapCase().getUsefulness()).max(Integer::compareTo).get() ? 1 : 0));
         if (col.size() > 10)
             col = col.stream().limit(10).collect(Collectors.toList());
         return col.stream().collect(Collectors.toMap(Item::getName, y -> ThreadLocalRandom.current().nextInt(5)));

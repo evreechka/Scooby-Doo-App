@@ -74,8 +74,9 @@
         </button>
         <script type="application/javascript">
             document.getElementById("but").addEventListener('click', function (event) {
-                let eve = new Event("custom_event", {bubbles: true})
-                document.dispatchEvent(eve);
+                let eve = new Event("storage", {bubbles: true})
+                localStorage.setItem("event", "go");
+                window.dispatchEvent(eve);
             });
         </script>
     </form>
