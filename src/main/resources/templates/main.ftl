@@ -14,7 +14,8 @@
                 <tr>
                     <td>Crime ${crime.id}</td>
                     <td>
-                        <div class="alert alert-<#if crime.getCrimeStatus().name() == 'ACTIVE'>warning<#elseif crime.getCrimeStatus().name() == 'POSTPON'>info<#else>success</#if>"  role="alert">
+                        <div class="alert alert-<#if crime.getCrimeStatus().name() == 'ACTIVE'>warning<#elseif crime.getCrimeStatus().name() == 'POSTPON'>info<#else>success</#if>"
+                             role="alert">
                             ${crime.getCrimeStatus()}
                         </div>
                     </td>
@@ -28,6 +29,15 @@
 
                 </tr>
             </#list>
+            <#if usr == "1">
+                <script>
+                    sessionStorage.setItem("user", "inv");
+                </script>
+            <#else>
+                <script>
+                    sessionStorage.setItem("user", "user");
+                </script>
+            </#if>
         </table>
     </#if>
 </@c.page>

@@ -8,7 +8,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Name:</label>
                 <div class="col-sm-6">
-                    <input type="text" name="name"
+                    <input type="text" name="name" id="name"
                            class="form-control ${(nameError??)?string('is-invalid', '')}"/>
                     <#if nameError??>
                         <div class="invalid-feedback">
@@ -30,7 +30,7 @@
                     </#if>
                 </#list>
             </div>
-            <button class="btn btn-dark" type="button" onclick="sendAttributes(, ${criminalCaseId})">
+            <button class="btn btn-dark" type="button" onclick="sendAttributes(${criminalCaseId})">
                 Add
             </button>
         </form>

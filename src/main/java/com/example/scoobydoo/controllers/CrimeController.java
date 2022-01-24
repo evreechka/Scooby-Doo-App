@@ -2,6 +2,8 @@ package com.example.scoobydoo.controllers;
 
 import com.example.scoobydoo.entities.*;
 import com.example.scoobydoo.entities.Character;
+import com.example.scoobydoo.entities.enums.SystemRoleType;
+import com.example.scoobydoo.repos.ProfileRepo;
 import com.example.scoobydoo.services.CharacterService;
 import com.example.scoobydoo.services.CrimeSceneService;
 import com.example.scoobydoo.services.CrimeService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+
 import java.util.Map;
 
 import static com.example.scoobydoo.utils.ControllerUtils.getErrors;
@@ -31,9 +34,13 @@ public class CrimeController {
     @Autowired
     private CharacterService characterService;
 
+    @Autowired
+    ProfileRepo profileRepo;
+
     @GetMapping()
     public String getMainPage(Model model, @AuthenticationPrincipal UserDetails profileDetails) {
         model.addAttribute("crimes", crimeService.getAllCrimes(profileDetails));
+        model.addAttribute("usr", profileRepo.findProfileByUsername(profileDetails.getUsername()).getRole().equals(SystemRoleType.USER) ? "0" : "1");
         return "main";
     }
 
@@ -52,7 +59,8 @@ public class CrimeController {
         model.addAttribute("investigators", crimeService.getInvestigators());
         return "add_crime";
     }
-//TODO
+
+    //TODO
     @PostMapping("/crime/{crimeId}/close")
     public String closeCrime(@PathVariable long crimeId, Model model, @AuthenticationPrincipal UserDetails profileDetails) {
         Map<String, String> feedback = crimeService.closeCrime(crimeId, profileDetails);
