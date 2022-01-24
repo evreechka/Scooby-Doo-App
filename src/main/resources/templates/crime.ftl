@@ -79,12 +79,12 @@
             </div>
             <hr>
             <h3>Criminal cases:</h3>
-            <form action="/criminal_case/${crime.getId()?c}/add" method="get">
-                <button type="submit" class="btn btn-dark"
-                        <#if crime.getCrimeStatus().name() == 'CLOSED'>disabled</#if>>
-                    Add Criminal case
-                </button>
-            </form>
+                <form action="/criminal_case/${crime.getId()?c}/add" method="get">
+                    <button type="submit" class="btn btn-dark"
+                            <#if crime.getCrimeStatus().name() == 'CLOSED'>disabled</#if>>
+                        Add Criminal case
+                    </button>
+                </form>
             <div class="list-group">
                 <#list crime.getCriminalCases() as cc>
                     <a href="/criminal_case/${cc.getId()?c}" class="list-group-item list-group-item-action">Criminal
