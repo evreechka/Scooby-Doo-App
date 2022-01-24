@@ -3,6 +3,7 @@ package com.example.scoobydoo.services;
 import com.example.scoobydoo.entities.*;
 import com.example.scoobydoo.entities.enums.PunishmentType;
 import com.example.scoobydoo.entities.enums.SystemRoleType;
+import com.example.scoobydoo.entities.enums.VisitRoleType;
 import com.example.scoobydoo.repos.CriminalCaseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,9 @@ public class CriminalCaseService {
     private SuspectService suspectService;
     @Autowired
     private MonsterService monsterService;
+    @Autowired
+    private CrimeVisitService crimeVisitService;
+
 
     public CriminalCase getCriminalCaseById(long criminalCaseId) {
         return criminalCaseRepo.findCriminalCasesById(criminalCaseId);
@@ -55,6 +59,8 @@ public class CriminalCaseService {
             return map;
         }
         CriminalCase criminalCase = criminalCaseRepo.findCriminalCasesById(criminalCaseId);
+        String[] arr = {VisitRoleType.BAIT.toString(), VisitRoleType.TRAP_MANAGER.toString(), VisitRoleType.BOBBY_TRAPS.toString()};
+        crimeVisitService.addCrimeVisit(criminalCase.getCrime(), new CrimeVisit(), "1", arr);
         Set<Suspect> suspects = criminalCase.getAllSuspect();
         for (Clue clue : criminalCase.getClues()) {
             suspects.stream().filter(suspect -> clue.getSuspects().contains(suspect)).forEach(Suspect::incInvolvement);

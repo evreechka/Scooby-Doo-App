@@ -33,6 +33,7 @@ public class CrimeService {
     private CrimeVisitService crimeVisitService;
     @Autowired
     private CrimeSceneService crimeSceneService;
+
     public List<Crime> getAllCrimes(UserDetails profileDetails) {
         List<Crime> crimes = crimeRepo.findAll();
         Profile profile = profileRepo.findProfileByUsername(profileDetails.getUsername());
@@ -48,7 +49,9 @@ public class CrimeService {
     }
 
     public String getDamage(long crimeId) {
-        int damage = getCrime(crimeId).getContention().getDamageCritically();
+        int damage = 0;
+        if (getCrime(crimeId) != null && getCrime(crimeId).getContention() != null)
+            damage = getCrime(crimeId).getContention().getDamageCritically();
         if (damage >= 0 && damage <= 4)
             return "small";
         else if (damage >= 5 && damage <= 7)
@@ -83,9 +86,11 @@ public class CrimeService {
         map.put("success", "Crime successfully closed!");
         return map;
     }
+
     public List<Investigator> getInvestigators() {
         return investigatorService.getAllInvestigators();
     }
+
     //contention
     //crime visit
     //criminalCase
@@ -101,7 +106,7 @@ public class CrimeService {
         crime.setCriminalCases(new HashSet<>());
         crime.setSheriff(characterService.getCharacter(Long.parseLong(sheriffId)));
         crime.setCrimeStatus(CrimeStatusType.ACTIVE);
-        for (String inv: invIds) {
+        for (String inv : invIds) {
             crime.getInvestigators().add(investigatorService.getInvestigatorById(Long.parseLong(inv)));
         }
         crime.getCriminalCases().add(criminalCase);

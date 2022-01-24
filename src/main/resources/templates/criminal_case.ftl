@@ -5,7 +5,7 @@
     <#if profile??>
         <h1>Criminal case ${criminal_case.getId()}</h1>
         <#if isAdmin && !(criminal_case.getQuilt()??)>
-            <form action="/criminal_case/${criminal_case.getId()?c}/close">
+            <form action="/criminal_case/${criminal_case.getId()?c}/close" method="post">
                 <button type="submit" class="btn btn-dark">
                     Close Criminal case
                 </button>

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface CriminalCaseRepo extends JpaRepository<CriminalCase, Long> {
-    @Modifying
     @Query(value = "SELECT is_enough_evidence(?1)", nativeQuery = true)
     boolean isEnoughEvidence(long criminalCaseId);
     CriminalCase findCriminalCasesById(long criminalCaseId);
