@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,6 +27,11 @@ public class TrapCaseController {
         model.addAttribute("object", this);
         model.addAttribute("page_counter", page_counter);
         return "trap_list";
+    }
+    @GetMapping("/{criminalCaseId}/add")
+    public String getAddTrapPage(Model model, @PathVariable long criminalCaseId) {
+        model.addAttribute("criminalCaseId", criminalCaseId);
+        return "add_trap";
     }
 
     public List<TrapCase> getPage(int x) {

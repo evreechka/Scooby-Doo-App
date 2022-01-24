@@ -1,6 +1,5 @@
 <#include "parts/security.ftl">
 <#import "parts/common.ftl" as c>
-<#assign trap_list = map?keys>
 <@c.page>
     <#if profile??>
         <h3>Add Trap for Criminal case ${criminalCaseId}</h3>
@@ -17,7 +16,7 @@
                     </#if>
                 </div>
             </div>
-            <button class="btn btn-dark" type="button">
+            <button class="btn btn-dark" type="submit">
                 Add
             </button>
         </form>

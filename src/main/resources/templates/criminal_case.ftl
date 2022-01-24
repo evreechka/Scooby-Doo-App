@@ -74,9 +74,8 @@
             </#list>
         </div>
         <hr>
-    <#--        /order/inventory/{investigator_id}/{criminal_case_id}-->
         <h3>Traps</h3>
-        <form action="/order/inventory/${criminal_case.getId()?c}" method="get">
+        <form action="/trap/${criminal_case.getId()?c}/add" method="get">
             <button type="submit" class="btn btn-light">
                 Create trap
             </button>
