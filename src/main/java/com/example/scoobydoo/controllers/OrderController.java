@@ -18,21 +18,21 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping("/inventory/{criminal_case_id}")
-    public String createInventory(Model model, @PathVariable long criminal_case_id) {
-        model.addAttribute("map", orderService.inventorySelection(criminal_case_id));
+    public String createInventory(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long criminal_case_id, @RequestParam String name) {
+        orderService.inventorySelection(criminal_case_id, userDetails, name);
         model.addAttribute("criminalCaseId", criminal_case_id);
-        return "add_trap";
+        return "redirect:/criminal_case/" + criminal_case_id;
     }
 
 
-    @PostMapping("/make/{criminal_case_id}")
-    public String makeOrder(Model model, @AuthenticationPrincipal UserDetails userDetails, @RequestParam(required = false, defaultValue = "default") String name, @RequestParam(required = false) Map<String, String> itemCount, @PathVariable Long criminal_case_id) {
-        try {
-            if (orderService.makeOrder(userDetails, name, itemCount, criminal_case_id))
-                return "redirect:/criminal_case/" + criminal_case_id;
-            else return "redirect:/order/inventory/" + criminal_case_id;
-        } catch (Exception e) {
-            return "redirect:/order/inventory/" + criminal_case_id;
-        }
-    }
+//    @PostMapping("/make/{criminal_case_id}")
+//    public String makeOrder(Model model, @AuthenticationPrincipal UserDetails userDetails, @RequestParam(required = false, defaultValue = "default") String name, @RequestParam(required = false) Map<String, String> itemCount, @PathVariable Long criminal_case_id) {
+//        try {
+//            if (orderService.makeOrder(userDetails, name, itemCount, criminal_case_id))
+//                return "redirect:/criminal_case/" + criminal_case_id;
+//            else return "redirect:/order/inventory/" + criminal_case_id;
+//        } catch (Exception e) {
+//            return "redirect:/order/inventory/" + criminal_case_id;
+//        }
+//    }
 }
