@@ -37,4 +37,9 @@ public class InvestigatorController {
         investigatorService.deleteInvestigator(investigatorId);
         return "redirect:/investigator";
     }
+    @PostMapping("/{investigatorId}/setAdmin")
+    public String setAdmin(@PathVariable long investigatorId) {
+        investigatorService.setAdmin(investigatorId);
+        return "redirect:/investigator";
+    }
 }

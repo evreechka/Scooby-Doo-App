@@ -4,7 +4,7 @@
 <@c.page>
     <#if profile??>
         <h1>Criminal case ${criminal_case.getId()}</h1>
-        <#if isAdmin && !(criminal_case.getQuilt()??)>
+        <#if (isAdmin || isInvestigator) && !(criminal_case.getQuilt()??)>
             <form action="/criminal_case/${criminal_case.getId()?c}/close" method="post">
                 <button type="submit" class="btn btn-dark">
                     Close Criminal case
@@ -71,7 +71,7 @@
         <hr>
     <#--        /order/inventory/{investigator_id}/{criminal_case_id}-->
         <h3>Traps</h3>
-        <form action="/order/inventory/${criminal_case.getId()?c}">
+        <form action="/order/inventory/${criminal_case.getId()?c}" method="get">
             <button type="submit" class="btn btn-light">
                 Create trap
             </button>

@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,12 +41,12 @@ public class CriminalCase implements Serializable {
 
     //TODO
     @ManyToOne
-    @JoinColumn(name="quilt_id", referencedColumnName = "suspect_id")
+    @JoinColumn(name = "quilt_id", referencedColumnName = "suspect_id")
     private Suspect quilt;
 
     //TODO
     @ManyToOne
-    @JoinColumn(name="crime_id", referencedColumnName = "crime_id")
+    @JoinColumn(name = "crime_id", referencedColumnName = "crime_id")
     private Crime crime;
 
     //TODO
@@ -63,8 +64,13 @@ public class CriminalCase implements Serializable {
 
     public Set<Suspect> getAllSuspect() {
         Set<Suspect> suspects = new HashSet<>();
-        for (CrimeVisit visit: getCrime().getCrimeVisits()) {
-            suspects.addAll(visit.getSuspects());
+        for (CrimeVisit visit : getCrime().getCrimeVisits()) {
+            if (visit != null && visit.getSuspects() != null && visit.getSuspects().size() != 0) {
+                for (Suspect x : visit.getSuspects()) {
+                    if (x != null)
+                        suspects.add(x);
+                }
+            }
         }
         return suspects;
     }
