@@ -30,7 +30,7 @@
                     </#if>
                 </#list>
             </div>
-            <button class="btn btn-dark" type="button" onclick="sendAttributes(trap_list, ${criminalCaseId})">
+            <button class="btn btn-dark" type="button" onclick="sendAttributes(, ${criminalCaseId})">
                 Add
             </button>
         </form>

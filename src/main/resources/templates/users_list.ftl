@@ -27,6 +27,15 @@
                     </td>
                     <#if isAdmin>
                         <td>
+                            <form action="/investigator/${user.getInvestigatorId()}/setAdmin" method="post">
+                                <button type="submit" class="btn btn-light">
+                                    set Admin
+                                </button>
+                            </form>
+                        </td>
+                    </#if>
+                    <#if isAdmin>
+                        <td>
                             <form action="/investigator/${user.getInvestigatorId()}/delete" method="post">
                                 <button type="submit" class="btn btn-light">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">

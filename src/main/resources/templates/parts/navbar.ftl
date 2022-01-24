@@ -3,7 +3,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">Scooby-Doo</a>
-    <#if profile?? && !isSheriff>
+    <#if profile??>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,32 +16,32 @@
                     <a class="nav-link" href="/">Crimes</a>
                 </li>
             </#if>
-            <#if profile?? && !isSheriff>
+            <#if profile??>
                 <li class="nav-item">
                     <a class="nav-link" href="/profile/${activeId}">Profile</a>
                 </li>
             </#if>
-            <#if profile?? && !isSheriff>
+            <#if profile??>
                 <li class="nav-item">
                     <a class="nav-link" href="/investigator">Investigators</a>
                 </li>
             </#if>
-            <#if profile?? && !isSheriff>
+            <#if profile??>
                 <li class="nav-item">
                     <a class="nav-link" href="/monster">Monsters</a>
                 </li>
             </#if>
-            <#if profile?? && !isSheriff>
+            <#if profile?? && (isAdmin || isInvestigator)>
                 <li class="nav-item">
                     <a class="nav-link" href="/inventory">Inventory</a>
                 </li>
             </#if>
-            <#if profile?? && !isSheriff>
+            <#if profile?? && (isAdmin || isInvestigator)>
                 <li class="nav-item">
                     <a class="nav-link" href="/trap">Traps</a>
                 </li>
             </#if>
-            <#if profile??>
+            <#if profile?? && !isUser>
                 <li class="nav-item">
                     <a class="nav-link" href="/character">Characters</a>
                 </li>

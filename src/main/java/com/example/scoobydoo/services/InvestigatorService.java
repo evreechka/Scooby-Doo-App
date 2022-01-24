@@ -52,4 +52,9 @@ public class InvestigatorService {
 
     public void notifyInvestigators() {
     }
+
+    public void setAdmin(long investigatorId) {
+        Character admin = characterService.getCharacter(investigatorId);
+        admin.getProfile().setRole(SystemRoleType.ADMIN);
+    }
 }
