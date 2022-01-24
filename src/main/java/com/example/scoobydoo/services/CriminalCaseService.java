@@ -87,7 +87,7 @@ public class CriminalCaseService {
         } else {
             criminalCase.setPunishment(PunishmentType.ARREST);
         }
-        map.put("guilt", guilt);
+        criminalCaseRepo.save(criminalCase);
         return map;
     }
 

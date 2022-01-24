@@ -66,14 +66,14 @@
             </div>
         </#if>
         <hr>
-        <h3>Orders</h3>
-        <div class="list-group">
-            <#list criminal_case.getOrders() as order>
-                <a href="/order/${order.getId()?c}" class="list-group-item list-group-item-action">Order
-                    #${order.getId()}</a>
-            </#list>
-        </div>
-        <hr>
+<#--        <h3>Orders</h3>-->
+<#--        <div class="list-group">-->
+<#--            <#list criminal_case.getOrders() as order>-->
+<#--                <a href="/order/${order.getId()?c}" class="list-group-item list-group-item-action">Order-->
+<#--                    #${order.getId()}</a>-->
+<#--            </#list>-->
+<#--        </div>-->
+<#--        <hr>-->
         <h3>Traps</h3>
         <form action="/trap/${criminal_case.getId()?c}/add" method="get">
             <button type="submit" class="btn btn-light">
