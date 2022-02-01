@@ -82,26 +82,6 @@ public class OrderService {
         putToInventory(LocalDateTime.now(), inv);
     }
 
-//    public boolean makeOrder(UserDetails userDetails, String name, Map<String, String> itemCount, Long criminal_case_id) {
-//        long inv_id = profileRepo.findProfileByUsername(userDetails.getUsername()).getUser().getId();
-//        Stream<Item> itemStream = itemCount.keySet().stream().map(x -> itemRepo.findItemByName(x));
-//        List<Item> items = itemStream.collect(Collectors.toList());
-//        double sum = itemStream.mapToDouble(Item::getCost).sum();
-//        BankAccount ba = bankAccountService.findBankAccountByOwner(investigatorService.getInvestigatorById(inv_id));
-//        if (ba.getBalance() < sum)
-//            return false;
-//        TrapCase trapCase = new TrapCase();
-//        trapCase.setCriminalCase(criminalCaseService.getCriminalCaseById(criminal_case_id));
-//        trapCase.setName(name);
-//        trapCase.setSelected(true);
-//        trapCase.setUsefulness((int) Math.round(Math.random() * 10));
-//        trapCaseRepo.save(trapCase);
-//        bankAccountService.setBalance(ba.getId(), (float) (ba.getBalance() - sum));
-//        putToInventory(LocalDateTime.now(), items);
-//        return true;
-//    }
-
-
     private void putToInventory(LocalDateTime date, List<Item> inv) {
         executor.schedule(() -> {
             List<Inventory> collect = inv.stream().map(x -> {

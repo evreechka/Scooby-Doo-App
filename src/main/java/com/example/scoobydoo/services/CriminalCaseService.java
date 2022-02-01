@@ -63,12 +63,17 @@ public class CriminalCaseService {
             map.put("error", "You haven't create any traps");
             return map;
         }
-        String[] arr = {VisitRoleType.BAIT.toString(), VisitRoleType.TRAP_MANAGER.toString(), VisitRoleType.BOBBY_TRAPS.toString()};
-        crimeVisitService.addCrimeVisit(criminalCase.getCrime(), new CrimeVisit(), "1", arr);
         Set<Suspect> suspects = criminalCase.getAllSuspect();
+        if (suspects.isEmpty()) {
+            map.put("error", "You haven't any suspects");
+            return map;
+        }
         for (Clue clue : criminalCase.getClues()) {
             suspects.stream().filter(suspect -> clue.getSuspects().contains(suspect)).forEach(Suspect::incInvolvement);
         }
+        String[] arr = {VisitRoleType.BAIT.toString(), VisitRoleType.TRAP_MANAGER.toString(), VisitRoleType.BOBBY_TRAPS.toString()};
+        List<CrimeScene> crimeScenes = criminalCase.getAllCrimeScenes();
+        crimeVisitService.addCrimeVisit(criminalCase.getCrime(), new CrimeVisit(), Long.toString(crimeScenes.get((int) Math.round(Math.random() * (crimeScenes.size() - 1))).getId()), arr);
         int max_involvement = -1;
         Suspect guilt = null;
         for (Suspect suspect : suspects) {
@@ -78,6 +83,7 @@ public class CriminalCaseService {
                 guilt = suspect;
             }
         }
+        criminalCase.setQuilt(guilt);
         if (criminalCase.getSeverity() >= 0 && criminalCase.getSeverity() <= 1) {
             criminalCase.setPunishment(PunishmentType.NONE);
         } else if (criminalCase.getSeverity() >= 2 && criminalCase.getSeverity() <= 4) {

@@ -11,7 +11,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -73,5 +75,14 @@ public class CriminalCase implements Serializable {
             }
         }
         return suspects;
+    }
+    public List<CrimeScene> getAllCrimeScenes() {
+        List<CrimeScene> crimeScenes = new ArrayList<>();
+        for (CrimeVisit visit : getCrime().getCrimeVisits()) {
+            if (visit != null && visit.getCrimeScene() != null) {
+                crimeScenes.add(visit.getCrimeScene());
+            }
+        }
+        return crimeScenes;
     }
 }
