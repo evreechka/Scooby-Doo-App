@@ -66,17 +66,9 @@
             </div>
         </#if>
         <hr>
-<#--        <h3>Orders</h3>-->
-<#--        <div class="list-group">-->
-<#--            <#list criminal_case.getOrders() as order>-->
-<#--                <a href="/order/${order.getId()?c}" class="list-group-item list-group-item-action">Order-->
-<#--                    #${order.getId()}</a>-->
-<#--            </#list>-->
-<#--        </div>-->
-<#--        <hr>-->
         <h3>Traps</h3>
         <form action="/trap/${criminal_case.getId()?c}/add" method="get">
-            <button type="submit" class="btn btn-light">
+            <button type="submit" class="btn btn-light" <#if criminal_case.getQuilt()??>disabled</#if>>
                 Create trap
             </button>
         </form>
@@ -99,7 +91,7 @@
         <hr>
         <h3>Clues</h3>
         <form action="/clue/${criminal_case.getId()?c}/add">
-            <button type="submit" class="btn btn-light">
+            <button type="submit" class="btn btn-light" <#if criminal_case.getQuilt()??>disabled</#if>>
                 Add clue
             </button>
         </form>
